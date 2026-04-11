@@ -1,1 +1,31 @@
-<p>navbar works!</p>
+<nav class="navbar">
+
+  <!-- Logo -->
+  <a class="nav-logo" routerLink="/">
+    <img class="logo-img" src="assets/logo.png" alt="SpeakUp Languages logo" />
+    <div class="logo-text-wrap">
+      <span class="logo-text">SpeakUp Languages</span>
+      <span class="logo-sub">Language Center</span>
+    </div>
+  </a>
+
+  <!-- Navigation Links -->
+  <div class="nav-links">
+    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+    <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+  </div>
+
+  <!-- Language Switcher (UI only) -->
+  <div class="lang-switcher">
+    <button
+      *ngFor="let lang of languages"
+      class="lang-btn"
+      [class.active]="activeLang === lang"
+      (click)="setLang(lang)"
+    >
+      {{ lang }}
+    </button>
+  </div>
+
+</nav>
