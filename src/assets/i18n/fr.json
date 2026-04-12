@@ -1,0 +1,107 @@
+{
+  "NAVBAR": {
+    "HOME": "Accueil",
+    "ABOUT": "À propos",
+    "CONTACT": "Contact"
+  },
+
+  "HOME": {
+    "HERO_LABEL": "Bienvenue chez SpeakUp Languages",
+    "HERO_TITLE": "Apprenez les langues",
+    "HERO_TITLE_HIGHLIGHT": "Facilement",
+    "HERO_SUBTITLE": "Français · Anglais · Allemand · Espagnol",
+    "BTN_GET_STARTED": "Commencer",
+    "BTN_CONTACT_US": "Nous contacter",
+
+    "LANGUAGES_TAG": "Ce que nous enseignons",
+    "LANGUAGES_TITLE": "Les langues que nous proposons",
+    "LANGUAGES_SUB": "Choisissez la langue qui vous ouvre les portes",
+    "LANG_FRENCH": "Français",
+    "LANG_FRENCH_DESC": "La langue de la culture, de la diplomatie et de la romance",
+    "LANG_ENGLISH": "Anglais",
+    "LANG_ENGLISH_DESC": "La langue mondiale des affaires et des opportunités",
+    "LANG_GERMAN": "Allemand",
+    "LANG_GERMAN_DESC": "La langue de l'ingénierie, des sciences et de la précision",
+    "LANG_SPANISH": "Espagnol",
+    "LANG_SPANISH_DESC": "Parlée par 500 millions de personnes dans le monde",
+
+    "WHY_TAG": "Nos atouts",
+    "WHY_TITLE": "Pourquoi nous choisir",
+    "WHY_SUB": "Nous rendons l'apprentissage naturel, pas stressant",
+    "WHY_1_TITLE": "Professeurs natifs",
+    "WHY_1_DESC": "Apprenez avec des locuteurs natifs certifiés qui rendent chaque cours authentique.",
+    "WHY_2_TITLE": "Horaires flexibles",
+    "WHY_2_DESC": "Matin, soir ou week-end — choisissez l'horaire qui correspond à votre vie.",
+    "WHY_3_TITLE": "Apprentissage en ligne",
+    "WHY_3_DESC": "Rejoignez des cours en direct depuis n'importe où. Tout ce qu'il vous faut, c'est une connexion.",
+    "WHY_4_TITLE": "Petits groupes",
+    "WHY_4_DESC": "Maximum 8 étudiants par classe — plus d'attention, plus de temps de parole, plus de progrès.",
+
+    "CTA_TITLE": "Commencez à apprendre aujourd'hui",
+    "CTA_SUB": "Rejoignez des centaines d'étudiants qui parlent déjà une nouvelle langue avec SpeakUp. Votre premier cours est à portée de clic.",
+    "CTA_BTN": "Nous contacter →"
+  },
+
+  "ABOUT": {
+    "HERO_TAG": "Notre histoire",
+    "HERO_TITLE": "À propos de",
+    "HERO_TITLE_HIGHLIGHT": "SpeakUp Languages",
+    "HERO_SUB": "Nous sommes un centre de langues dédié à aider les adultes à communiquer avec confiance dans une nouvelle langue.",
+
+    "WHO_TAG": "Qui sommes-nous",
+    "WHO_TITLE": "Une école conçue pour les adultes sérieux dans leur apprentissage",
+    "WHO_P1": "SpeakUp Languages a été fondé avec un objectif clair : rendre l'apprentissage des langues accessible, pratique et agréable pour les adultes de tous niveaux.",
+    "WHO_P2": "Que vous appreniez pour le travail, les voyages, la famille ou le développement personnel, nos programmes sont conçus autour de votre vie réelle.",
+    "STAT_LANGUAGES": "Langues enseignées",
+    "STAT_STUDENTS": "Étudiants inscrits",
+    "STAT_CLASS_SIZE": "Étudiants max / cours",
+    "STAT_TEACHERS": "Professeurs natifs",
+
+    "MISSION_TAG": "Notre mission",
+    "MISSION_TITLE": "Aider les gens à parler, pas seulement à étudier",
+    "MISSION_TEXT": "Notre mission est simple — supprimer les barrières qui empêchent les adultes d'apprendre une langue. Chaque cours chez SpeakUp est axé sur la parole, l'écoute et la connexion.",
+
+    "APPROACH_TAG": "Comment nous enseignons",
+    "APPROACH_TITLE": "Notre approche pédagogique",
+    "APPROACH_SUB": "Tout ce que nous faisons vise un seul objectif — que vous parliez avec confiance",
+    "APPROACH_1_TITLE": "Locuteurs natifs",
+    "APPROACH_1_DESC": "Chaque enseignant est un locuteur natif certifié. Vous apprenez la vraie prononciation, les vraies expressions.",
+    "APPROACH_2_TITLE": "Apprentissage pratique",
+    "APPROACH_2_DESC": "Nous nous concentrons sur ce que vous utiliserez vraiment — commander un repas, écrire des e-mails, avoir des réunions.",
+    "APPROACH_3_TITLE": "Suivi des progrès",
+    "APPROACH_3_DESC": "Des bilans réguliers et des évaluations de niveau pour que vous sachiez toujours où vous en êtes.",
+    "APPROACH_4_TITLE": "Environnement bienveillant",
+    "APPROACH_4_DESC": "Les petits groupes signifient plus de temps de parole et un espace sûr pour faire des erreurs et progresser."
+  },
+
+  "CONTACT": {
+    "HERO_TAG": "Prenez contact",
+    "HERO_TITLE": "Contactez",
+    "HERO_TITLE_HIGHLIGHT": "Nous",
+    "HERO_SUB": "Vous avez une question ? Vous voulez vous inscrire ? Nous serions ravis de vous entendre. Remplissez le formulaire et nous vous répondrons sous 24 heures.",
+
+    "FORM_TITLE": "Envoyez-nous un message",
+    "FIELD_NAME": "Nom complet",
+    "FIELD_NAME_PLACEHOLDER": "ex. Sarah Johnson",
+    "FIELD_EMAIL": "Adresse e-mail",
+    "FIELD_EMAIL_PLACEHOLDER": "ex. sarah@email.com",
+    "FIELD_SUBJECT": "Sujet",
+    "FIELD_SUBJECT_PLACEHOLDER": "Sélectionnez un sujet",
+    "SUBJECT_ENROLL": "S'inscrire à un cours",
+    "SUBJECT_INFO": "Informations sur les cours",
+    "SUBJECT_PRICING": "Tarifs et horaires",
+    "SUBJECT_OTHER": "Autre",
+    "FIELD_MESSAGE": "Message",
+    "FIELD_MESSAGE_PLACEHOLDER": "Dites-nous ce dont vous avez besoin...",
+    "BTN_SEND": "Envoyer le message →",
+
+    "INFO_EMAIL_LABEL": "E-mail",
+    "INFO_EMAIL_VALUE": "contact@speakuplanguages.com",
+    "INFO_PHONE_LABEL": "Téléphone",
+    "INFO_PHONE_VALUE": "+1 (555) 234-5678",
+    "INFO_HOURS_LABEL": "Heures de bureau",
+    "INFO_HOURS_VALUE": "Lun – Ven, 9h à 18h",
+    "INFO_LOCATION_LABEL": "Localisation",
+    "INFO_LOCATION_VALUE": "Cours en ligne et en présentiel disponibles"
+  }
+}
