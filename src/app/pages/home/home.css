@@ -144,11 +144,7 @@ section { font-family: 'DM Sans', sans-serif; }
   box-shadow: 0 12px 32px rgba(0,0,0,0.06);
 }
 
-.lang-flag {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  line-height: 1;
-}
+
 
 .lang-name {
   font-family: 'Playfair Display', serif;
@@ -250,4 +246,15 @@ section { font-family: 'DM Sans', sans-serif; }
 @media (max-width: 576px) {
   .py-6 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
   .hero-section { min-height: 100vh; }
+}
+
+
+/* ── Flag images ── */
+.lang-flag {
+  width: 64px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }

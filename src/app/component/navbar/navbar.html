@@ -9,7 +9,7 @@
     </div>
   </a>
 
-  <!-- Navigation Links -->
+  <!-- Desktop Navigation Links -->
   <div class="nav-links">
     <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       {{ 'NAVBAR.HOME' | translate }}
@@ -22,16 +22,42 @@
     </a>
   </div>
 
-  <!-- Language Switcher -->
-  <div class="lang-switcher">
-    <button
-      *ngFor="let lang of languages"
-      class="lang-btn"
-      [class.active]="activeLang === lang.code"
-      (click)="setLang(lang.code)"
-    >
-      {{ lang.label }}
+  <!-- Right side: Lang switcher + Hamburger -->
+  <div class="nav-right">
+
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+      <button
+        *ngFor="let lang of languages"
+        class="lang-btn"
+        [class.active]="activeLang === lang.code"
+        (click)="setLang(lang.code)"
+      >
+        {{ lang.label }}
+      </button>
+    </div>
+
+    <!-- Hamburger button (mobile only) -->
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
+
   </div>
 
 </nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" [class.open]="menuOpen" dir="ltr">
+  <a class="mobile-link" routerLink="/" routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+    {{ 'NAVBAR.HOME' | translate }}
+  </a>
+  <a class="mobile-link" routerLink="/about" routerLinkActive="active" (click)="closeMenu()">
+    {{ 'NAVBAR.ABOUT' | translate }}
+  </a>
+  <a class="mobile-link" routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">
+    {{ 'NAVBAR.CONTACT' | translate }}
+  </a>
+</div>

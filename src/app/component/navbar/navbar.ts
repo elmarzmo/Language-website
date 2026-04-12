@@ -18,11 +18,20 @@ export class Navbar {
   ];
 
   activeLang = 'en';
+  menuOpen = false;
 
   @Output() langChange = new EventEmitter<string>();
 
   setLang(langCode: string): void {
     this.activeLang = langCode;
     this.langChange.emit(langCode);
+  }
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu(): void {
+    this.menuOpen = false;
   }
 }
