@@ -11,20 +11,26 @@
 
   <!-- Navigation Links -->
   <div class="nav-links">
-    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
-    <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      {{ 'NAVBAR.HOME' | translate }}
+    </a>
+    <a class="nav-link" routerLink="/about" routerLinkActive="active">
+      {{ 'NAVBAR.ABOUT' | translate }}
+    </a>
+    <a class="nav-link" routerLink="/contact" routerLinkActive="active">
+      {{ 'NAVBAR.CONTACT' | translate }}
+    </a>
   </div>
 
-  <!-- Language Switcher (UI only) -->
+  <!-- Language Switcher -->
   <div class="lang-switcher">
     <button
       *ngFor="let lang of languages"
       class="lang-btn"
-      [class.active]="activeLang === lang"
-      (click)="setLang(lang)"
+      [class.active]="activeLang === lang.code"
+      (click)="setLang(lang.code)"
     >
-      {{ lang }}
+      {{ lang.label }}
     </button>
   </div>
 
