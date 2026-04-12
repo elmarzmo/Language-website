@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [RouterModule, TranslateModule],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css']
 })
-export class Home {
-
-}
+export class Home {}
