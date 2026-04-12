@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './component/navbar/navbar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,19 @@ import { Navbar } from './component/navbar/navbar';
 })
 export class App {
   protected title = 'language-website';
+
+  constructor(private translate: TranslateService) {
+    
+    this.translate.use('en');
+  }
+
+  switchLanguage(lang: string) {
+    this.translate.use(lang);
+
+    if (lang === 'ar') {
+      document.documentElement.dir = 'rtl';
+    } else {
+      document.documentElement.dir = 'ltr';
+    }
+  }
 }
