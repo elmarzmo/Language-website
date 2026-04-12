@@ -1,23 +1,18 @@
 <!-- contact.component.html -->
 
-<!-- ══════════════════════════════════════
-  HERO — Contact
-══════════════════════════════════════ -->
+<!-- HERO -->
 <section class="contact-hero text-center d-flex align-items-center justify-content-center">
   <div class="container">
-    <span class="section-tag">Get In Touch</span>
-    <h1 class="hero-title mt-3 mb-4">Contact <span class="highlight">Us</span></h1>
-    <p class="hero-sub mx-auto">
-      Have a question? Want to enroll? We'd love to hear from you.
-      Fill in the form below and we'll get back to you within 24 hours.
-    </p>
+    <span class="section-tag">{{ 'CONTACT.HERO_TAG' | translate }}</span>
+    <h1 class="hero-title mt-3 mb-4">
+      {{ 'CONTACT.HERO_TITLE' | translate }}
+      <span class="highlight">{{ 'CONTACT.HERO_TITLE_HIGHLIGHT' | translate }}</span>
+    </h1>
+    <p class="hero-sub mx-auto">{{ 'CONTACT.HERO_SUB' | translate }}</p>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-  SECTION — Contact Form + Info
-══════════════════════════════════════ -->
+<!-- FORM + INFO -->
 <section class="contact-section py-6">
   <div class="container">
     <div class="row g-5 justify-content-center">
@@ -25,35 +20,38 @@
       <!-- Form -->
       <div class="col-12 col-lg-7">
         <div class="form-card">
-          <h3 class="form-title mb-4">Send us a message</h3>
+          <h3 class="form-title mb-4">{{ 'CONTACT.FORM_TITLE' | translate }}</h3>
 
           <div class="mb-4">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-control custom-input" placeholder="e.g. Sarah Johnson" />
+            <label class="form-label">{{ 'CONTACT.FIELD_NAME' | translate }}</label>
+            <input type="text" class="form-control custom-input"
+              [placeholder]="'CONTACT.FIELD_NAME_PLACEHOLDER' | translate" />
           </div>
 
           <div class="mb-4">
-            <label class="form-label">Email Address</label>
-            <input type="email" class="form-control custom-input" placeholder="e.g. sarah@email.com" />
+            <label class="form-label">{{ 'CONTACT.FIELD_EMAIL' | translate }}</label>
+            <input type="email" class="form-control custom-input"
+              [placeholder]="'CONTACT.FIELD_EMAIL_PLACEHOLDER' | translate" />
           </div>
 
           <div class="mb-4">
-            <label class="form-label">Subject</label>
+            <label class="form-label">{{ 'CONTACT.FIELD_SUBJECT' | translate }}</label>
             <select class="form-select custom-input">
-              <option value="" disabled selected>Select a topic</option>
-              <option>Enroll in a course</option>
-              <option>Course information</option>
-              <option>Pricing & schedules</option>
-              <option>Other</option>
+              <option value="" disabled selected>{{ 'CONTACT.FIELD_SUBJECT_PLACEHOLDER' | translate }}</option>
+              <option>{{ 'CONTACT.SUBJECT_ENROLL' | translate }}</option>
+              <option>{{ 'CONTACT.SUBJECT_INFO' | translate }}</option>
+              <option>{{ 'CONTACT.SUBJECT_PRICING' | translate }}</option>
+              <option>{{ 'CONTACT.SUBJECT_OTHER' | translate }}</option>
             </select>
           </div>
 
           <div class="mb-4">
-            <label class="form-label">Message</label>
-            <textarea class="form-control custom-input" rows="5" placeholder="Tell us what you need..."></textarea>
+            <label class="form-label">{{ 'CONTACT.FIELD_MESSAGE' | translate }}</label>
+            <textarea class="form-control custom-input" rows="5"
+              [placeholder]="'CONTACT.FIELD_MESSAGE_PLACEHOLDER' | translate"></textarea>
           </div>
 
-          <button class="btn btn-submit w-100">Send Message →</button>
+          <button class="btn btn-submit w-100">{{ 'CONTACT.BTN_SEND' | translate }}</button>
         </div>
       </div>
 
@@ -62,32 +60,29 @@
         <div class="info-block mb-4">
           <div class="info-icon">📧</div>
           <div>
-            <div class="info-label">Email</div>
-            <div class="info-value">contact&#64;speakuplanguages.com</div>
+            <div class="info-label">{{ 'CONTACT.INFO_EMAIL_LABEL' | translate }}</div>
+            <div class="info-value">{{ 'CONTACT.INFO_EMAIL_VALUE' | translate }}</div>
           </div>
         </div>
-
         <div class="info-block mb-4">
           <div class="info-icon">📞</div>
           <div>
-            <div class="info-label">Phone</div>
-            <div class="info-value">+1 (555) 234-5678</div>
+            <div class="info-label">{{ 'CONTACT.INFO_PHONE_LABEL' | translate }}</div>
+            <div class="info-value">{{ 'CONTACT.INFO_PHONE_VALUE' | translate }}</div>
           </div>
         </div>
-
         <div class="info-block mb-4">
           <div class="info-icon">🕐</div>
           <div>
-            <div class="info-label">Office Hours</div>
-            <div class="info-value">Mon – Fri, 9 AM to 6 PM</div>
+            <div class="info-label">{{ 'CONTACT.INFO_HOURS_LABEL' | translate }}</div>
+            <div class="info-value">{{ 'CONTACT.INFO_HOURS_VALUE' | translate }}</div>
           </div>
         </div>
-
         <div class="info-block">
           <div class="info-icon">📍</div>
           <div>
-            <div class="info-label">Location</div>
-            <div class="info-value">Online & In-Person Classes Available</div>
+            <div class="info-label">{{ 'CONTACT.INFO_LOCATION_LABEL' | translate }}</div>
+            <div class="info-value">{{ 'CONTACT.INFO_LOCATION_VALUE' | translate }}</div>
           </div>
         </div>
       </div>
