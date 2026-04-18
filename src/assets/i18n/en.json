@@ -82,9 +82,9 @@
 
     "FORM_TITLE": "Send us a message",
     "FIELD_NAME": "Full Name",
-    "FIELD_NAME_PLACEHOLDER": "e.g. Sarah Johnson",
+    "FIELD_NAME_PLACEHOLDER": "e.g. Fatima Ezzahra Elmarzougui",
     "FIELD_EMAIL": "Email Address",
-    "FIELD_EMAIL_PLACEHOLDER": "e.g. sarah@email.com",
+    "FIELD_EMAIL_PLACEHOLDER": "e.g. fatima@email.com",
     "FIELD_SUBJECT": "Subject",
     "FIELD_SUBJECT_PLACEHOLDER": "Select a topic",
     "SUBJECT_ENROLL": "Enroll in a course",
