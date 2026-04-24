@@ -3,11 +3,14 @@ import { About } from './pages/about/about';
 import { Contact } from './pages/contact/contact';
 import { Home } from './pages/home/home';
 
+import { Signin } from './pages/signin/signin';
+
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: Home },
     { path: 'about', component: About },
     { path: 'contact', component: Contact },
+    { path: 'signin', component: Signin },
     
 
 ];
