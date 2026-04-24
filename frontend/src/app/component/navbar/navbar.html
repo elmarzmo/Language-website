@@ -20,6 +20,10 @@
     <a class="nav-link" routerLink="/contact" routerLinkActive="active">
       {{ 'NAVBAR.CONTACT' | translate }}
     </a>
+
+    <a class="nav-link" routerLink="/signin" routerLinkActive="active">
+      {{ 'NAVBAR.SIGNIN' | translate }}
+    </a>
   </div>
 
   <!-- Right side: Lang switcher + Hamburger -->
@@ -59,5 +63,8 @@
   </a>
   <a class="mobile-link" routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">
     {{ 'NAVBAR.CONTACT' | translate }}
+  </a>
+  <a class="mobile-link" routerLink="/signin" routerLinkActive="active" (click)="closeMenu()">
+    {{ 'NAVBAR.SIGNIN' | translate }}
   </a>
 </div>
