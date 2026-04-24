@@ -2,7 +2,9 @@
   "NAVBAR": {
     "HOME": "الرئيسية",
     "ABOUT": "من نحن",
-    "CONTACT": "اتصل بنا"
+    "CONTACT": "اتصل بنا",
+    "SIGNIN": "تسجيل الدخول"
+   
   },
 
   "HOME": {
@@ -103,5 +105,30 @@
     "INFO_HOURS_VALUE": "الاثنين – الجمعة، 9 صباحاً حتى 6 مساءً",
     "INFO_LOCATION_LABEL": "الموقع",
     "INFO_LOCATION_VALUE": "دروس عبر الإنترنت وحضورية متاحة"
+  },
+  "SIGNIN": {
+    "HERO_TAG": "دخول آمن",
+    "HERO_TITLE": "تسجيل الدخول إلى حسابك",
+    "HERO_SUB": "أهلاً وسهلاً! سجّل الدخول أو أنشئ حساباً جديداً للبدء مع SpeakUp Languages.",
+    "TAB_LOGIN": "تسجيل الدخول",
+    "TAB_SIGNUP": "إنشاء حساب",
+    "LOGIN_TITLE": "أهلاً وسهلاً",
+    "SIGNUP_TITLE": "أنشئ حسابك",
+    "FIELD_FULLNAME": "الاسم الكامل",
+    "FIELD_FULLNAME_PLACEHOLDER": "مثال: سارة جونسون",
+    "FIELD_EMAIL": "البريد الإلكتروني",
+    "FIELD_EMAIL_PLACEHOLDER": "مثال: sarah@email.com",
+    "FIELD_PASSWORD": "كلمة المرور",
+    "FIELD_PASSWORD_PLACEHOLDER": "أدخل كلمة مرورك",
+    "FIELD_CONFIRM_PASSWORD": "تأكيد كلمة المرور",
+    "FIELD_CONFIRM_PASSWORD_PLACEHOLDER": "أعد إدخال كلمة مرورك",
+    "REMEMBER_ME": "تذكّر بيانات الدخول",
+    "FORGOT_PASSWORD": "هل نسيت كلمة المرور؟",
+    "AGREE_TERMS": "أوافق على شروط الخدمة وسياسة الخصوصية",
+    "BTN_LOGIN": "تسجيل الدخول",
+    "BTN_CREATE_ACCOUNT": "إنشاء حساب",
+    "LOGIN_GOOGLE": "متابعة مع Google",
+    "SIGNUP_GOOGLE": "التسجيل مع Google",
+    "OR": "أو"
   }
 }
