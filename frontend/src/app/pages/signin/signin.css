@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500&display=swap');
+
+section { font-family: 'DM Sans', sans-serif; }
+.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+
+.section-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7c6fcf;
+  background: #f0eeff;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+/* ── Hero ── */
+.signin-hero {
+  min-height: 40vh;
+  background: linear-gradient(160deg, #f7f5ff 0%, #fdf9f3 60%, #f0f7ff 100%);
+  padding: 5rem 0;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.03em;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.8;
+  max-width: 520px;
+}
+
+/* ── Sign In Section ── */
+.signin-section {
+  background: #ffffff;
+}
+
+.signin-card {
+  max-width: 420px;
+  background: #fafaf8;
+  border: 0.5px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+/* ── Tabs ── */
+.signin-tabs {
+  display: flex;
+  gap: 0;
+  background: #f0eeea;
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 2rem;
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 0.5px solid rgba(0,0,0,0.12);
+}
+
+.tab-btn:hover:not(.active) {
+  color: #1a1a1a;
+}
+
+/* ── Tab Content ── */
+.tab-content {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Forms ── */
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+  display: block;
+}
+
+.custom-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #ffffff;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.custom-input:focus {
+  border-color: #7c6fcf;
+  box-shadow: 0 0 0 3px rgba(124, 111, 207, 0.1);
+  outline: none;
+}
+
+.custom-input::placeholder {
+  color: #bbb;
+}
+
+/* ── Checkboxes ── */
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  user-select: none;
+}
+
+.form-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #7c6fcf;
+}
+
+/* ── Links ── */
+.forgot-link {
+  font-size: 13px;
+  color: #7c6fcf;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.forgot-link:hover {
+  color: #6a5dbf;
+  text-decoration: underline;
+}
+
+/* ── Buttons ── */
+.btn-submit {
+  background: #7c6fcf;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  padding: 12px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-submit:hover {
+  background: #6a5dbf;
+  transform: translateY(-1px);
+}
+
+/* ── Divider ── */
+.divider {
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 0.5px;
+  background: rgba(0,0,0,0.08);
+  z-index: 0;
+}
+
+.divider {
+  position: relative;
+  z-index: 1;
+  background: #fafaf8;
+}
+
+/* ── Google Button ── */
+.btn-google {
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-google:hover {
+  background: #f7f5ff;
+  border-color: #7c6fcf;
+}
+
+.google-icon {
+  font-weight: 700;
+  color: #4285f4;
+  font-size: 16px;
+}
+
+@media (max-width: 576px) {
+  .py-6 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .signin-card { padding: 1.5rem; }
+}
