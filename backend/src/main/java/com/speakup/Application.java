@@ -1,10 +1,10 @@
-package com.speakup.example.demo;
+package com.speakup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
