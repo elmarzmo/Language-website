@@ -1,69 +1,78 @@
-<!-- signin.component.html -->
+<div class="signin-container">
+  <div class="signin-card">
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'login'"
+        (click)="switchTab('login')">
+        {{ 'SIGNIN.LOGIN_TITLE' | translate }}
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'signup'"
+        (click)="switchTab('signup')">
+        {{ 'SIGNIN.SIGNUP_TITLE' | translate }}
+      </button>
+    </div>
 
-<!-- ══════════════════════════════════════
-  HERO — Sign In
-══════════════════════════════════════ -->
-<section class="signin-hero text-center d-flex align-items-center justify-content-center">
-  <div class="container">
-    <span class="section-tag">{{ 'SIGNIN.HERO_TAG' | translate }}</span>
-    <h1 class="hero-title mt-3 mb-4">{{ 'SIGNIN.HERO_TITLE' | translate }}</h1>
-    <p class="hero-sub mx-auto">{{ 'SIGNIN.HERO_SUB' | translate }}</p>
-  </div>
-</section>
+    <!-- Form Content -->
+    <div class="form-content">
+      <!-- ERROR MESSAGE -->
+      <div *ngIf="errorMessage" class="alert alert-danger mb-4" role="alert">
+        {{ errorMessage }}
+      </div>
 
-
-<!-- ══════════════════════════════════════
-  SIGN IN FORMS — Login & Sign Up
-══════════════════════════════════════ -->
-<section class="signin-section py-6">
-  <div class="container">
-    <div class="signin-card mx-auto">
-
-      <!-- Tabs Header -->
-      <div class="signin-tabs">
-        <button 
-          class="tab-btn" 
-          [class.active]="activeTab === 'login'"
-          (click)="switchTab('login')">
-          {{ 'SIGNIN.TAB_LOGIN' | translate }}
-        </button>
-        <button 
-          class="tab-btn" 
-          [class.active]="activeTab === 'signup'"
-          (click)="switchTab('signup')">
-          {{ 'SIGNIN.TAB_SIGNUP' | translate }}
-        </button>
+      <!-- SUCCESS MESSAGE -->
+      <div *ngIf="successMessage" class="alert alert-success mb-4" role="alert">
+        {{ successMessage }}
       </div>
 
       <!-- LOGIN FORM -->
       <div class="tab-content" [class.active]="activeTab === 'login'">
-        <h3 class="form-title mb-4">{{ 'SIGNIN.LOGIN_TITLE' | translate }}</h3>
+        <h3 class="form-title">{{ 'SIGNIN.LOGIN_TITLE' | translate }}</h3>
 
         <div class="mb-4">
           <label class="form-label">{{ 'SIGNIN.FIELD_EMAIL' | translate }}</label>
-          <input type="email" class="form-control custom-input" 
+          <input 
+            type="email" 
+            class="form-control custom-input" 
+            [(ngModel)]="loginData.username" 
+            name="loginUsername"
+            [disabled]="isLoading"
             [placeholder]="'SIGNIN.FIELD_EMAIL_PLACEHOLDER' | translate" />
         </div>
 
         <div class="mb-4">
           <label class="form-label">{{ 'SIGNIN.FIELD_PASSWORD' | translate }}</label>
-          <input type="password" class="form-control custom-input" 
+          <input 
+            type="password" 
+            class="form-control custom-input" 
+            [(ngModel)]="loginData.password" 
+            name="loginPassword"
+            [disabled]="isLoading"
             [placeholder]="'SIGNIN.FIELD_PASSWORD_PLACEHOLDER' | translate" />
         </div>
 
         <div class="mb-4 d-flex justify-content-between align-items-center">
           <label class="form-checkbox">
-            <input type="checkbox" />
+            <input type="checkbox" [disabled]="isLoading" />
             <span>{{ 'SIGNIN.REMEMBER_ME' | translate }}</span>
           </label>
           <a href="#" class="forgot-link">{{ 'SIGNIN.FORGOT_PASSWORD' | translate }}</a>
         </div>
 
-        <button class="btn btn-submit w-100 mb-3">{{ 'SIGNIN.BTN_LOGIN' | translate }}</button>
+        <button 
+          class="btn btn-submit w-100 mb-3" 
+          (click)="login()"
+          [disabled]="isLoading">
+          <span *ngIf="!isLoading">{{ 'SIGNIN.BTN_LOGIN' | translate }}</span>
+          <span *ngIf="isLoading">Loading...</span>
+        </button>
 
         <div class="divider">{{ 'SIGNIN.OR' | translate }}</div>
 
-        <button class="btn btn-google w-100">
+        <button class="btn btn-google w-100" [disabled]="isLoading">
           <span class="google-icon">G</span>
           {{ 'SIGNIN.LOGIN_GOOGLE' | translate }}
         </button>
@@ -71,49 +80,74 @@
 
       <!-- SIGN UP FORM -->
       <div class="tab-content" [class.active]="activeTab === 'signup'">
-        <h3 class="form-title mb-4">{{ 'SIGNIN.SIGNUP_TITLE' | translate }}</h3>
+        <h3 class="form-title">{{ 'SIGNIN.SIGNUP_TITLE' | translate }}</h3>
 
         <div class="mb-4">
           <label class="form-label">{{ 'SIGNIN.FIELD_FULLNAME' | translate }}</label>
-          <input type="text" class="form-control custom-input" 
+          <input 
+            type="text" 
+            class="form-control custom-input" 
+            [(ngModel)]="signupData.username"
+            name="signupUsername"
+            [disabled]="isLoading"
             [placeholder]="'SIGNIN.FIELD_FULLNAME_PLACEHOLDER' | translate" />
         </div>
 
         <div class="mb-4">
           <label class="form-label">{{ 'SIGNIN.FIELD_EMAIL' | translate }}</label>
-          <input type="email" class="form-control custom-input" 
+          <input 
+            type="email" 
+            class="form-control custom-input" 
+            [(ngModel)]="signupData.email"
+            name="signupEmail"
+            [disabled]="isLoading"
             [placeholder]="'SIGNIN.FIELD_EMAIL_PLACEHOLDER' | translate" />
         </div>
 
         <div class="mb-4">
           <label class="form-label">{{ 'SIGNIN.FIELD_PASSWORD' | translate }}</label>
-          <input type="password" class="form-control custom-input" 
+          <input 
+            type="password" 
+            class="form-control custom-input" 
+            [(ngModel)]="signupData.password"
+            name="signupPassword"
+            [disabled]="isLoading"
             [placeholder]="'SIGNIN.FIELD_PASSWORD_PLACEHOLDER' | translate" />
         </div>
 
         <div class="mb-4">
           <label class="form-label">{{ 'SIGNIN.FIELD_CONFIRM_PASSWORD' | translate }}</label>
-          <input type="password" class="form-control custom-input" 
+          <input 
+            type="password" 
+            class="form-control custom-input" 
+            [(ngModel)]="signupData.confirmPassword"
+            name="signupConfirmPassword"
+            [disabled]="isLoading"
             [placeholder]="'SIGNIN.FIELD_CONFIRM_PASSWORD_PLACEHOLDER' | translate" />
         </div>
 
         <div class="mb-4">
           <label class="form-checkbox">
-            <input type="checkbox" />
+            <input type="checkbox" [disabled]="isLoading" />
             <span>{{ 'SIGNIN.AGREE_TERMS' | translate }}</span>
           </label>
         </div>
 
-        <button class="btn btn-submit w-100 mb-3">{{ 'SIGNIN.BTN_CREATE_ACCOUNT' | translate }}</button>
+        <button 
+          class="btn btn-submit w-100 mb-3" 
+          (click)="signup()"
+          [disabled]="isLoading">
+          <span *ngIf="!isLoading">{{ 'SIGNIN.BTN_CREATE_ACCOUNT' | translate }}</span>
+          <span *ngIf="isLoading">Loading...</span>
+        </button>
 
         <div class="divider">{{ 'SIGNIN.OR' | translate }}</div>
 
-        <button class="btn btn-google w-100">
+        <button class="btn btn-google w-100" [disabled]="isLoading">
           <span class="google-icon">G</span>
           {{ 'SIGNIN.SIGNUP_GOOGLE' | translate }}
         </button>
       </div>
-
     </div>
   </div>
-</section>
+</div>
