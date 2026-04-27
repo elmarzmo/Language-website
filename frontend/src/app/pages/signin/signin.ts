@@ -21,7 +21,7 @@ export class Signin {
 
   // Login
   loginData = {
-    username: '',
+    email: '',
     password: ''
   };
 
@@ -46,7 +46,7 @@ export class Signin {
 
   login(): void {
     // Validation
-    if (!this.loginData.username || !this.loginData.password) {
+    if (!this.loginData.email || !this.loginData.password) {
       this.errorMessage = 'Please fill in all fields';
       return;
     }
@@ -54,7 +54,7 @@ export class Signin {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginData.username, this.loginData.password).subscribe({
+    this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (response) => {
         this.isLoading = false;
         console.log('Login successful:', response);
@@ -113,7 +113,7 @@ export class Signin {
           };
           this.activeTab = 'login';
           this.successMessage = '';
-          this.loginData.username = this.signupData.username;
+          this.loginData.email = this.signupData.email; // Pre-fill email in login form
         }, 500);
       },
       error: (error) => {
