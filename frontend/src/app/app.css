@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+app-navbar {
+  flex-shrink: 0;
+}
+
+router-outlet {
+  flex: 1;
+  display: block;
+}
+
+footer {
+  flex-shrink: 0;
+}
