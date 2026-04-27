@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 import { About } from './pages/about/about';
 import { Contact } from './pages/contact/contact';
 import { Home } from './pages/home/home';
-
+import { Dashboard } from './pages/dashboard/dashboard';
 import { Signin } from './pages/signin/signin';
+import { AuthGuard } from './services/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,6 +12,7 @@ export const routes: Routes = [
     { path: 'about', component: About },
     { path: 'contact', component: Contact },
     { path: 'signin', component: Signin },
+    { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
     
 
 ];
