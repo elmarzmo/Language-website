@@ -7,6 +7,10 @@ interface AuthResponse {
   token?: string;
   message?: string;
   success?: boolean;
+  error?: string;
+  id?: string; // user id or token id
+  username?: string; // for storing in dashboard
+  email?: string; // for storing in dashboard
 }
 
 @Injectable({
