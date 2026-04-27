@@ -58,12 +58,24 @@ export class Signin {
       next: (response) => {
         this.isLoading = false;
         console.log('Login successful:', response);
+        
+        // Store user data in localStorage for dashboard
+        const studentId = response.id || response.email || '';
+        const studentName = response.username || '';
+        
+        localStorage.setItem('studentId', studentId);
+        localStorage.setItem('studentName', studentName);
+        
+        console.log('Stored studentId:', localStorage.getItem('studentId'));
+        console.log('Stored studentName:', localStorage.getItem('studentName'));
+        console.log('Token in localStorage:', this.authService.getToken());
+        
         this.successMessage = 'Login successful! Redirecting...';
         
-        // Clear form and redirect after a short delay
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 500);
+        // Navigate immediately
+        this.router.navigate(['/dashboard']).then(success => {
+          console.log('Navigation result:', success);
+        });
       },
       error: (error) => {
         this.isLoading = false;
