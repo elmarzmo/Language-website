@@ -1,5 +1,6 @@
 package com.speakup.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class AuthController {
     }
 
   
-  @PostMapping("/login")
+@PostMapping("/login")
 public ResponseEntity<?> loginUser(@RequestBody User user) {
     try {
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
@@ -46,16 +47,21 @@ public ResponseEntity<?> loginUser(@RequestBody User user) {
         User dbUser = existingUser.get();
 
         if (dbUser.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.ok(dbUser); 
+            // Create a response map that includes the 'token' key
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", dbUser.getId()); // Frontend is looking for this!
+            response.put("username", dbUser.getUsername());
+            response.put("email", dbUser.getEmail());
+            
+            return ResponseEntity.ok(response); 
         } else {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
         }
     } catch (Exception e) {
-        e.printStackTrace(); // This prints the REAL error to your IDE console
+        e.printStackTrace(); 
         return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
     }
 }
-
 
    
 
