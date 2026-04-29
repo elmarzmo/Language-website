@@ -7,17 +7,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
+
     private String username;
     private String email;
     private String password;
 
+    private Role role;
+
+    public enum Role {
+        STUDENT,
+        TEACHER,
+        ADMIN
+    }
+
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
     // Getters and Setters
     public String getId() {
@@ -48,4 +58,13 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    
 }
