@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,7 +47,7 @@ public class LessonResource {
 
     // Constructor
     public LessonResource(String title, ResourceType type, String url) {
-        this.id = org.springframework.data.mongodb.core.ObjectIdUtils.toString(new org.bson.types.ObjectId());
+        this.id =  new org.bson.types.ObjectId().toString(); // Generate unique ID
         this.title = title;
         this.type = type;
         this.url = url;
