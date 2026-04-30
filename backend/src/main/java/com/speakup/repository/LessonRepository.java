@@ -1,12 +1,13 @@
 package com.speakup.repository;
 
-import com.speakup.model.LessonModule;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.speakup.model.LessonModule;
 
 @Repository
 public interface LessonRepository extends MongoRepository<LessonModule, String> {
@@ -79,4 +80,5 @@ public interface LessonRepository extends MongoRepository<LessonModule, String> 
      * Delete all lessons by teacher
      */
     long deleteByCreatedBy(String teacherId);
+
 }
