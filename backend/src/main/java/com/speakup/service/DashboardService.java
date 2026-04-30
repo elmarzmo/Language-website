@@ -23,10 +23,10 @@ public class DashboardService {
         List<ClassSession> classes = classSessionRepository.findByStudentIdsContains(studentId);
         List<StudentProgress> progresses = studentProgressRepository.findByStudentId(studentId);
 
-        StudentDashboardDTO dashboardDTO = new StudentDashboardDTO();
-        dashboardDTO.setUpcomingClasses(classes);
-        dashboardDTO.setProgressList(progresses);
+        StudentDashboardDTO dto = new StudentDashboardDTO();
+        dto.setUpcomingClasses(classes);
+        dto.setProgressList(progresses);
 
-        return dashboardDTO;
+        return dto;
     }
 }
