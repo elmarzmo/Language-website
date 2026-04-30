@@ -21,11 +21,12 @@ export interface StudentProgress {
   progressPercentage: number;
   completionStatus: 'not started' | 'in progress' | 'completed';
   lastUpdated: string; // ISO format
+  
 }
 
 export interface StudentDashboard{
   upcomingClasses: ClassSession[];
-  progress: StudentProgress[];
+  progressList: StudentProgress[];
 }
 
 @Injectable({
