@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { About } from './pages/about/about';
-import { Contact } from './pages/contact/contact';
-import { Home } from './pages/home/home';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { Signin } from './pages/signin/signin';
+import { About } from './public/about/about';
+import { Contact } from './public/contact/contact';
+import { Home } from './public/home/home';
+import { Dashboard } from './private/dashboard/dashboard';
+import { Signin } from './public/signin/signin';
 import { AuthGuard } from './services/auth.guard';
 
 export const routes: Routes = [
