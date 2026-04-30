@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth } from '../../services/auth';
-import { LessonService } from '../../services/lesson';
-import { LessonModule, LiveClass } from '../../services/lesson.model';
+import { DashboardService, StudentDashboard, ClassSession, StudentProgress } from '../../services/dashboardService';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -22,10 +21,10 @@ export class Dashboard implements OnInit {
   studentName: string = '';
   currentTime: string = '';
   
-  // Data from backend
-  lessons: LessonModule[] = [];
-  upcomingClasses: LiveClass[] = [];
-  selectedLesson: LessonModule | null = null;
+ dashboardData!: StudentDashboard;
+
+upcomingClasses: ClassSession[] = [];
+progressList: StudentProgress[] = [];
   
   // Loading states
   isLoading = true;
@@ -33,7 +32,7 @@ export class Dashboard implements OnInit {
 
   constructor(
     private auth: Auth,
-    private lessonService: LessonService,
+    private dashboardService: DashboardService,
     private router: Router
   ) {}
 
@@ -54,17 +53,15 @@ export class Dashboard implements OnInit {
     }
 
     // Load lessons and upcoming classes
-    this.lessonService.getStudentLessons(this.studentId).subscribe({
-      next: (lessons) => {
-        this.lessons = lessons.sort((a, b) => 
-          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-        );
+    this.dashboardService.getStudentDashboard(this.studentId).subscribe({
+      next: (data) => {
+        this.dashboardData = data;
+        this.upcomingClasses = data.upcomingClasses;
+        this.progressList = data.progressList;
+
         this.isLoading = false;
-        
-        // Auto-select first lesson
-        if (this.lessons.length > 0) {
-          this.selectLesson(this.lessons[0]);
-        }
+
+        console.log('Dashboard data loaded:', this.dashboardData);
       },
       error: (err) => {
         console.error('Failed to load lessons:', err);
@@ -72,15 +69,7 @@ export class Dashboard implements OnInit {
       }
     });
 
-    // Load upcoming classes
-    this.lessonService.getUpcomingClasses(this.studentId).subscribe({
-      next: (classes) => {
-        this.upcomingClasses = classes;
-      },
-      error: (err) => {
-        console.error('Failed to load classes:', err);
-      }
-    });
+    
   }
 
   private updateTime(): void {
@@ -94,39 +83,17 @@ export class Dashboard implements OnInit {
     });
   }
 
-  selectLesson(lesson: LessonModule): void {
-    this.selectedLesson = lesson;
+
+
+  joinClass(classSession: ClassSession): void {
+    if (classSession.meetingLink) {
+      window.open(classSession.meetingLink, '_blank');
+    } else {
+      alert('Meeting link not available for this class.');
+    }
   }
 
-  joinClass(liveClass: LiveClass): void {
-    this.lessonService.joinClass(liveClass.id).subscribe({
-      next: (response) => {
-        window.open(response.meetingLink, '_blank');
-      },
-      error: (err) => {
-        console.error('Failed to join class:', err);
-      }
-    });
-  }
-
-  openResource(lessonId: string, resourceId: string): void {
-    // Mark as viewed
-    this.lessonService.markResourceViewed(this.studentId, lessonId, resourceId).subscribe({
-      next: () => {
-        // Find and open the resource
-        const lesson = this.lessons.find(l => l.id === lessonId);
-        if (lesson) {
-          const resource = lesson.resources.find(r => r.id === resourceId);
-          if (resource) {
-            window.open(resource.url, '_blank');
-          }
-        }
-      },
-      error: (err) => {
-        console.error('Failed to mark resource as viewed:', err);
-      }
-    });
-  }
+  
 
   getResourceIcon(type: string): string {
     const icons: { [key: string]: string } = {
@@ -139,10 +106,10 @@ export class Dashboard implements OnInit {
     return icons[type] || '📎';
   }
 
-  getClassStatus(liveClass: LiveClass): string {
+  getClassStatus(classSession: ClassSession): string {
     const now = new Date();
-    const classDate = new Date(liveClass.scheduledDate);
-    
+    const classDate = new Date(classSession.dateTime);
+
     if (classDate.toDateString() === now.toDateString()) {
       return 'TODAY';
     } else if (classDate > now) {
