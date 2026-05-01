@@ -1,14 +1,12 @@
 package com.speakup.model;
 
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.web.filter.OncePerRequestFilter;
+import lombok.Data;
 
 @Document(collection = "class_sessions")
 @Data
@@ -21,7 +19,7 @@ public class ClassSession {
 
     private List<String> studentIds;
 
-    private String lessonMosduleId;
+    private String lessonModuleId;
 
     private LocalDateTime dateTime;
 
@@ -33,7 +31,7 @@ public class ClassSession {
 
     public enum Status {
         SCHEDULED,
-        ONGOUNG,
+        ONGOING,
         COMPLETED,
         CANCELLED
     }
