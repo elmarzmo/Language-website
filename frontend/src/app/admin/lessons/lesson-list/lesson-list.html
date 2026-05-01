@@ -1,0 +1,10 @@
+<h2>Admin Lessons</h2>
+
+<a routerLink="/admin/lessons/create">Create Lesson</a>
+
+<hr>
+
+<div *ngFor="let lesson of lessons">
+  <h3>{{ lesson.title }}</h3>
+  <p>{{ lesson.description }}</p>
+</div>
