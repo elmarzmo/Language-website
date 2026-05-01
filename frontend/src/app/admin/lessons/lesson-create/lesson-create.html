@@ -1,0 +1,21 @@
+<h2>Create Lesson</h2>
+
+<form (ngSubmit)="createLesson()">
+
+  <div>
+    <label>Title</label><br>
+    <input type="text" [(ngModel)]="lesson.title" name="title" required />
+  </div>
+
+  <br>
+
+  <div>
+    <label>Description</label><br>
+    <textarea [(ngModel)]="lesson.description" name="description"></textarea>
+  </div>
+
+  <br>
+
+  <button type="submit">Create Lesson</button>
+
+</form>
