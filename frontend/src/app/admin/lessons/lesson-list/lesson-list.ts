@@ -1,0 +1,28 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { LessonModule } from '../../../services/lesson.model';
+import { LessonService } from '../../../services/lesson';
+
+@Component({
+  selector: 'app-lesson-list',
+  imports: [CommonModule],
+  templateUrl: './lesson-list.html',
+  styleUrl: './lesson-list.css',
+})
+export class LessonList implements OnInit {
+
+  lessons: LessonModule[] = [];
+
+  constructor(private lessonService: LessonService) { }
+
+  ngOnInit(): void {
+    this.loadLessons();
+  }
+
+  loadLessons() {
+    this.lessonService.getAllLessons().subscribe((data) => {
+      this.lessons = data;
+    });
+  }
+
+}
