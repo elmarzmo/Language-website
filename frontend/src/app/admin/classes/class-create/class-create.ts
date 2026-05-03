@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ClassSession } from '../../service/class-session';
+import { ClassSessionService } from '../../service/class-session';
 import { LessonService } from '../../../services/lesson';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ClassSession } from '../../models/class-session.model';
 
 
 @Component({
   selector: 'app-class-create',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './class-create.html',
   styleUrl: './class-create.css',
 })
@@ -16,7 +17,7 @@ export class ClassCreate implements OnInit {
   
   lessons: any[] = [];
 
-  classSession = {
+  classSession : ClassSession = {
     lessonModuleId: '',
     teacherId: '',
     studentIds: [],
@@ -25,8 +26,10 @@ export class ClassCreate implements OnInit {
     status: 'Scheduled',
   };
 
+  studentsInput: string = '';
+
   constructor(
-    private classSessionService: ClassSession,
+    private classSessionService: ClassSessionService,
     private lessonService: LessonService,
     private route: Router
 
@@ -44,12 +47,27 @@ export class ClassCreate implements OnInit {
 
 
   }
+createClassSession() {
+  // Create a copy of the object so we don't break the UI binding
+  const payload = { ...this.classSession };
 
-  createClassSession() {
-    this.classSessionService.createClassSession(this.classSession).subscribe(() => {
-      this.route.navigate(['/admin/class-sessions']);
-    });
+  // If studentIds is a string (from a text input), split it into an array
+  if (typeof payload.studentIds === 'string') {
+    payload.studentIds = (payload.studentIds as string)
+      .split(',')
+      .map(id => id.trim()) // Remove extra spaces
+      .filter(id => id !== ''); // Remove empty values
   }
+
+  this.classSessionService.createClassSession(payload).subscribe({
+    next: () => {
+      this.route.navigate(['/admin/classes']);
+    },
+    error: (err) => {
+      console.error("Backend validation failed:", err);
+    }
+  });
+}
 
 
 
