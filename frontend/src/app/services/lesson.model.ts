@@ -5,6 +5,7 @@
 export interface LessonModule {
   id: string;
   title: string;
+  content: string;
   description: string;
   createdBy: string; // teacher id
   createdDate: Date;
@@ -19,6 +20,7 @@ export interface LessonModule {
 export interface LessonResource {
   id: string;
   title: string;
+  content: string;
   type: 'pdf' | 'video' | 'exercise' | 'reading' | 'link';
   url: string;
   description?: string;
