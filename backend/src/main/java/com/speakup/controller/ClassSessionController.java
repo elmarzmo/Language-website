@@ -54,6 +54,13 @@ public class ClassSessionController {
         return classSessionService.updateStatus(sessionId, status);
     }
 
+    // get all sessions (for admin)
+    @GetMapping("/all")
+    public List<ClassSessionDTO> getAllSessions() {
+        return classSessionService.getAllSessions();
+    }
+
+
 
 
 }
