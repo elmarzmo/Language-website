@@ -61,6 +61,14 @@ public class ClassSessionService {
         return mapToDTO(classSessionRepository.save(session));
     }
 
+    public List<ClassSessionDTO> getAllSessions() {
+        return classSessionRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+    
+
     // mapper
     private ClassSessionDTO mapToDTO(ClassSession session) {
         ClassSessionDTO dto = new ClassSessionDTO();
