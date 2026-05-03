@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+
 export interface ClassSession {
   id: string;
   teacherId: string;
@@ -27,6 +28,7 @@ export interface StudentProgress {
 export interface StudentDashboard{
   upcomingClasses: ClassSession[];
   progressList: StudentProgress[];
+
 }
 
 @Injectable({
