@@ -1,0 +1,30 @@
+<h2> Create Class Session </h2>
+
+<form (ngSubmit)="createClassSession()">
+  <div>
+    <label for="lessonModuleId">Lesson Module ID:</label>
+    <input type="text" id="lessonModuleId" [(ngModel)]="classSession.lessonModuleId" name="lessonModuleId" required>
+  </div>
+
+  <div>
+    <label for="teacherId">Teacher ID:</label>
+    <input type="text" id="teacherId" [(ngModel)]="classSession.teacherId" name="teacherId" required>
+  </div>
+
+  <div>
+    <label for="studentIds">Student IDs (comma separated):</label>
+    <input type="text" id="studentIds" [(ngModel)]="classSession.studentIds" name="studentIds">
+  </div>
+
+  <div>
+    <label for="dateTime">Date & Time:</label>
+    <input type="datetime-local" id="dateTime" [(ngModel)]="classSession.dateTime" name="dateTime" required>
+  </div>
+
+  <div>
+    <label for="meetingLink">Meeting Link:</label>
+    <input type="text" id="meetingLink" [(ngModel)]="classSession.meetingLink" name="meetingLink">
+  </div>
+
+  <button type="submit">Create Session</button>
+</form>
