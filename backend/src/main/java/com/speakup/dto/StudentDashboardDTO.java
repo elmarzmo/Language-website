@@ -1,8 +1,9 @@
 package com.speakup.dto;
 
+import java.util.List;
+
 import com.speakup.model.ClassSession;
 import com.speakup.model.StudentProgress;
-import java.util.List;
 
 public class StudentDashboardDTO {
     private List<ClassSession> upcomingClasses;
@@ -28,4 +29,7 @@ public class StudentDashboardDTO {
     public List<StudentProgress> getProgressList() {
         return progressList;
     }
+
+   
+
 }
