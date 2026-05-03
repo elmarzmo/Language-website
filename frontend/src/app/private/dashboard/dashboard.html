@@ -122,5 +122,27 @@
       </div>
     </div>
 
+   <!-- 📚 Learning Path -->
+<div class="section">
+  <h2 class="section-title">📚 Your Learning Path</h2>
+  
+  <div *ngIf="lessons.length === 0" class="empty-state">
+    <p>No lessons available yet.</p>
+  </div>
+
+  <div class="lesson-circle-container">
+    <div 
+      *ngFor="let l of lessons; let i = index"
+      [routerLink]="['/lesson', l.id]" 
+      class="lesson-circle"
+      [title]="l.title">
+
+      L{{ i + 1 }}
+
+    </div>
+  </div>
+</div>
+
+
   </div>
 </div>

@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth } from '../../services/auth';
 import { DashboardService, StudentDashboard, ClassSession, StudentProgress } from '../../services/dashboardService';
+import { LessonModule } from '../../services/lesson.model';
+import { LessonService } from '../../services/lesson';
+
 
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
   host: {
@@ -25,6 +28,9 @@ export class Dashboard implements OnInit {
 
 upcomingClasses: ClassSession[] = [];
 progressList: StudentProgress[] = [];
+
+lessons: LessonModule[] = [];
+
   
   // Loading states
   isLoading = true;
@@ -33,7 +39,8 @@ progressList: StudentProgress[] = [];
   constructor(
     private auth: Auth,
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
+    private lessonService: LessonService
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +76,15 @@ progressList: StudentProgress[] = [];
       }
     });
 
+    // lessons (separate)
+  this.lessonService.getAllLessons().subscribe({
+    next: (lessonsData) => {
+      this.lessons = lessonsData;
+    },
+    error: (err) => console.error('Could not load lessons', err)
+  });
+
+   
     
   }
 

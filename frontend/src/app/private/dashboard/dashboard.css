@@ -235,3 +235,32 @@
     padding: 15px;
   }
 }
+
+.lesson-circle-container {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.lesson-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+
+  transition: 0.3s;
+}
+
+.lesson-circle:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
