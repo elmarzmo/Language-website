@@ -1,0 +1,15 @@
+<div *ngIf="lesson; else loading" class="lesson-container">
+  <h2>{{ lesson.title }}</h2>
+  <p class="description">{{ lesson.description }}</p>
+  
+  <div class="content">
+   
+    {{ lesson.content }}
+  </div>
+
+  <a routerLink="/dashboard" class="back-btn">← Back to Dashboard</a>
+</div>
+
+<ng-template #loading>
+  <p>Loading lesson details...</p>
+</ng-template>
