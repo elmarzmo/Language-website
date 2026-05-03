@@ -1,0 +1,16 @@
+<h2>All Class Sessions</h2>
+
+<a routerLink="/admin/classes/create">Create New Class</a>
+
+<hr>
+
+<div *ngFor="let c of classes" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+
+  <p><strong>Lesson ID:</strong> {{ c.lessonModuleId }}</p>
+  <p><strong>Teacher:</strong> {{ c.teacherId }}</p>
+  <p><strong>Date:</strong> {{ c.dateTime }}</p>
+  <p><strong>Students Count:</strong> {{ c.studentIds.length }}</p>
+
+  <a [href]="c.meetingLink" target="_blank">Join Link</a>
+
+</div>
