@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 
@@ -10,9 +10,9 @@ export interface ClassSession {
   studentIds: string[];
   lessonModuleId: string;
   dateTime: string; // ISO format
-  duration: number; // in minutes
+  durationMinutes: number; // in minutes
   meetingLink: string;
-  status: 'scheduled' | 'ongoing' | 'completed';
+  status: 'SCHEDULED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
 }
 
 export interface StudentProgress {
@@ -40,7 +40,15 @@ export class DashboardService {
     constructor(private http: HttpClient) {}
 
     getStudentDashboard(studentId: string): Observable<StudentDashboard> {
-        return this.http.get<StudentDashboard>(`${this.apiUrl}/dashboard/student/${studentId}`);
+        return this.http.get<StudentDashboard>(`${this.apiUrl}/dashboard/student/${studentId}`)
+        .pipe(
+          map(data => {
+            // sort classes the nearst first
+            data.upcomingClasses.sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
+            return data;
+          }
+          )
+        );
     }
     
   
