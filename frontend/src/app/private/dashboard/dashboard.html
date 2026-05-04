@@ -1,23 +1,6 @@
 <div class="dashboard-container">
 
-  <!-- 🔔 Top Alert (Next Class) -->
-  <!-- Automatically pulls the first class from your sorted array -->
-  <div class="top-alert" *ngIf="!isLoading && upcomingClasses.length > 0">
-    <div class="alert-content">
-      <span class="alert-icon">🚀</span>
-      <div class="alert-text">
-        <p class="alert-title">
-          Next Lesson: {{ getLessonInfo(upcomingClasses[0].lessonModuleId)?.title || 'Scheduled Session' }}
-        </p>
-        <p class="alert-time">
-          {{ upcomingClasses[0].dateTime | date:'MMM d, yyyy h:mm a' }}
-        </p>
-      </div>
-    </div>
-    <button class="btn-join-now" (click)="joinClass(upcomingClasses[0])">
-      📞 Join Now
-    </button>
-  </div>
+
 
   <!-- 🧠 Header -->
   <div class="dashboard-header">
@@ -38,6 +21,49 @@
     <p>Syncing your learning data...</p>
   </div>
 
+
+    <!--  Top Alert (Next Class) -->
+  <!-- Automatically pulls the first class from your sorted array -->
+  <div class="top-alert" *ngIf="!isLoading && upcomingClasses.length > 0">
+    <div class="alert-content">
+      <span class="alert-icon">🚀</span>
+      <div class="alert-text">
+        <p class="alert-title">
+          Next Lesson: {{ getLessonInfo(upcomingClasses[0].lessonModuleId)?.title || 'Scheduled Session' }}
+        </p>
+        <p class="alert-time">
+          {{ upcomingClasses[0].dateTime | date:'MMM d, yyyy h:mm a' }}
+        </p>
+      </div>
+    </div>
+    <button class="btn-join-now" (click)="joinClass(upcomingClasses[0])">
+      📞 Join Now
+    </button>
+  </div>
+
+
+
+    <!--  Learning Path -->
+    <div class="section">
+      <h2 class="section-title">📚 Your Learning Path</h2>
+      
+      <div *ngIf="lessons.length === 0" class="empty-state">
+        <p>Curriculum is being prepared.</p>
+      </div>
+
+      <div class="lesson-circle-container">
+        <div 
+          *ngFor="let l of lessons; let i = index"
+          [routerLink]="['/lesson', l.id]" 
+          class="lesson-circle"
+          [title]="l.title">
+          L{{ i + 1 }}
+          <span class="tooltip-text">{{ l.title }}</span>
+        </div>
+      </div>
+    </div>
+
+    
   <!-- 📊 Main Content -->
   <div *ngIf="!isLoading" class="dashboard-main">
 
@@ -89,62 +115,6 @@
               Completed
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 📈 Progress Section -->
-    <div class="section">
-      <h2 class="section-title">📈 Your Progress</h2>
-
-      <div *ngIf="progressList.length === 0" class="empty-state">
-        <p>Start your first lesson to track progress!</p>
-      </div>
-
-      <div class="progress-list" *ngIf="progressList.length > 0">
-        <div *ngFor="let p of progressList" class="progress-card">
-
-          <div class="progress-header">
-            <p class="module-title">
-              <!-- Linked Lesson Title for Progress -->
-              {{ getLessonInfo(p.lessonModuleId)?.title || 'Module ' + p.lessonModuleId }}
-            </p>
-            <span class="status-badge" [attr.data-status]="p.completionStatus">
-              {{ p.completionStatus }}
-            </span>
-          </div>
-
-          <!-- Progress Bar -->
-          <div class="progress-bar">
-            <div 
-              class="progress-fill"
-              [style.width.%]="p.progressPercentage">
-            </div>
-          </div>
-
-          <p class="progress-text">
-            {{ p.progressPercentage }}% completed
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 📚 Learning Path -->
-    <div class="section">
-      <h2 class="section-title">📚 Your Learning Path</h2>
-      
-      <div *ngIf="lessons.length === 0" class="empty-state">
-        <p>Curriculum is being prepared.</p>
-      </div>
-
-      <div class="lesson-circle-container">
-        <div 
-          *ngFor="let l of lessons; let i = index"
-          [routerLink]="['/lesson', l.id]" 
-          class="lesson-circle"
-          [title]="l.title">
-          L{{ i + 1 }}
-          <span class="tooltip-text">{{ l.title }}</span>
         </div>
       </div>
     </div>
