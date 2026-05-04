@@ -30,6 +30,7 @@ public class ClassSessionService {
         session.setDateTime(request.getDateTime());
         session.setDurationMinutes(request.getDurationMinutes());
         session.setMeetingLink(request.getMeetingLink());
+        session.setStatus(ClassSession.Status.SCHEDULED);
 
         ClassSession saved = classSessionRepository.save(session);
 
@@ -38,7 +39,7 @@ public class ClassSessionService {
 
     // Get by student
     public List<ClassSessionDTO> getSessionsByStudent(String studentId) {
-        return classSessionRepository.findByStudentIdsContains(studentId)
+        return classSessionRepository.findByStudentIdsContaining(studentId)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
