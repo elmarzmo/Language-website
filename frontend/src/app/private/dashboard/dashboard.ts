@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth } from '../../services/auth';
-import { DashboardService, StudentDashboard, ClassSession, StudentProgress } from '../../services/dashboardService';
+import { DashboardService, StudentDashboard, ClassSession } from '../../services/dashboardService';
 import { LessonModule } from '../../services/lesson.model';
 import { LessonService } from '../../services/lesson';
 import { forkJoin } from 'rxjs';
@@ -33,6 +33,7 @@ export class Dashboard implements OnInit {
   isLoadingLesson = false;
 
   lessonLookup: Map<string, LessonModule> = new Map();
+  completedLessons: Set<string> = new Set();
 
   constructor(
     private auth: Auth,
@@ -44,6 +45,7 @@ export class Dashboard implements OnInit {
   ngOnInit(): void {
     this.loadData();
     this.updateTime();
+    this.loadCompletedLessons();
     setInterval(() => this.updateTime(), 60000);
   }
 
@@ -133,6 +135,18 @@ export class Dashboard implements OnInit {
   getLessonInfo(lessonId: string): LessonModule | null {
     return this.lessonLookup.get(lessonId) || null;
   }
+
+  loadCompletedLessons(){
+      const data = localStorage.getItem('completedLessons');
+      if (data) {
+        this.completedLessons = new Set(JSON.parse(data));
+      }
+    }
+
+    isCompleted(lessonId: string): boolean {
+      return this.completedLessons.has(lessonId);
+    }
+    
 
   logout(): void {
     this.auth.logout();

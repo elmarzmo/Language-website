@@ -23,9 +23,20 @@ export class LessonView implements OnInit {
     if (lessonId) {
       this.lessonService.getAllLessons().subscribe((data: any) => {
         this.lesson = data.find((l: any) => l.id === lessonId);
+        this.markAsCompleted(lessonId);
       });
     } else {
       console.error('No lesson ID provided in route');
+    }
+
+
+  }
+
+  markAsCompleted(lessonId: string) {
+    const completedLessons = JSON.parse(localStorage.getItem('completedLessons') || '[]');  
+    if (!completedLessons.includes(lessonId)) {
+      completedLessons.push(lessonId);
+      localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
     }
   }
 }
