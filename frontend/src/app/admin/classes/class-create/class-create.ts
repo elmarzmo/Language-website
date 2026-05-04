@@ -23,11 +23,12 @@ export class ClassCreate implements OnInit {
     studentIds: [],
     dateTime: '',
     meetingLink: '',
-    status: 'Scheduled',
+    status: 'SCHEDULED',
   };
 
   studentsInput: string = '';
-
+  
+  
   constructor(
     private classSessionService: ClassSessionService,
     private lessonService: LessonService,
@@ -48,16 +49,15 @@ export class ClassCreate implements OnInit {
 
   }
 createClassSession() {
-  // Create a copy of the object so we don't break the UI binding
-  const payload = { ...this.classSession };
-
-  // If studentIds is a string (from a text input), split it into an array
-  if (typeof payload.studentIds === 'string') {
-    payload.studentIds = (payload.studentIds as string)
+  const payload: ClassSession = {
+    ...this.classSession,
+    studentIds: this.studentsInput
       .split(',')
-      .map(id => id.trim()) // Remove extra spaces
-      .filter(id => id !== ''); // Remove empty values
-  }
+      .map(id => id.trim())
+      .filter(id => id !== '')
+  };
+
+  console.log('PAYLOAD:', payload); //  this for debugging
 
   this.classSessionService.createClassSession(payload).subscribe({
     next: () => {
@@ -68,7 +68,6 @@ createClassSession() {
     }
   });
 }
-
 
 
 
