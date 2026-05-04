@@ -8,7 +8,6 @@ import { LessonModule } from '../../services/lesson.model';
 import { LessonService } from '../../services/lesson';
 import { forkJoin } from 'rxjs';
 
-
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
@@ -25,13 +24,9 @@ export class Dashboard implements OnInit {
   studentName: string = '';
   currentTime: string = '';
   
- dashboardData!: StudentDashboard;
-
-upcomingClasses: ClassSession[] = [];
-progressList: StudentProgress[] = [];
-
-lessons: LessonModule[] = [];
-
+  dashboardData!: StudentDashboard;
+  upcomingClasses: ClassSession[] = [];
+  lessons: LessonModule[] = [];
   
   // Loading states
   isLoading = true;
@@ -50,54 +45,46 @@ lessons: LessonModule[] = [];
     this.loadData();
     this.updateTime();
     setInterval(() => this.updateTime(), 60000);
-    
   }
 
   private loadData(): void {
-  this.studentId = localStorage.getItem('studentId') || '';
-  this.studentName = localStorage.getItem('studentName') || 'Student';
+    this.studentId = localStorage.getItem('studentId') || '';
+    this.studentName = localStorage.getItem('studentName') || 'Student';
 
-  if (!this.studentId) {
-    this.router.navigate(['/signin']);
-    return;
-  }
-
-  this.isLoading = true;
-
-  // Keep ONLY this part
-  forkJoin({
-    dashboard: this.dashboardService.getStudentDashboard(this.studentId),
-    allLessons: this.lessonService.getAllLessons()
-  }).subscribe({
-    next: (res) => {
-      this.dashboardData = res.dashboard;
-      this.upcomingClasses = res.dashboard.upcomingClasses;
-      this.progressList = res.dashboard.progressList;
-      this.lessons = res.allLessons;
-
-      console.log('FULL RESPONSE:', res);
-console.log('DASHBOARD:', res.dashboard);
-console.log('CLASSES:', res.dashboard.upcomingClasses);
-
-      this.lessonLookup.clear();
-      res.allLessons.forEach(lesson => {
-        this.lessonLookup.set(lesson.id, lesson);
-      });
-
-      this.isLoading = false;
-      console.log('Dashboard fully synced');
-    },
-    error: (err) => {
-      console.error('Failed to sync dashboard data', err);
-      this.isLoading = false;
+    if (!this.studentId) {
+      this.router.navigate(['/signin']);
+      return;
     }
-  });
-  
-}
 
+    this.isLoading = true;
 
+    forkJoin({
+      dashboard: this.dashboardService.getStudentDashboard(this.studentId),
+      allLessons: this.lessonService.getAllLessons()
+    }).subscribe({
+      next: (res) => {
+        this.dashboardData = res.dashboard;
+        this.upcomingClasses = res.dashboard.upcomingClasses;
+        this.lessons = res.allLessons;
 
-  
+        console.log('FULL RESPONSE:', res);
+        console.log('DASHBOARD:', res.dashboard);
+        console.log('CLASSES:', res.dashboard.upcomingClasses);
+
+        this.lessonLookup.clear();
+        res.allLessons.forEach(lesson => {
+          this.lessonLookup.set(lesson.id, lesson);
+        });
+
+        this.isLoading = false;
+        console.log('Dashboard fully synced');
+      },
+      error: (err) => {
+        console.error('Failed to sync dashboard data', err);
+        this.isLoading = false;
+      }
+    });
+  }
 
   private updateTime(): void {
     const now = new Date();
@@ -110,8 +97,6 @@ console.log('CLASSES:', res.dashboard.upcomingClasses);
     });
   }
 
-
-
   joinClass(classSession: ClassSession): void {
     if (classSession.meetingLink) {
       window.open(classSession.meetingLink, '_blank');
@@ -119,8 +104,6 @@ console.log('CLASSES:', res.dashboard.upcomingClasses);
       alert('Meeting link not available for this class.');
     }
   }
-
-  
 
   getResourceIcon(type: string): string {
     const icons: { [key: string]: string } = {
@@ -134,27 +117,22 @@ console.log('CLASSES:', res.dashboard.upcomingClasses);
   }
 
   getClassStatus(classSession: ClassSession): string {
-
     if (classSession.status === 'COMPLETED' || classSession.status === 'CANCELLED') {
-
       return 'PAST';
-
     }
   
-  const now = new Date();
-  const classDate = new Date(classSession.dateTime);
+    const now = new Date();
+    const classDate = new Date(classSession.dateTime);
 
-  if (classDate.toDateString() === now.toDateString()) {
-    return 'TODAY';
+    if (classDate.toDateString() === now.toDateString()) {
+      return 'TODAY';
+    }
+    return 'UPCOMING';
   }
-  return 'UPCOMING';
-}
-
 
   getLessonInfo(lessonId: string): LessonModule | null {
     return this.lessonLookup.get(lessonId) || null;
   }
-
 
   logout(): void {
     this.auth.logout();
