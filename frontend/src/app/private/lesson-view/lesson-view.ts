@@ -23,6 +23,11 @@ export class LessonView implements OnInit {
     if (lessonId) {
       this.lessonService.getAllLessons().subscribe((data: any) => {
         this.lesson = data.find((l: any) => l.id === lessonId);
+
+        // mark after 10 seconds as completed
+        setTimeout(() => {
+          this.markAsCompleted(lessonId);
+        }, 10000);
         this.markAsCompleted(lessonId);
       });
     } else {
