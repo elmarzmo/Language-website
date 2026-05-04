@@ -2,18 +2,17 @@ package com.speakup.dto;
 
 import java.util.List;
 
-import com.speakup.model.ClassSession;
 import com.speakup.model.StudentProgress;
 
 public class StudentDashboardDTO {
-    private List<ClassSession> upcomingClasses;
+    private List<ClassSessionDTO> upcomingClasses;
     private List<StudentProgress> progressList;
 
     // Default Constructor
     public StudentDashboardDTO() {}
 
     // Manual Setters (Bypasses Lombok issues)
-    public void setUpcomingClasses(List<ClassSession> upcomingClasses) {
+    public void setUpcomingClasses(List<ClassSessionDTO> upcomingClasses) {
         this.upcomingClasses = upcomingClasses;
     }
 
@@ -22,7 +21,7 @@ public class StudentDashboardDTO {
     }
 
     // Manual Getters
-    public List<ClassSession> getUpcomingClasses() {
+    public List<ClassSessionDTO> getUpcomingClasses() {
         return upcomingClasses;
     }
 
