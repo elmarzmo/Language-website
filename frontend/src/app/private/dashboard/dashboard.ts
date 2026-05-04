@@ -6,6 +6,7 @@ import { Auth } from '../../services/auth';
 import { DashboardService, StudentDashboard, ClassSession, StudentProgress } from '../../services/dashboardService';
 import { LessonModule } from '../../services/lesson.model';
 import { LessonService } from '../../services/lesson';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -36,6 +37,8 @@ lessons: LessonModule[] = [];
   isLoading = true;
   isLoadingLesson = false;
 
+  lessonLookup: Map<string, LessonModule> = new Map();
+
   constructor(
     private auth: Auth,
     private dashboardService: DashboardService,
@@ -47,46 +50,54 @@ lessons: LessonModule[] = [];
     this.loadData();
     this.updateTime();
     setInterval(() => this.updateTime(), 60000);
+    
   }
 
   private loadData(): void {
-    // Get student ID from auth service or local storage
-    this.studentId = localStorage.getItem('studentId') || '';
-    this.studentName = localStorage.getItem('studentName') || 'Student';
+  this.studentId = localStorage.getItem('studentId') || '';
+  this.studentName = localStorage.getItem('studentName') || 'Student';
 
-    if (!this.studentId) {
-      this.router.navigate(['/signin']);
-      return;
-    }
-
-    // Load lessons and upcoming classes
-    this.dashboardService.getStudentDashboard(this.studentId).subscribe({
-      next: (data) => {
-        this.dashboardData = data;
-        this.upcomingClasses = data.upcomingClasses;
-        this.progressList = data.progressList;
-
-        this.isLoading = false;
-
-        console.log('Dashboard data loaded:', this.dashboardData);
-      },
-      error: (err) => {
-        console.error('Failed to load lessons:', err);
-        this.isLoading = false;
-      }
-    });
-
-    // lessons (separate)
-  this.lessonService.getAllLessons().subscribe({
-    next: (lessonsData) => {
-      this.lessons = lessonsData;
-    },
-    error: (err) => console.error('Could not load lessons', err)
-  });
-
-   
-    
+  if (!this.studentId) {
+    this.router.navigate(['/signin']);
+    return;
   }
+
+  this.isLoading = true;
+
+  // Keep ONLY this part
+  forkJoin({
+    dashboard: this.dashboardService.getStudentDashboard(this.studentId),
+    allLessons: this.lessonService.getAllLessons()
+  }).subscribe({
+    next: (res) => {
+      this.dashboardData = res.dashboard;
+      this.upcomingClasses = res.dashboard.upcomingClasses;
+      this.progressList = res.dashboard.progressList;
+      this.lessons = res.allLessons;
+
+      console.log('FULL RESPONSE:', res);
+console.log('DASHBOARD:', res.dashboard);
+console.log('CLASSES:', res.dashboard.upcomingClasses);
+
+      this.lessonLookup.clear();
+      res.allLessons.forEach(lesson => {
+        this.lessonLookup.set(lesson.id, lesson);
+      });
+
+      this.isLoading = false;
+      console.log('Dashboard fully synced');
+    },
+    error: (err) => {
+      console.error('Failed to sync dashboard data', err);
+      this.isLoading = false;
+    }
+  });
+  
+}
+
+
+
+  
 
   private updateTime(): void {
     const now = new Date();
@@ -123,16 +134,27 @@ lessons: LessonModule[] = [];
   }
 
   getClassStatus(classSession: ClassSession): string {
-    const now = new Date();
-    const classDate = new Date(classSession.dateTime);
 
-    if (classDate.toDateString() === now.toDateString()) {
-      return 'TODAY';
-    } else if (classDate > now) {
-      return 'UPCOMING';
+    if (classSession.status === 'COMPLETED' || classSession.status === 'CANCELLED') {
+
+      return 'PAST';
+
     }
-    return 'PAST';
+  
+  const now = new Date();
+  const classDate = new Date(classSession.dateTime);
+
+  if (classDate.toDateString() === now.toDateString()) {
+    return 'TODAY';
   }
+  return 'UPCOMING';
+}
+
+
+  getLessonInfo(lessonId: string): LessonModule | null {
+    return this.lessonLookup.get(lessonId) || null;
+  }
+
 
   logout(): void {
     this.auth.logout();
