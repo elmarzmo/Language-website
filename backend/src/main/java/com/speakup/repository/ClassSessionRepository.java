@@ -1,13 +1,14 @@
 package com.speakup.repository;
 
-import com.speakup.model.ClassSession;
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
+import com.speakup.model.ClassSession;
 
 public interface ClassSessionRepository extends MongoRepository<ClassSession, String> {
 
-    List<ClassSession> findByStudentIdsContains(String studentId);
+    List<ClassSession> findByStudentIdsContaining(String studentId);
 
     List<ClassSession> findByTeacherId(String teacherId);
 }
