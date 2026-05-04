@@ -60,7 +60,7 @@ export class Signin {
         console.log('Login successful:', response);
         
         // Store user data in localStorage for dashboard
-        const studentId = response.id || response.email || '';
+        const studentId = response.token || response.id || '';
         const studentName = response.username || '';
         
         localStorage.setItem('studentId', studentId);
