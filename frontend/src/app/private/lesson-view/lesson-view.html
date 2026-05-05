@@ -1,15 +1,45 @@
 <div *ngIf="lesson; else loading" class="lesson-container">
-  <h2>{{ lesson.title }}</h2>
-  <p class="description">{{ lesson.description }}</p>
   
-  <div class="content">
-   
-    {{ lesson.content }}
+  <!-- Lesson Header with Audio Controls -->
+  <div class="lesson-header">
+    <div>
+      <h2>{{ lesson.title }}</h2>
+      <p class="description">{{ lesson.description }}</p>
+    </div>
+    
+    <!-- Audio Controls -->
+    <div class="audio-controls" *ngIf="isSpeechSupported">
+      <button 
+        class="btn-listen"
+        [class.playing]="isReading"
+        (click)="toggleTextToSpeech()">
+        {{ getReadButtonText() }}
+      </button>
+      <button 
+        class="btn-stop"
+        *ngIf="isReading"
+        (click)="stopTextToSpeech()">
+        ⏹️ Stop
+      </button>
+    </div>
   </div>
 
-  <a routerLink="/dashboard" class="back-btn">← Back to Dashboard</a>
+  <!-- Main Content -->
+  <div class="content" [innerHTML]="lesson.content"></div>
+
+  <!-- Back Button -->
+  <div style="max-width: 900px; margin: 0 auto;">
+    <a routerLink="/dashboard" class="back-btn">
+      ← Back to Dashboard
+    </a>
+  </div>
+
 </div>
 
+<!-- Loading Template -->
 <ng-template #loading>
-  <p>Loading lesson details...</p>
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading lesson details...</p>
+  </div>
 </ng-template>
