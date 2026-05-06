@@ -14,7 +14,9 @@ export class LessonView implements OnInit, OnDestroy {
   lesson: any; 
   isReading: boolean = false;
   isSpeechSupported: boolean = false;
-  private synthesis= window.speechSynthesis;
+  isPaused: boolean = false;
+  private synthesis = window.speechSynthesis;
+  
   constructor(
     private route: ActivatedRoute,
     private lessonService: LessonService
@@ -61,21 +63,27 @@ export class LessonView implements OnInit, OnDestroy {
       alert('Text-to-speech is not supported in this browser.');
       return;
     }
-    if (this.synthesis.speaking || this.synthesis.paused) {
-      if (this.synthesis.paused) {
-        this.synthesis.resume();
-      } else {
-        this.synthesis.pause();
-      }
+
+    // Handle resume
+    if (this.isPaused) {
+      this.synthesis.resume();
+      this.isPaused = false;
       return;
     }
-    
+
+    // Handle pause
+    if (this.isReading) {
+      this.synthesis.pause();
+      this.isPaused = true;
+      return;
+    }
+
+    // Start new speech
     const textToRead = `
     ${this.lesson.title}.
     ${this.lesson.description}.
     ${this.stripHtml(this.lesson.content)}
     `.trim();
-
 
     const utterance = new SpeechSynthesisUtterance(textToRead);
     utterance.rate = 1;
@@ -84,24 +92,28 @@ export class LessonView implements OnInit, OnDestroy {
 
     utterance.onstart = () => {
       this.isReading = true;
+      this.isPaused = false;
     };
 
     utterance.onend = () => {
       this.isReading = false;
+      this.isPaused = false;
     };
 
     utterance.onerror = (event) => {
       console.error('Speech synthesis error:', event);
       this.isReading = false;
+      this.isPaused = false;
     };
 
+    this.isReading = true; // Set immediately to update UI
     this.synthesis.speak(utterance);
-
   }
 
   stopTextToSpeech(): void {
     this.synthesis.cancel();
     this.isReading = false;
+    this.isPaused = false;
   }
 
   private stripHtml(html: string): string {
@@ -112,7 +124,7 @@ export class LessonView implements OnInit, OnDestroy {
 
   getReadButtonText(): string {
     if (!this.isSpeechSupported) return '🎧 Not Supported';
-    if (this.synthesis.paused) return '▶️ Resume';
+    if (this.isPaused) return '▶️ Resume';
     if (this.isReading) return '⏸️ Pause';
     return '🎧 Listen to Lesson';
   }
