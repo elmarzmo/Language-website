@@ -536,4 +536,20 @@ ng-template + p {
   .content table td {
     padding: 0.5rem 0.75rem;
   }
+
+
+}
+
+  /* Update or add this to your CSS */
+.description-container {
+  max-width: 900px;  /* Matches your header and content width */
+  margin: 0 auto;    /* Centers the container */
+  width: 100%;       /* Ensures it takes full available space up to 900px */
+  margin-bottom: 2rem; /* Adds some breathing room before the content */
+}
+
+/* Ensure the .description inside stays responsive */
+.description {
+  width: 100%; 
+  /* rest of your existing .description styles... */
 }

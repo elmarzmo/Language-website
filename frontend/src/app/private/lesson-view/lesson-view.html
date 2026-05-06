@@ -4,7 +4,6 @@
   <div class="lesson-header">
     <div>
       <h2>{{ lesson.title }}</h2>
-      <p class="description">{{ lesson.description }}</p>
     </div>
     
     <!-- Audio Controls -->
@@ -43,6 +42,11 @@
 
   <!-- Main Content -->
   <div class="content" [innerHTML]="lesson.content"></div>
+
+  <!-- Description (Now centered) -->
+<div class="description-container" *ngIf="lesson.description">
+    <p class="description">{{ lesson.description }}</p>
+</div>
 
   <!-- Back Button -->
   <div style="max-width: 900px; margin: 0 auto;">
