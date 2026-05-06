@@ -15,6 +15,7 @@ export class LessonView implements OnInit, OnDestroy {
   isReading: boolean = false;
   isSpeechSupported: boolean = false;
   isPaused: boolean = false;
+  playbackRate: number = 1;
   private synthesis = window.speechSynthesis;
   
   constructor(
@@ -40,8 +41,6 @@ export class LessonView implements OnInit, OnDestroy {
     } else {
       console.error('No lesson ID provided in route');
     }
-
-
   }
 
   ngOnDestroy(): void {
@@ -86,7 +85,7 @@ export class LessonView implements OnInit, OnDestroy {
     `.trim();
 
     const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.rate = 1;
+    utterance.rate = this.playbackRate;
     utterance.pitch = 1;
     utterance.volume = 1;
 
@@ -106,7 +105,7 @@ export class LessonView implements OnInit, OnDestroy {
       this.isPaused = false;
     };
 
-    this.isReading = true; // Set immediately to update UI
+    this.isReading = true;
     this.synthesis.speak(utterance);
   }
 
@@ -114,6 +113,24 @@ export class LessonView implements OnInit, OnDestroy {
     this.synthesis.cancel();
     this.isReading = false;
     this.isPaused = false;
+  }
+
+  setPlaybackRate(event: any): void {
+    const rate = parseFloat(event.target.value);
+    this.playbackRate = rate;
+
+    // If currently playing, we need to restart with new rate
+    if (this.isReading && !this.isPaused) {
+      const wasReading = this.isReading;
+      this.stopTextToSpeech();
+      
+      // Restart with new rate after a brief delay
+      setTimeout(() => {
+        if (wasReading) {
+          this.toggleTextToSpeech();
+        }
+      }, 100);
+    }
   }
 
   private stripHtml(html: string): string {
@@ -126,6 +143,6 @@ export class LessonView implements OnInit, OnDestroy {
     if (!this.isSpeechSupported) return '🎧 Not Supported';
     if (this.isPaused) return '▶️ Resume';
     if (this.isReading) return '⏸️ Pause';
-    return '🎧 Listen to Lesson';
+    return '🎧 Listen';
   }
 }

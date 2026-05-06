@@ -21,31 +21,181 @@ body, html {
 }
 
 /* ══════════════════════════════════════
+   LESSON HEADER WITH AUDIO
+════════════════════════════════════════ */
+.lesson-header {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.lesson-header > div:first-child {
+  flex: 1;
+}
+
+/* ══════════════════════════════════════
    HEADER / TITLE SECTION
 ════════════════════════════════════════ */
 .lesson-container h2 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .description {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #666;
   line-height: 1.8;
-  max-width: 900px;
-  margin: 1.5rem auto 2rem;
   padding: 1.5rem 2rem;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   border-left: 5px solid #7c6fcf;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.description::before {
+  content: '📝';
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════
+   AUDIO CONTROLS
+════════════════════════════════════════ */
+.audio-controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ══════════════════════════════════════
+   LISTEN BUTTON
+════════════════════════════════════════ */
+.btn-listen,
+.btn-stop,
+.speed-control {
+  padding: 11px 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-listen {
+  background: linear-gradient(135deg, #7c6fcf, #6a5dbf);
+  color: white;
+  box-shadow: 0 4px 16px rgba(124, 111, 207, 0.2);
+  position: relative;
+}
+
+.btn-listen:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(124, 111, 207, 0.3);
+}
+
+.btn-listen.playing {
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3);
+  animation: pulse-btn 1.5s infinite;
+}
+
+.btn-listen.paused {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  box-shadow: 0 4px 16px rgba(243, 156, 18, 0.2);
+}
+
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3); }
+  50% { box-shadow: 0 4px 24px rgba(78, 205, 196, 0.5); }
+}
+
+.btn-stop {
+  background: #ff6b6b;
+  color: white;
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.2);
+  padding: 11px 16px;
+}
+
+.btn-stop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 107, 107, 0.3);
+  background: #ff5252;
+}
+
+/* ══════════════════════════════════════
+   SPEED CONTROL
+════════════════════════════════════════ */
+.speed-control {
+  background: white;
+  color: #666;
+  border: 1px solid rgba(124, 111, 207, 0.2);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.speed-control:hover {
+  border-color: #7c6fcf;
+  color: #7c6fcf;
+}
+
+.speed-control:focus {
+  outline: none;
+  border-color: #7c6fcf;
+  box-shadow: 0 0 0 3px rgba(124, 111, 207, 0.1);
+}
+
+.speed-control option {
+  color: #1a1a1a;
+}
+
+/* ══════════════════════════════════════
+   READING STATE INDICATOR
+════════════════════════════════════════ */
+.reading-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #4ecdc4;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: rgba(78, 205, 196, 0.1);
+  border-radius: 20px;
+  margin-left: 0.5rem;
+}
+
+.reading-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ecdc4;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 /* ══════════════════════════════════════
@@ -63,10 +213,6 @@ body, html {
   font-size: 1rem;
   word-break: break-word;
   overflow-wrap: break-word;
-}
-
-/* Content text styling */
-.content {
   text-align: left;
 }
 
@@ -234,7 +380,6 @@ ng-template + p {
   color: #888;
 }
 
-/* Loading spinner */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -264,24 +409,47 @@ ng-template + p {
 }
 
 /* ══════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE - TABLET (768px)
 ════════════════════════════════════════ */
 @media (max-width: 768px) {
   .lesson-container {
     padding: 1.5rem;
   }
 
+  .lesson-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
   .lesson-container h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
   }
 
   .description {
     padding: 1.2rem 1.5rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .audio-controls {
+    width: 100%;
+    gap: 0.6rem;
+    padding: 0.8rem;
+  }
+
+  .btn-listen,
+  .btn-stop,
+  .speed-control {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
   }
 
   .content {
     padding: 1.5rem;
+    margin: 1.5rem auto;
   }
 
   .back-btn {
@@ -290,18 +458,54 @@ ng-template + p {
   }
 }
 
+/* ══════════════════════════════════════
+   RESPONSIVE - MOBILE (480px)
+════════════════════════════════════════ */
 @media (max-width: 480px) {
   .lesson-container {
     padding: 1rem;
   }
 
+  .lesson-header {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
   .lesson-container h2 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
   }
 
   .description {
     padding: 1rem 1.2rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+  }
+
+  .description::before {
+    font-size: 1.1rem;
+    margin-top: 0;
+  }
+
+  .audio-controls {
+    gap: 0.5rem;
+    padding: 0.75rem;
+    flex-direction: column;
+  }
+
+  .btn-listen,
+  .btn-stop,
+  .speed-control {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.8rem;
+    min-width: unset;
+  }
+
+  .reading-indicator {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 0.5rem;
   }
 
   .content {
@@ -331,119 +535,5 @@ ng-template + p {
   .content table th,
   .content table td {
     padding: 0.5rem 0.75rem;
-  }
-}
-
-/* ══════════════════════════════════════
-   LESSON HEADER WITH AUDIO
-════════════════════════════════════════ */
-.lesson-header {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.lesson-header > div {
-  flex: 1;
-}
-
-.audio-controls {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: flex-start;
-}
-
-/* ══════════════════════════════════════
-   LISTEN BUTTON
-════════════════════════════════════════ */
-.btn-listen,
-.btn-stop {
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-listen {
-  background: linear-gradient(135deg, #7c6fcf, #6a5dbf);
-  color: white;
-  box-shadow: 0 4px 16px rgba(124, 111, 207, 0.2);
-}
-
-.btn-listen:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(124, 111, 207, 0.3);
-}
-
-.btn-listen.playing {
-  background: linear-gradient(135deg, #4ecdc4, #44a08d);
-  box-shadow: 0 4px 16px rgba(78, 205, 196, 0.2);
-  animation: pulse-btn 1.5s infinite;
-}
-
-@keyframes pulse-btn {
-  0%, 100% { box-shadow: 0 4px 16px rgba(78, 205, 196, 0.2); }
-  50% { box-shadow: 0 4px 24px rgba(78, 205, 196, 0.4); }
-}
-
-.btn-stop {
-  background: #ff6b6b;
-  color: white;
-  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.2);
-}
-
-.btn-stop:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(255, 107, 107, 0.3);
-  background: #ff5252;
-}
-
-/* ══════════════════════════════════════
-   RESPONSIVE AUDIO CONTROLS
-════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .lesson-header {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .audio-controls {
-    justify-content: flex-start;
-    width: 100%;
-  }
-
-  .btn-listen,
-  .btn-stop {
-    flex: 1;
-    min-width: 150px;
-  }
-}
-
-@media (max-width: 480px) {
-  .lesson-header {
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .audio-controls {
-    gap: 0.5rem;
-  }
-
-  .btn-listen,
-  .btn-stop {
-    padding: 10px 16px;
-    font-size: 0.85rem;
-    min-width: 140px;
   }
 }
