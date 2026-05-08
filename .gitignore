@@ -1,0 +1,15 @@
+# Ignore IDE settings and secrets
+.vscode/
+.idea/
+*.swp
+*.log
+.env
+
+# Ignore build artifacts (will be handled by sub-folders usually, but safe here)
+target/
+bin/
+build/
+
+# Ignore OS specific files
+.DS_Store
+Thumbs.db
