@@ -1,10 +1,12 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withFetch, HttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch, HttpClient, withInterceptors } from '@angular/common/http';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+
 import { routes } from './app.routes';
+import { authInterceptor } from './auth-interceptor';
 
 export class CustomLoader implements TranslateLoader {
   constructor(private http: HttpClient) {}
@@ -17,7 +19,7 @@ export class CustomLoader implements TranslateLoader {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideTranslateService({
       fallbackLang: 'en',
       loader: {
