@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,8 @@ public class AuthController {
     private MongoTemplate mongoTemplate;
     @Autowired
     private JwtUtil JwtUtil;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     // Registration and Login endpoints
@@ -50,6 +52,10 @@ public class AuthController {
             // force STUDENT role
             user.setRole(Role.STUDENT);
 
+            user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+            );
+            
             User savedUser = userRepository.save(user);
 
             return ResponseEntity.ok(savedUser);
@@ -73,7 +79,10 @@ public class AuthController {
 
             User dbUser = existingUser.get();
 
-           if (!dbUser.getPassword().equals(user.getPassword())) {
+           if (!passwordEncoder.matches(
+                user.getPassword(),
+                dbUser.getPassword()
+           )) {
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
            } 
             // Hernerate JWT token
