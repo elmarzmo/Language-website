@@ -64,3 +64,14 @@ public class ClassSessionController {
 
 
 }
+/*
+next BCrypt password hashing
+
+later:
+Spring Security config
+Role-based route protection
+Refresh tokens
+Proper exception handling
+DTO validation
+Rate limiting on login
+Production deployment security */
