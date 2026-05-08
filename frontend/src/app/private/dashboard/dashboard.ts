@@ -61,7 +61,7 @@ export class Dashboard implements OnInit {
     this.isLoading = true;
 
     forkJoin({
-      dashboard: this.dashboardService.getStudentDashboard(this.studentId),
+      dashboard: this.dashboardService.getStudentDashboard(),
       allLessons: this.lessonService.getAllLessons()
     }).subscribe({
       next: (res) => {
