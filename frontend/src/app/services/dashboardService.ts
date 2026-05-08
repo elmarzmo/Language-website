@@ -39,8 +39,8 @@ export class DashboardService {
 
     constructor(private http: HttpClient) {}
 
-    getStudentDashboard(studentId: string): Observable<StudentDashboard> {
-        return this.http.get<StudentDashboard>(`${this.apiUrl}/dashboard/student/${studentId}`)
+    getStudentDashboard() {
+        return this.http.get<StudentDashboard>(`${this.apiUrl}/dashboard/student`)
         .pipe(
           map(data => {
             // sort classes the nearst first
