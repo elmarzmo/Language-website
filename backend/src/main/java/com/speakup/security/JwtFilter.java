@@ -1,18 +1,22 @@
 package com.speakup.security;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletResponse;
 @Component
-public class JwtFilter implements Filter {
+public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
@@ -21,30 +25,42 @@ public class JwtFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        HttpServletRequest req = (HttpServletRequest) request;
+        final String authHeader = request.getHeader("Authorization");
 
-        String authHeader = req.getHeader("Authorization");
-
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-
-            String token = authHeader.substring(7);
-
-            try {
-                if (jwtUtil.isValid(token)) {
-                    String userId = jwtUtil.extractUserId(token);
-
-                    // Attach user info to request (clean + simple)
-                    req.setAttribute("userId", userId);
-                }
-            } catch (Exception e) {
-                // Silent fail (important)
-                // We don't break the request here — controller can handle auth if needed
-            }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
-        chain.doFilter(request, response);
+        String token = authHeader.substring(7);
+
+        if (jwtUtil.isValid(token)) {
+
+            String userId = jwtUtil.extractUserId(token);
+            String role = jwtUtil.extractRole(token);
+
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                            userId,
+                            null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                    );
+
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+
+            request.setAttribute("userId", userId);
+        }
+
+        filterChain.doFilter(request, response);
     }
 }
