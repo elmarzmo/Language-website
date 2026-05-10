@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { LessonModule } from '../../../services/lesson.model';
 import { LessonService } from '../../../services/lesson';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-lesson-create',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './lesson-create.html',
   styleUrl: './lesson-create.css',
 })
