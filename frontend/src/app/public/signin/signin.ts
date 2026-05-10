@@ -60,7 +60,7 @@ export class Signin {
         console.log('Login successful:', response);
         
         // Store user data in localStorage for dashboard
-        const studentId = response.token || response.id || '';
+        const studentId = response.token || response.id || response.role ||'';
         const studentName = response.username || '';
         
         localStorage.setItem('studentId', studentId);
@@ -72,11 +72,17 @@ export class Signin {
         
         this.successMessage = 'Login successful! Redirecting...';
         
+        if(response.role === 'ADMIN'){
+          console.log('Redirecting to Admin Dashboard')
+          this.router.navigate(['/admin']);
+        } else {
         // Navigate immediately
+        
         this.router.navigate(['/dashboard']).then(success => {
           console.log('Navigation result:', success);
         });
-      },
+      }
+    },
       error: (error) => {
         this.isLoading = false;
         console.error('Login failed:', error);
