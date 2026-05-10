@@ -43,9 +43,12 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    setTimeout(() => {
     this.loadData();
     this.updateTime();
     this.loadCompletedLessons();
+    },0);
+    this.updateTime();
     setInterval(() => this.updateTime(), 60000);
   }
 
@@ -62,7 +65,7 @@ export class Dashboard implements OnInit {
 
     forkJoin({
       dashboard: this.dashboardService.getStudentDashboard(),
-      allLessons: this.lessonService.getAllLessons()
+      allLessons: this.lessonService.getStudentLessons()
     }).subscribe({
       next: (res) => {
         this.dashboardData = res.dashboard;
