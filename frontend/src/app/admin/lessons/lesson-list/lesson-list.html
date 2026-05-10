@@ -1,12 +1,70 @@
-<h2>Admin Lessons</h2>
+<div class="lesson-list-container">
 
-<a routerLink="/admin/lessons/create">Create Lesson</a>
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Lessons</h1>
+      <p class="page-subtitle">Manage your curriculum and create new lessons</p>
+    </div>
+    <a routerLink="/admin/lessons/create" class="btn btn-primary">
+      + Create Lesson
+    </a>
+  </div>
 
-<hr>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading lessons...</p>
+  </div>
 
-<div *ngFor="let lesson of lessons">
-  <h3>{{ lesson.title }}</h3>
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && lessons.length === 0" class="empty-state">
+    <div class="empty-icon">📚</div>
+    <h3 class="empty-title">No Lessons Yet</h3>
+    <p class="empty-text">Get started by creating your first lesson</p>
+    <a routerLink="/admin/lessons/create" class="btn btn-primary mt-2">
+      Create First Lesson
+    </a>
+  </div>
 
-  <p>{{ lesson.description }}</p>
-  <p><strong>Content:</strong> {{ lesson.content }}</p>
+  <!-- Lessons Grid -->
+  <div class="lessons-grid" *ngIf="!isLoading && lessons.length > 0">
+    <div class="lesson-card" *ngFor="let lesson of lessons; let i = index">
+      
+      <!-- Lesson Number Badge -->
+      <div class="lesson-badge">L{{ i + 1 }}</div>
+
+      <!-- Card Content -->
+      <div class="card-content">
+        <h3 class="lesson-title">{{ lesson.title }}</h3>
+        
+        <p class="lesson-description">{{ lesson.description }}</p>
+
+        <!-- Content Preview -->
+        <div class="content-preview" *ngIf="lesson.content">
+          <div class="preview-label">📄 Content Preview</div>
+          <p class="preview-text">{{ lesson.content | slice:0:150 }}{{ lesson.content.length > 150 ? '...' : '' }}</p>
+        </div>
+
+        <div class="no-content" *ngIf="!lesson.content">
+          <p class="preview-label">📄 Content</p>
+          <p class="preview-text empty-text">No content added yet</p>
+        </div>
+      </div>
+
+      <!-- Card Actions -->
+      <div class="card-actions">
+        <a [routerLink]="['/lesson', lesson.id]" class="btn btn-secondary btn-sm" title="View lesson">
+          👁️ View
+        </a>
+        <a [routerLink]="['/admin/lessons', lesson.id, 'edit']" class="btn btn-secondary btn-sm" title="Edit lesson">
+          ✏️ Edit
+        </a>
+        <button class="btn btn-danger btn-sm" title="Delete lesson">
+          🗑️ Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
 </div>
