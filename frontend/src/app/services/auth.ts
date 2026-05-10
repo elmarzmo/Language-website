@@ -11,6 +11,7 @@ interface AuthResponse {
   id?: string; // user id or token id
   username?: string; // for storing in dashboard
   email?: string; // for storing in dashboard
+  role?: string;
 }
 
 @Injectable({
@@ -38,7 +39,7 @@ export class Auth {
     }).pipe(
       tap((response: AuthResponse) => {
         if (response.token) {
-          localStorage.setItem('authToken', response.token);
+          localStorage.setItem('Token', response.token);
           this.isLoggedInSubject.next(true);
         }
       })
@@ -46,16 +47,16 @@ export class Auth {
   }
 
   logout(): void {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('Token');
     this.isLoggedInSubject.next(false);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('Token');
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('Token');
   }
 
   isLoggedIn(): boolean {
