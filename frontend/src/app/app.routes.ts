@@ -14,9 +14,15 @@ export const routes: Routes = [
     { path: 'about', component: About },
     { path: 'contact', component: Contact },
     { path: 'signin', component: Signin },
+
+    // student area
+
     { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
-    { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule), canActivate: [AuthGuard] },
-    { path: 'lesson/:id', component: LessonView, canActivate: [AuthGuard] }
+    { path: 'lesson/:id', component: LessonView, canActivate: [AuthGuard] },
+
+
+    { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule), canActivate: [AuthGuard] }
+    
 
 ];
 
