@@ -47,7 +47,7 @@
     <div class="lesson-circle-container">
       <div 
         *ngFor="let l of lessons; let i = index"
-        [routerLink]="['/lesson', l.id]" 
+        [routerLink]="['/dashboard/lesson', l.id]" 
         class="lesson-circle"
         [class.completed]="isCompleted(l.id)"
         >
