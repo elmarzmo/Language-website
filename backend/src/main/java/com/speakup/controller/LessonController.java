@@ -15,7 +15,7 @@ import com.speakup.model.LessonModule;
 import com.speakup.service.LessonService;
 
 @RestController
-@RequestMapping("/api/lessons")
+@RequestMapping("/api/admin/lessons")
 @CrossOrigin
 public class LessonController {
 
