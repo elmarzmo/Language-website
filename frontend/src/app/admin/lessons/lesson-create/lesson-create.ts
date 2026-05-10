@@ -25,12 +25,12 @@ export class LessonCreate {
   ) { }
 
   createLesson() {
-    const role = localStorage.getItem('role' ) || '';
+    
     if (!this.lesson.title || !this.lesson.description) {
       alert('Please fill in all fields');
       return;
     }
-     this.lessonService.createLesson(this.lesson as LessonModule, role)
+     this.lessonService.createLesson(this.lesson as LessonModule)
       .subscribe({
         next: () => {
           console.log('Lesson created successfully');
