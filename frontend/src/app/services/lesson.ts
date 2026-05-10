@@ -12,10 +12,13 @@ export class LessonService {
   constructor(private http: HttpClient) { }
 
   getAllLessons(){
-    return this.http.get<LessonModule[]>(`${this.apiUrl}/lessons`);
+    return this.http.get<LessonModule[]>(`${this.apiUrl}/admin/lessons`);
   }
 
-  createLesson(lesson: LessonModule, userRole: string) {
-    return this.http.post(`${this.apiUrl}/lessons/create?userRole=${userRole}`, lesson);
+  getStudentLessons(){
+    return this.http.get<LessonModule[]>(`${this.apiUrl}/dashboard/student/lessons`);
+  }
+  createLesson(lesson: LessonModule) {
+  return this.http.post(`${this.apiUrl}/admin/lessons/create`, lesson);  
   } 
 }
