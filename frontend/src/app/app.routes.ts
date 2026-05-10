@@ -18,7 +18,7 @@ export const routes: Routes = [
     // student area
 
     { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
-    { path: 'lesson/:id', component: LessonView, canActivate: [AuthGuard] },
+    { path: 'dashboard/lesson/:id', component: LessonView, canActivate: [AuthGuard] },
 
 
     { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule), canActivate: [AuthGuard] }
