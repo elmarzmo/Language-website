@@ -29,7 +29,7 @@ export class LessonView implements OnInit, OnDestroy {
 
    
     if (lessonId) {
-      this.lessonService.getAllLessons().subscribe((data: any) => {
+      this.lessonService.getStudentLessons().subscribe((data: any) => {
         this.lesson = data.find((l: any) => l.id === lessonId);
 
         // mark after 10 seconds as completed
