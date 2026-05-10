@@ -2,6 +2,7 @@ package com.speakup.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,7 +24,7 @@ public class SecurityConfig {
             throws Exception {
 
         http
-
+            .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
 
             .sessionManagement(session ->
@@ -38,7 +39,21 @@ public class SecurityConfig {
                     .requestMatchers(
                             "/api/auth/**"
                     ).permitAll()
+                    
+                    // STUDENT route
+                    .requestMatchers("/api/dashboard/**")
+                    .hasAnyRole("STUDENT", "TEACHER", "ADMIN")
 
+                    
+                    // Teacher Routes
+                    .requestMatchers("/api/teachers/**")
+                    .hasAnyRole("TEACHER", "ADMIN")
+
+                    
+
+                    .requestMatchers("/api/admin/**")
+                    .hasAnyRole("ADMIN")
+                    
                     // EVERYTHING ELSE REQUIRES JWT
                     .anyRequest().authenticated()
             )
