@@ -1,4 +1,4 @@
-package com.speakup.controller;
+/*package com.speakup.controller;
 
 import java.util.List;
 
@@ -36,4 +36,4 @@ public class LessonController {
     public List<LessonModule> getAllLessons() {
         return lessonService.getAllLessons();
     }
-}
+}*/
