@@ -1,16 +1,89 @@
-<h2>All Class Sessions</h2>
+<div class="class-list-container">
 
-<a routerLink="/admin/classes/create">Create New Class</a>
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Class Sessions</h1>
+      <p class="page-subtitle">Manage all scheduled classes and sessions</p>
+    </div>
+    <a routerLink="/admin/classes/create" class="btn btn-primary">
+      + Create New Class
+    </a>
+  </div>
 
-<hr>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading class sessions...</p>
+  </div>
 
-<div *ngFor="let c of classes" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && classes.length === 0" class="empty-state">
+    <div class="empty-icon">📚</div>
+    <h3 class="empty-title">No Classes Yet</h3>
+    <p class="empty-text">Get started by creating your first class session</p>
+    <a routerLink="/admin/classes/create" class="btn btn-primary mt-2">
+      Create First Class
+    </a>
+  </div>
 
-  <p><strong>Lesson ID:</strong> {{ c.lessonModuleId }}</p>
-  <p><strong>Teacher:</strong> {{ c.teacherId }}</p>
-  <p><strong>Date:</strong> {{ c.dateTime }}</p>
-  <p><strong>Students Count:</strong> {{ c.studentIds.length }}</p>
+  <!-- Classes Grid -->
+  <div class="classes-grid" *ngIf="!isLoading && classes.length > 0">
+    <div class="class-card" *ngFor="let c of classes; let i = index">
+      
+      <!-- Class Number Badge -->
+      <div class="class-badge">{{ i + 1 }}</div>
 
-  <a [href]="c.meetingLink" target="_blank">Join Link</a>
+      <!-- Card Content -->
+      <div class="card-content">
+        
+        <!-- Lesson ID -->
+        <div class="info-block">
+          <span class="info-label">📚 Lesson ID</span>
+          <p class="info-value">{{ c.lessonModuleId }}</p>
+        </div>
+
+        <!-- Teacher ID -->
+        <div class="info-block">
+          <span class="info-label">👨‍🏫 Teacher</span>
+          <p class="info-value">{{ c.teacherId }}</p>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="info-block">
+          <span class="info-label">📅 Date & Time</span>
+          <p class="info-value">{{ c.dateTime | date:'MMM d, yyyy h:mm a' }}</p>
+        </div>
+
+        <!-- Students Count -->
+        <div class="info-block">
+          <span class="info-label">👥 Students Enrolled</span>
+          <p class="info-value">
+            <span class="student-count">{{ c.studentIds.length }}</span>
+            <span class="student-text">{{ c.studentIds.length === 1 ? 'student' : 'students' }}</span>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Card Actions -->
+      <div class="card-actions">
+        <a 
+          [href]="c.meetingLink" 
+          target="_blank"
+          class="btn btn-secondary btn-sm"
+          *ngIf="c.meetingLink">
+          🔗 Join Meeting
+        </a>
+        <button class="btn btn-secondary btn-sm">
+          ✏️ Edit
+        </button>
+        <button class="btn btn-danger btn-sm">
+          🗑️ Delete
+        </button>
+      </div>
+
+    </div>
+  </div>
 
 </div>
