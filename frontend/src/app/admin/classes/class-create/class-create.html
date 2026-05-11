@@ -1,33 +1,105 @@
-<h2> Create Class Session </h2>
+<div class="create-class-container">
 
-<form (ngSubmit)="createClassSession()">
-  <div>
-    <label for="lessonModuleId">Lesson Module ID:</label>
-    <input type="text" id="lessonModuleId" [(ngModel)]="classSession.lessonModuleId" name="lessonModuleId" required>
+  <!-- Header -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Create Class Session</h1>
+      <p class="page-subtitle">Schedule a new class for your students</p>
+    </div>
   </div>
 
-  <div>
-    <label for="teacherId">Teacher ID:</label>
-    <input type="text" id="teacherId" [(ngModel)]="classSession.teacherId" name="teacherId" required>
+  <!-- Form Wrapper -->
+  <div class="form-wrapper">
+    <form (ngSubmit)="createClassSession()" class="class-form">
+
+      <!-- Lesson Module ID -->
+      <div class="form-group">
+        <label for="lessonModuleId" class="form-label">
+          Lesson Module ID <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="lessonModuleId" 
+          [(ngModel)]="classSession.lessonModuleId" 
+          name="lessonModuleId" 
+          class="form-input"
+          placeholder="e.g. lesson-001"
+          required>
+        <p class="form-hint">Enter the ID of the lesson for this class</p>
+      </div>
+
+      <!-- Teacher ID -->
+      <div class="form-group">
+        <label for="teacherId" class="form-label">
+          Teacher ID <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="teacherId" 
+          [(ngModel)]="classSession.teacherId" 
+          name="teacherId" 
+          class="form-input"
+          placeholder="e.g. teacher-001"
+          required>
+        <p class="form-hint">Enter the ID of the teacher leading this class</p>
+      </div>
+
+      <!-- Date & Time -->
+      <div class="form-group">
+        <label for="dateTime" class="form-label">
+          Date & Time <span class="required">*</span>
+        </label>
+        <input 
+          type="datetime-local" 
+          id="dateTime" 
+          [(ngModel)]="classSession.dateTime" 
+          name="dateTime" 
+          class="form-input"
+          required>
+        <p class="form-hint">When will this class take place?</p>
+      </div>
+
+      <!-- Meeting Link -->
+      <div class="form-group">
+        <label for="meetingLink" class="form-label">
+          Meeting Link <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="meetingLink" 
+          [(ngModel)]="classSession.meetingLink" 
+          name="meetingLink" 
+          class="form-input"
+          placeholder="e.g. https://zoom.us/meeting/...">
+        <p class="form-hint">Zoom, Google Meet, or other video conference link</p>
+      </div>
+
+      <!-- Student IDs -->
+      <div class="form-group">
+        <label for="studentIds" class="form-label">
+          Student IDs <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="studentIds" 
+          [(ngModel)]="studentsInput" 
+          name="studentIds" 
+          class="form-input"
+          placeholder="Comma separated: student1, student2, student3">
+        <p class="form-hint">Enter student IDs separated by commas</p>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          ✓ Create Session
+        </button>
+        <a routerLink="/admin/classes" class="btn btn-secondary">
+          ← View All Classes
+        </a>
+      </div>
+
+    </form>
   </div>
 
-  <div>
-    <label for="studentIds">Student IDs (comma separated):</label>
-    <input type="text" id="studentIds" [(ngModel)]="studentsInput" name="studentIds">
-  </div>
-
-  <div>
-    <label for="dateTime">Date & Time:</label>
-    <input type="datetime-local" id="dateTime" [(ngModel)]="classSession.dateTime" name="dateTime" required>
-  </div>
-
-  <div>
-    <label for="meetingLink">Meeting Link:</label>
-    <input type="text" id="meetingLink" [(ngModel)]="classSession.meetingLink" name="meetingLink">
-  </div>
-
-  <button type="submit">Create Session</button>
- 
-  <button routerLink="/admin/classes">View All Classes</button>
-  
-</form>
+</div>

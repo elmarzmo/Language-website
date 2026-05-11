@@ -18,12 +18,16 @@ export class ClassCreate implements OnInit {
   lessons: any[] = [];
 
   classSession : ClassSession = {
+    id: '',
     lessonModuleId: '',
     teacherId: '',
     studentIds: [],
     dateTime: '',
+    durationMinutes: 60,
     meetingLink: '',
     status: 'SCHEDULED',
+
+    
   };
 
   studentsInput: string = '';
