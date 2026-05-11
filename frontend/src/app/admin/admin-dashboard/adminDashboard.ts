@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth } from '../../services/auth';
-import { DashboardService, StudentDashboard, ClassSession } from '../../services/dashboardService';
 import { LessonModule } from '../../services/lesson.model';
 import { LessonService } from '../../services/lesson';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
+import { AdminDashboardService } from '../service/admin-dashboard-service';
+import { ClassSession } from '../models/class-session.model';
+
 
 @Component({
-  selector: 'app-student-dashboard',
+  selector: 'app-admin-dashboard',
   standalone: true,
   imports: [CommonModule, TranslateModule, RouterLink],
   templateUrl: './admindashboard.html',
@@ -19,73 +21,63 @@ import { forkJoin } from 'rxjs';
     'style': 'display: block; height: 100%; width: 100%;'
   }
 })
-export class AdminDashboard implements OnInit {
-  studentId: string = '';
-  studentName: string = '';
+export class AdminDashboard implements OnInit, OnDestroy {
+  adminName: string = '';
   currentTime: string = '';
   
-  dashboardData!: StudentDashboard;
-  upcomingClasses: ClassSession[] = [];
+  allClasses: ClassSession[] = [];
   lessons: LessonModule[] = [];
   
-  // Loading states
   isLoading = true;
-  isLoadingLesson = false;
-
-  lessonLookup: Map<string, LessonModule> = new Map();
-  completedLessons: Set<string> = new Set();
+  private timeInterval: any;
 
   constructor(
     private auth: Auth,
-    private dashboardService: DashboardService,
-    private router: Router,
-    private lessonService: LessonService
+    private admindashboardService: AdminDashboardService,
+    private lessonService: LessonService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-    this.loadData();
+    this.setAdminInfo();
+    this.loadManagementData();
     this.updateTime();
-    this.loadCompletedLessons();
-    },0);
-    this.updateTime();
-    setInterval(() => this.updateTime(), 60000);
+    
+    // Update clock every minute
+    this.timeInterval = setInterval(() => this.updateTime(), 60000);
   }
 
-  private loadData(): void {
-    this.studentId = localStorage.getItem('studentId') || '';
-    this.studentName = localStorage.getItem('studentName') || 'Student';
-
-    if (!this.studentId) {
-      this.router.navigate(['/signin']);
-      return;
+  ngOnDestroy(): void {
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
     }
+  }
 
+  private setAdminInfo(): void {
+    // Using 'adminName' or 'studentName' depending on how you store it in localStorage
+    this.adminName = localStorage.getItem('studentName') || 'Administrator';
+    const adminId = localStorage.getItem('studentId');
+
+    if (!adminId) {
+      this.router.navigate(['/signin']);
+    }
+  }
+
+  private loadManagementData(): void {
     this.isLoading = true;
 
     forkJoin({
-      dashboard: this.dashboardService.getStudentDashboard(),
+      dashboard: this.admindashboardService.getAdminDashboard(), // Keeping service call as is
       allLessons: this.lessonService.getAllLessons()
     }).subscribe({
       next: (res) => {
-        this.dashboardData = res.dashboard;
-        this.upcomingClasses = res.dashboard.upcomingClasses;
+        this.allClasses = res.dashboard.allClasses;
         this.lessons = res.allLessons;
-
-        console.log('FULL RESPONSE:', res);
-        console.log('DASHBOARD:', res.dashboard);
-        console.log('CLASSES:', res.dashboard.upcomingClasses);
-
-        this.lessonLookup.clear();
-        res.allLessons.forEach(lesson => {
-          this.lessonLookup.set(lesson.id, lesson);
-        });
-
         this.isLoading = false;
-        console.log('Dashboard fully synced');
+        console.log('Admin Dashboard synced successfully');
       },
       error: (err) => {
-        console.error('Failed to sync dashboard data', err);
+        console.error('Failed to sync admin data', err);
         this.isLoading = false;
       }
     });
@@ -101,55 +93,6 @@ export class AdminDashboard implements OnInit {
       minute: '2-digit'
     });
   }
-
-  joinClass(classSession: ClassSession): void {
-    if (classSession.meetingLink) {
-      window.open(classSession.meetingLink, '_blank');
-    } else {
-      alert('Meeting link not available for this class.');
-    }
-  }
-
-  getResourceIcon(type: string): string {
-    const icons: { [key: string]: string } = {
-      'pdf': '📄',
-      'video': '🎥',
-      'exercise': '✏️',
-      'reading': '📖',
-      'link': '🔗'
-    };
-    return icons[type] || '📎';
-  }
-
-  getClassStatus(classSession: ClassSession): string {
-    if (classSession.status === 'COMPLETED' || classSession.status === 'CANCELLED') {
-      return 'PAST';
-    }
-  
-    const now = new Date();
-    const classDate = new Date(classSession.dateTime);
-
-    if (classDate.toDateString() === now.toDateString()) {
-      return 'TODAY';
-    }
-    return 'UPCOMING';
-  }
-
-  getLessonInfo(lessonId: string): LessonModule | null {
-    return this.lessonLookup.get(lessonId) || null;
-  }
-
-  loadCompletedLessons(){
-      const data = localStorage.getItem('completedLessons');
-      if (data) {
-        this.completedLessons = new Set(JSON.parse(data));
-      }
-    }
-
-    isCompleted(lessonId: string): boolean {
-      return this.completedLessons.has(lessonId);
-    }
-    
 
   logout(): void {
     this.auth.logout();
