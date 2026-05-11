@@ -4,7 +4,7 @@ import {map, Observable} from 'rxjs'
 import { environment } from '../../../environments/environment';
 import { AdminDashboard } from '../models/admin-dashboard.model';
 
-
+/*
 
 export interface ClassSession {
   id: string;
@@ -16,7 +16,7 @@ export interface ClassSession {
   meetingLink: string;
   status: 'SCHEDULED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
 }
-
+*/
 
 @Injectable({
   providedIn: 'root',
