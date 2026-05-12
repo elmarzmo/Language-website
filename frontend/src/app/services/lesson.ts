@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LessonModule } from './lesson.model';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,4 +22,9 @@ export class LessonService {
   createLesson(lesson: LessonModule) {
   return this.http.post(`${this.apiUrl}/admin/lessons/create`, lesson);  
   } 
+
+    
+  deleteLesson(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/admin/lessons/${id}`);
+  }
 }
