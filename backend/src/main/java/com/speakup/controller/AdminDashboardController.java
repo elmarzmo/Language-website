@@ -2,10 +2,11 @@ package com.speakup.controller;
 
 import java.util.List; // Import the DTO
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ import com.speakup.service.LessonService;
 @CrossOrigin
 public class AdminDashboardController {
 
-    @Autowired
+    
     private final LessonService lessonService;
     private final ClassSessionService classSessionService;
 
@@ -66,6 +67,12 @@ public class AdminDashboardController {
     public ResponseEntity<?> createLesson( @RequestBody LessonModule lesson) {
 
         return ResponseEntity.ok(lessonService.createLesson(lesson));
+    }
+
+    @DeleteMapping("/lessons/{id}")
+    public ResponseEntity<?> deleteLesson( @PathVariable String id) {
+        lessonService.deleteLesson(id);
+        return ResponseEntity.noContent().build();
     }
     
     
