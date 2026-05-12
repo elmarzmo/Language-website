@@ -35,4 +35,19 @@ export class LessonList implements OnInit {
     });
   }
 
+onDeleteLesson(id: string): void {
+    if (confirm('Are you sure you want to delete this lesson?')) {
+      this.lessonService.deleteLesson(id).subscribe({
+        next: () => {
+          // Remove the lesson from the local array so the UI updates immediately
+          this.lessons = this.lessons.filter(l => l.id !== id);
+          console.log('Lesson deleted successfully');
+        },
+        error: (err: Error) => {
+        console.error('Error deleting lesson :', err);
+       
+      }
+      });
+    }
+  }
 }
