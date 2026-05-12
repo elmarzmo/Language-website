@@ -1,11 +1,12 @@
 package com.speakup.service;
 
-import org.springframework.stereotype.Service;
-
-import com.speakup.repository.LessonRepository;
-import com.speakup.model.LessonModule;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.speakup.model.LessonModule;
+import com.speakup.repository.LessonRepository;
 
 @Service
 public class LessonService {
@@ -38,6 +39,10 @@ public class LessonService {
         return lessonRepository.findByStatus(LessonModule.LessonStatus.PUBLISHED);
     }
 
+    public void deleteLesson(String id){
+        
+        lessonRepository.deleteById(id);
+    }
 
     
 }
