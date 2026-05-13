@@ -1,0 +1,81 @@
+<div class="lesson-edit-container">
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading lesson...</p>
+  </div>
+
+  <!-- Edit Form -->
+  <div *ngIf="lesson && !isLoading" class="edit-wrapper">
+
+    <!-- Header -->
+    <div class="header-section">
+      <div class="header-content">
+        <h1 class="page-title">Edit Lesson</h1>
+        <p class="page-subtitle">Update lesson details and content</p>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+      
+      <!-- Lesson Title -->
+      <div class="form-group">
+        <label for="title" class="form-label">
+          Lesson Title <span class="optional">(Optional)</span>
+        </label>
+        <input 
+          type="text" 
+          id="title"
+          [(ngModel)]="lesson.title" 
+          class="form-input"
+          placeholder="e.g. Introduction to French Grammar"
+          required>
+        <p class="form-hint">Give your lesson a clear, descriptive title</p>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description" class="form-label">
+          Description <span class="optional">(Optional)</span>
+        </label>
+        <textarea 
+          id="description"
+          [(ngModel)]="lesson.description" 
+          class="form-textarea short"
+          placeholder="Provide a brief overview of what students will learn"
+          required>
+        </textarea>
+        <p class="form-hint">This appears on the dashboard (2-3 sentences)</p>
+      </div>
+
+      <!-- Content -->
+      <div class="form-group">
+        <label for="content" class="form-label">
+          Lesson Content <span class="optional">(Optional)</span>
+        </label>
+        <textarea 
+          id="content"
+          [(ngModel)]="lesson.content" 
+          class="form-textarea long"
+          placeholder="Write your lesson content here. HTML and markdown supported.">
+        </textarea>
+        <p class="form-hint">The main content students will read. Supports HTML formatting.</p>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button (click)="onUpdateLesson()" class="btn btn-primary">
+          ✓ Save Changes
+        </button>
+        <a routerLink="/admin/lessons" class="btn btn-secondary">
+          ← Cancel
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
