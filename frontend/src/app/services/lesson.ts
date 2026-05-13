@@ -27,4 +27,12 @@ export class LessonService {
   deleteLesson(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/admin/lessons/${id}`);
   }
+
+  getLessonsById(id: string): Observable<LessonModule> {
+    return this.http.get<LessonModule>(`${this.apiUrl}/admin/lessons/${id}`);
+  }
+
+  updateLesson(id: string, lesson: LessonModule): Observable<LessonModule> {
+    return this.http.put<LessonModule>(`${this.apiUrl}/admin/lessons/${id}`, lesson)
+  }
 }
