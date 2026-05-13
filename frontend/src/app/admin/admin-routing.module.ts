@@ -5,11 +5,13 @@ import { LessonCreate } from './lessons/lesson-create/lesson-create';
 import { ClassCreate } from './classes/class-create/class-create';
 import { ClassList } from './classes/class-list/class-list';
 import { AdminDashboard } from './admin-dashboard/adminDashboard' 
+import { LessonEdit } from './lessons/lesson-edit/lesson-edit';
 
 const routes: Routes = [
   {path: '', component: AdminDashboard },
   {path: 'lessons', component: LessonList},
   {path: 'lessons/create', component: LessonCreate},
+  {path: 'lessons/:id/edit', component: LessonEdit},
 
   {path: 'classes', component: ClassList},
   {path: 'classes/create', component: ClassCreate}

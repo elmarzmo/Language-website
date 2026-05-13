@@ -44,6 +44,15 @@ public class LessonService {
         lessonRepository.deleteById(id);
     }
 
+    public LessonModule getLessonById( String id) {
+        return lessonRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Lesson not found"));
+    } 
+
+    public LessonModule updateLesson(String id, LessonModule updatedLesson) {
+        updatedLesson.setId(id);
+        return lessonRepository.save(updatedLesson);
+    }
     
 }
  
