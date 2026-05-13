@@ -1,0 +1,582 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: 'DM Sans', sans-serif;
+  background: #ffffff;
+}
+
+/* ══════════════════════════════════════
+   LESSON CONTAINER
+════════════════════════════════════════ */
+.lesson-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f7f5ff 0%, #fdf9f3 50%, #f0f7ff 100%);
+  padding: 2rem;
+}
+
+/* ══════════════════════════════════════
+   LESSON HEADER WITH AUDIO
+════════════════════════════════════════ */
+.lesson-header {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.lesson-header > div:first-child {
+  flex: 1;
+}
+
+/* ══════════════════════════════════════
+   HEADER / TITLE SECTION
+════════════════════════════════════════ */
+.lesson-container h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.8;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  border-left: 5px solid #7c6fcf;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.description::before {
+  content: '📝';
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════
+   AUDIO CONTROLS
+════════════════════════════════════════ */
+.audio-controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ══════════════════════════════════════
+   LISTEN BUTTON
+════════════════════════════════════════ */
+.btn-listen,
+.btn-stop,
+.speed-control {
+  padding: 11px 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-listen {
+  background: linear-gradient(135deg, #7c6fcf, #6a5dbf);
+  color: white;
+  box-shadow: 0 4px 16px rgba(124, 111, 207, 0.2);
+  position: relative;
+}
+
+.btn-listen:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(124, 111, 207, 0.3);
+}
+
+.btn-listen.playing {
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3);
+  animation: pulse-btn 1.5s infinite;
+}
+
+.btn-listen.paused {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  box-shadow: 0 4px 16px rgba(243, 156, 18, 0.2);
+}
+
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3); }
+  50% { box-shadow: 0 4px 24px rgba(78, 205, 196, 0.5); }
+}
+
+.btn-stop {
+  background: #ff6b6b;
+  color: white;
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.2);
+  padding: 11px 16px;
+}
+
+.btn-stop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 107, 107, 0.3);
+  background: #ff5252;
+}
+
+/* ══════════════════════════════════════
+   SPEED CONTROL
+════════════════════════════════════════ */
+.speed-control {
+  background: white;
+  color: #666;
+  border: 1px solid rgba(124, 111, 207, 0.2);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.speed-control:hover {
+  border-color: #7c6fcf;
+  color: #7c6fcf;
+}
+
+.speed-control:focus {
+  outline: none;
+  border-color: #7c6fcf;
+  box-shadow: 0 0 0 3px rgba(124, 111, 207, 0.1);
+}
+
+.speed-control option {
+  color: #1a1a1a;
+}
+
+/* ══════════════════════════════════════
+   READING STATE INDICATOR
+════════════════════════════════════════ */
+.reading-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #4ecdc4;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: rgba(78, 205, 196, 0.1);
+  border-radius: 20px;
+  margin-left: 0.5rem;
+}
+
+.reading-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ecdc4;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ══════════════════════════════════════
+   CONTENT AREA
+════════════════════════════════════════ */
+.content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  line-height: 1.9;
+  color: #555;
+  font-size: 1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+
+.content p {
+  margin-bottom: 1.5rem;
+}
+
+.content h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 2rem 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.content h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2a2a2a;
+  margin: 1.5rem 0 0.8rem 0;
+}
+
+.content ul,
+.content ol {
+  margin-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.content li {
+  margin-bottom: 0.7rem;
+  color: #666;
+}
+
+.content strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.content em {
+  color: #7c6fcf;
+  font-style: italic;
+}
+
+.content a {
+  color: #7c6fcf;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(124, 111, 207, 0.3);
+  transition: all 0.2s ease;
+}
+
+.content a:hover {
+  color: #6a5dbf;
+  border-bottom-color: #7c6fcf;
+}
+
+.content blockquote {
+  border-left: 5px solid #7c6fcf;
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  color: #777;
+  font-style: italic;
+  background: #f9f9f9;
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-radius: 8px;
+}
+
+.content code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: #d9534f;
+  font-size: 0.9rem;
+}
+
+.content pre {
+  background: #1a1a1a;
+  color: #f1f1f1;
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.content pre code {
+  background: none;
+  color: #f1f1f1;
+  padding: 0;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.content table th,
+.content table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.content table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.content table tr:hover {
+  background: #f9f9f9;
+}
+
+/* ══════════════════════════════════════
+   SHARED BUTTON BASE (DRY)
+════════════════════════════════════════ */
+.back-btn, .edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-btn:hover, .edit-btn:hover {
+  transform: translateY(-2px);
+}
+
+.back-btn:active, .edit-btn:active {
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════════════
+   BACK BUTTON (Navigation Style)
+════════════════════════════════════════ */
+.back-btn {
+  background: linear-gradient(135deg, #7c6fcf, #6a5dbf);
+  color: white;
+  box-shadow: 0 4px 16px rgba(124, 111, 207, 0.2);
+}
+
+.back-btn:hover {
+  box-shadow: 0 6px 24px rgba(124, 111, 207, 0.3);
+  filter: brightness(1.1);
+}
+
+/* ══════════════════════════════════════
+   EDIT BUTTON (Action Style)
+════════════════════════════════════════ */
+.edit-btn {
+  /* Using a slightly different hue (Indigo/Slate) to differentiate from 'Back' */
+  background: #ffffff;
+  color: #4a3fad;
+  border: 2px solid #7c6fcf;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.edit-btn:hover {
+  background: #f8f7ff;
+  color: #6a5dbf;
+  border-color: #6a5dbf;
+  box-shadow: 0 4px 12px rgba(124, 111, 207, 0.15);
+}
+
+/* ══════════════════════════════════════
+   LOADING STATE
+════════════════════════════════════════ */
+ng-template + p {
+  text-align: center;
+  padding: 3rem 2rem;
+  font-size: 1rem;
+  color: #888;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f7f5ff 0%, #fdf9f3 50%, #f0f7ff 100%);
+  gap: 1.5rem;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(124, 111, 207, 0.2);
+  border-top-color: #7c6fcf;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE - TABLET (768px)
+════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .lesson-container {
+    padding: 1.5rem;
+  }
+
+  .lesson-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lesson-container h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    padding: 1.2rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .audio-controls {
+    width: 100%;
+    gap: 0.6rem;
+    padding: 0.8rem;
+  }
+
+  .btn-listen,
+  .btn-stop,
+  .speed-control {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  .content {
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+
+  .back-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE - MOBILE (480px)
+════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .lesson-container {
+    padding: 1rem;
+  }
+
+  .lesson-header {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .lesson-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .description {
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .description::before {
+    font-size: 1.1rem;
+    margin-top: 0;
+  }
+
+  .audio-controls {
+    gap: 0.5rem;
+    padding: 0.75rem;
+    flex-direction: column;
+  }
+
+  .btn-listen,
+  .btn-stop,
+  .speed-control {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.8rem;
+    min-width: unset;
+  }
+
+  .reading-indicator {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  .content {
+    padding: 1.2rem;
+    margin: 1.5rem auto;
+  }
+
+  .content h3 {
+    font-size: 1.2rem;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+  }
+
+  .content ul,
+  .content ol {
+    margin-left: 1.5rem;
+  }
+
+  .content table {
+    font-size: 0.9rem;
+  }
+
+  .content table th,
+  .content table td {
+    padding: 0.5rem 0.75rem;
+  }
+
+
+}
+
+  /* Update or add this to your CSS */
+.description-container {
+  max-width: 900px;  /* Matches your header and content width */
+  margin: 0 auto;    /* Centers the container */
+  width: 100%;       /* Ensures it takes full available space up to 900px */
+  margin-bottom: 2rem; /* Adds some breathing room before the content */
+}
+
+/* Ensure the .description inside stays responsive */
+.description {
+  width: 100%; 
+  /* rest of your existing .description styles... */
+}

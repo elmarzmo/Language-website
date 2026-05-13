@@ -1,0 +1,69 @@
+<div *ngIf="lesson; else loading" class="lesson-container">
+  
+  <!-- Lesson Header with Audio Controls -->
+  <div class="lesson-header">
+    <div>
+      <h2>{{ lesson.title }}</h2>
+    </div>
+    
+    <!-- Audio Controls -->
+    <div class="audio-controls" *ngIf="isSpeechSupported">
+      <button 
+        class="btn-listen"
+        [class.playing]="isReading"
+        [class.paused]="isPaused"
+        (click)="toggleTextToSpeech()">
+        {{ getReadButtonText() }}
+      </button>
+      
+      <button 
+        class="btn-stop"
+        *ngIf="isReading"
+        (click)="stopTextToSpeech()">
+        ⏹️ Stop
+      </button>
+
+      <select 
+        class="speed-control"
+        (change)="setPlaybackRate($event)"
+        [disabled]="!isReading && !isPaused"
+        title="Adjust playback speed">
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+        <option value="1.5">1.5x</option>
+      </select>
+
+      <div class="reading-indicator" *ngIf="isReading && !isPaused">
+        Playing
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content" [innerHTML]="lesson.content"></div>
+
+  <!-- Description (Now centered) -->
+<div class="description-container" *ngIf="lesson.description">
+    <p class="description">{{ lesson.description }}</p>
+</div>
+
+ <div style="max-width: 900px; margin: 2rem auto; display: flex; align-items: center; justify-content: space-between;">
+  <a routerLink="/admin/lessons" class="back-btn">
+    ← Back to Lesson list
+  </a>
+
+  <a [routerLink]="['/admin/lessons', lesson.id, 'edit']" class="edit-btn">
+    ✏️ Edit Lesson
+  </a>
+</div>
+
+</div>
+
+<!-- Loading Template -->
+<ng-template #loading>
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading lesson details...</p>
+  </div>
+</ng-template>
