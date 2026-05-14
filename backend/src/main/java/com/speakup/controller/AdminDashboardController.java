@@ -18,6 +18,7 @@ import com.speakup.dto.ClassSessionDTO;
 import com.speakup.model.LessonModule;
 import com.speakup.service.ClassSessionService;
 import com.speakup.service.LessonService;
+import com.speakup.service.UserService;
 
 
 
@@ -31,10 +32,13 @@ public class AdminDashboardController {
     
     private final LessonService lessonService;
     private final ClassSessionService classSessionService;
+    private final UserService userService;
+    
 
-    public AdminDashboardController(LessonService lessonService, ClassSessionService classSessionService){
+    public AdminDashboardController(LessonService lessonService, ClassSessionService classSessionService, UserService userService){
         this.lessonService = lessonService;
         this.classSessionService = classSessionService;
+        this.userService = userService;
     }
 
     @GetMapping("") 
@@ -84,5 +88,10 @@ public class AdminDashboardController {
     @PutMapping("/lessons/{id}")
     public ResponseEntity<LessonModule> updateLesson(@PathVariable String id, @RequestBody LessonModule lesson) {
         return  ResponseEntity.ok(lessonService.updateLesson(id, lesson));
+    }
+
+    @GetMapping("/students")
+    public ResponseEntity<?> getAllStudents(){
+        return ResponseEntity.ok(userService.getAllStudents());
     }
 }
