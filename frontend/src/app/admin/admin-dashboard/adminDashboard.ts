@@ -8,6 +8,8 @@ import { LessonService } from '../../services/lesson';
 import { forkJoin, Subscription } from 'rxjs';
 import { AdminDashboardService } from '../service/admin-dashboard-service';
 import { ClassSession } from '../models/class-session.model';
+import { User } from '../models/user.model';
+import { StudentListService } from '../service/student-list';
 
 
 @Component({
@@ -27,6 +29,7 @@ export class AdminDashboard implements OnInit, OnDestroy {
   
   allClasses: ClassSession[] = [];
   lessons: LessonModule[] = [];
+  allStudents: User[] = [];
   
   isLoading = true;
   private timeInterval: any;
@@ -35,6 +38,7 @@ export class AdminDashboard implements OnInit, OnDestroy {
     private auth: Auth,
     private admindashboardService: AdminDashboardService,
     private lessonService: LessonService,
+    private studentService: StudentListService,
     private router: Router
   ) {}
 
@@ -68,11 +72,13 @@ export class AdminDashboard implements OnInit, OnDestroy {
 
     forkJoin({
       dashboard: this.admindashboardService.getAdminDashboard(), // Keeping service call as is
-      allLessons: this.lessonService.getAllLessons()
+      allLessons: this.lessonService.getAllLessons(),
+      allStudents: this.studentService.getStudents()
     }).subscribe({
       next: (res) => {
         this.allClasses = res.dashboard.allClasses;
         this.lessons = res.allLessons;
+        this.allStudents = res.allStudents;
         this.isLoading = false;
         console.log('Admin Dashboard synced successfully');
       },
