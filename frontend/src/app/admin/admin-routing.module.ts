@@ -7,7 +7,7 @@ import { ClassList } from './classes/class-list/class-list';
 import { AdminDashboard } from './admin-dashboard/adminDashboard' 
 import { LessonEdit } from './lessons/lesson-edit/lesson-edit';
 import { AdminLessonView } from './lessons/admin-lesson-view/admin-lesson-view';
-
+import { StudentList } from './student-list/student-list'
 
 const routes: Routes = [
   {path: '', component: AdminDashboard },
@@ -17,7 +17,9 @@ const routes: Routes = [
   {path: 'lessons/view/:id', component: AdminLessonView},
 
   {path: 'classes', component: ClassList},
-  {path: 'classes/create', component: ClassCreate}
+  {path: 'classes/create', component: ClassCreate},
+
+  {path: 'students', component: StudentList}
 ];
 
 @NgModule({
