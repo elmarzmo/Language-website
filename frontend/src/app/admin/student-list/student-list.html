@@ -1,0 +1,83 @@
+<div class="student-list-container">
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Student Directory</h1>
+      <p class="page-subtitle">Manage all students registered in SpeakUp Languages</p>
+    </div>
+    <a routerLink="/admin" class="btn btn-secondary">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Filter & Search Bar -->
+  <div class="filter-section">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (input)="onSearch()" 
+        placeholder="Search by username or email..."
+        class="search-input"
+      >
+    </div>
+    <div class="stats-display">
+      <span class="stat-label">Total Students:</span>
+      <span class="stat-value">{{ filteredStudents.length }}</span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading students...</p>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper" *ngIf="!loading && filteredStudents.length > 0">
+    <div class="table-scroll">
+      <table class="student-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Email Address</th>
+            <th>Role</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of filteredStudents" class="table-row">
+            <td class="user-cell">
+              <div class="avatar">{{ student.username.charAt(0).toUpperCase() }}</div>
+              <div class="user-info">
+                <div class="username">{{ student.username }}</div>
+              </div>
+            </td>
+            <td class="email-cell">{{ student.email }}</td>
+            <td>
+              <span class="role-badge">{{ student.role }}</span>
+            </td>
+            <td class="text-right">
+              <a [routerLink]="['/admin/students/edit', student.id]" class="btn-action">
+                ✏️ Edit
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredStudents.length === 0" class="empty-state">
+    <div class="empty-icon">👥</div>
+    <h3 class="empty-title">No Students Found</h3>
+    <p class="empty-text">No students matching "{{ searchQuery }}"</p>
+    <button (click)="searchQuery = ''; onSearch()" class="btn btn-primary">
+      Clear Search
+    </button>
+  </div>
+
+</div>
