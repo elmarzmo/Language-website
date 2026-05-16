@@ -14,20 +14,20 @@ export interface ClassSession {
   meetingLink: string;
   status: 'SCHEDULED' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
 }
-/*
+
 export interface StudentProgress {
   id: string;
   studentId: string;
   lessonModuleId: string;
   progressPercentage: number;
-  completionStatus: 'not started' | 'in progress' | 'completed';
-  lastUpdated: string; // ISO format
+  completed: boolean;
+  lastUpdated: number; // ISO format
   
 }
-*/
+
 export interface StudentDashboard{
   upcomingClasses: ClassSession[];
- // progressList: StudentProgress[];
+  progressList: StudentProgress[];
 
 }
 
