@@ -1,7 +1,12 @@
 package com.speakup.controller;
 
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,4 +45,17 @@ public class DashboardController {
 
     }
    
+    @PostMapping("/student/completed-lessons")
+    public ResponseEntity<?> markComplete(@RequestBody Map<String, String> payload, HttpServletRequest request) {
+        String studentId = (String) request.getAttribute("userId");
+        String lessonId = payload.get("lessonId");
+
+
+        if(studentId == null || lessonId == null) {
+            return ResponseEntity.badRequest().body("User Id or lesson Id missing");
+        }
+
+        dashboardService.markLessonAsComplete(studentId, lessonId);
+        return ResponseEntity.ok().build();
+    }
 }
