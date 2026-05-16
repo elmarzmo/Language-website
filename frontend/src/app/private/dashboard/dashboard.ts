@@ -46,9 +46,9 @@ export class Dashboard implements OnInit {
     setTimeout(() => {
     this.loadData();
     this.updateTime();
-    this.loadCompletedLessons();
+  
     },0);
-    this.updateTime();
+   
     setInterval(() => this.updateTime(), 60000);
   }
 
@@ -72,15 +72,20 @@ export class Dashboard implements OnInit {
         this.upcomingClasses = res.dashboard.upcomingClasses;
         this.lessons = res.allLessons;
 
-        console.log('FULL RESPONSE:', res);
-        console.log('DASHBOARD:', res.dashboard);
-        console.log('CLASSES:', res.dashboard.upcomingClasses);
 
         this.lessonLookup.clear();
         res.allLessons.forEach(lesson => {
           this.lessonLookup.set(lesson.id, lesson);
         });
 
+        this.completedLessons.clear();
+        if (res.dashboard.progressList) {
+          res.dashboard.progressList.forEach(p => {
+          if (p.completed) {
+            this.completedLessons.add(p.lessonModuleId);
+          }
+         });
+        }
         this.isLoading = false;
         console.log('Dashboard fully synced');
       },
@@ -139,12 +144,7 @@ export class Dashboard implements OnInit {
     return this.lessonLookup.get(lessonId) || null;
   }
 
-  loadCompletedLessons(){
-      const data = localStorage.getItem('completedLessons');
-      if (data) {
-        this.completedLessons = new Set(JSON.parse(data));
-      }
-    }
+ 
 
     isCompleted(lessonId: string): boolean {
       return this.completedLessons.has(lessonId);
