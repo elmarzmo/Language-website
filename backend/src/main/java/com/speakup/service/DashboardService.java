@@ -1,5 +1,6 @@
 package com.speakup.service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,5 +50,19 @@ public class DashboardService {
     dto.setProgressList(progresses);
 
     return dto;
+}
+
+public void markLessonAsComplete(String studentId, String lessonId){
+    StudentProgress progress = studentProgressRepository
+        .findByStudentIdAndLessonModuleId(studentId, lessonId)
+        .orElse(new StudentProgress());
+
+    progress.setStudentId(studentId);
+    progress.setLessonModuleId(lessonId);
+    progress.setCompleted(true);
+    progress.setProgressPercentage(100);
+    progress.setLastUpdated(Instant.now());
+
+    studentProgressRepository.save(progress);
 }
 }
