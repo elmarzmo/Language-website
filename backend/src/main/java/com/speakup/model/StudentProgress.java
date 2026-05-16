@@ -1,8 +1,11 @@
 package com.speakup.model;
 
-import lombok.Data;
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.Data;
 
 @Document(collection = "student_progress")
 @Data
@@ -19,5 +22,5 @@ public class StudentProgress {
 
     private boolean completed;
 
-    private long lastUpdated; // Timestamp of last update
+    private Instant lastUpdated; // Timestamp of last update
 }
