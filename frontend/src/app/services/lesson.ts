@@ -35,4 +35,15 @@ export class LessonService {
   updateLesson(id: string, lesson: LessonModule): Observable<LessonModule> {
     return this.http.put<LessonModule>(`${this.apiUrl}/admin/lessons/${id}`, lesson)
   }
+
+  getCompletedLessons(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/dashboard/student/completed-lessons`)
+  }
+
+  // Add this to your LessonService class
+markLessonComplete(lessonId: string): Observable<void> {
+  // We don't send studentId here because the Spring Boot 
+  // backend gets it from the Request Attribute (userId)
+  return this.http.post<void>(`${this.apiUrl}/dashboard/student/completed-lessons`, { lessonId });
+}
 }
