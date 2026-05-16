@@ -36,7 +36,6 @@ export class LessonView implements OnInit, OnDestroy {
         setTimeout(() => {
           this.markAsCompleted(lessonId);
         }, 10000);
-        this.markAsCompleted(lessonId);
       });
     } else {
       console.error('No lesson ID provided in route');
@@ -50,11 +49,15 @@ export class LessonView implements OnInit, OnDestroy {
   }
 
   markAsCompleted(lessonId: string) {
-    const completedLessons = JSON.parse(localStorage.getItem('completedLessons') || '[]');  
-    if (!completedLessons.includes(lessonId)) {
-      completedLessons.push(lessonId);
-      localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
-    }
+    this.lessonService.markLessonComplete(lessonId).subscribe({
+      next: () => {
+        console.log('Lesson marked as completed');
+      },
+      error: (err) => {
+        console.error('Failed to mark lesson as completed', err);
+        
+      }
+    })
   }
 
   toggleTextToSpeech() {
