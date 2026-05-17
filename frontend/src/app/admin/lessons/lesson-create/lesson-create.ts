@@ -16,7 +16,8 @@ export class LessonCreate {
   lesson: Partial<LessonModule> = {
     title: '',
     content: '',
-    description: ''
+    description: '',
+    instructions: ''
   };
 
   constructor(

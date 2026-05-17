@@ -60,6 +60,21 @@
         <p class="form-hint">The main content students will read. Supports HTML formatting.</p>
       </div>
 
+      <!-- What to expect next class -->
+      <div class="form-group">
+        <label for="content" class="form-label">
+          What to expect next class
+        </label>
+        <textarea 
+          id="content"
+          [(ngModel)]="lesson.instructions" 
+          name="content"
+          class="form-textarea long"
+          placeholder="Write your lesson content here."
+        ></textarea>
+        <p class="form-hint">The main content students will read. Supports HTML formatting.</p>
+      </div>
+
       <!-- Form Actions -->
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">
