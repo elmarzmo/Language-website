@@ -82,7 +82,6 @@ export class LessonView implements OnInit, OnDestroy {
 
     // Start new speech
     const textToRead = `
-    ${this.lesson.title}.
     ${this.stripHtml(this.lesson.content)}
     `.trim();
 

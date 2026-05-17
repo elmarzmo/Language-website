@@ -39,14 +39,20 @@
       </div>
     </div>
   </div>
-
-  <!-- Main Content -->
+  <div class="description-container" *ngIf="lesson.description">
+     <p class="description">{{ lesson.description }}</p>
+  </div>
+    <!-- Main Content -->
   <div class="content" [innerHTML]="lesson.content"></div>
 
   <!-- Description (Now centered) -->
-<div class="description-container" *ngIf="lesson.description">
-    <p class="description">{{ lesson.description }}</p>
-</div>
+
+
+  <div class="description-container" *ngIf="lesson.instructions">
+      <h3> What to expect next class</h3>
+     <p class="instructions">{{ lesson.instructions }}</p>
+  </div>
+
 
   <!-- Back Button -->
   <div style="max-width: 900px; margin: 0 auto;">

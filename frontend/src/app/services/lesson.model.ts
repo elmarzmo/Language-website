@@ -7,6 +7,7 @@ export interface LessonModule {
   title: string;
   content: string;
   description: string;
+  instructions: string;
   createdBy: string; // teacher id
   createdDate: Date;
   updatedDate: Date;

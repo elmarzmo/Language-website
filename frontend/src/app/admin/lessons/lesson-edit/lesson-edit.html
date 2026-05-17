@@ -50,6 +50,7 @@
         <p class="form-hint">This appears on the dashboard (2-3 sentences)</p>
       </div>
 
+
       <!-- Content -->
       <div class="form-group">
         <label for="content" class="form-label">
@@ -61,6 +62,23 @@
           class="form-textarea long"
           placeholder="Write your lesson content here. HTML and markdown supported.">
         </textarea>
+        <p class="form-hint">The main content students will read. Supports HTML formatting.</p>
+      </div>
+
+
+
+      <!-- What to expect next class -->
+      <div class="form-group">
+        <label for="content" class="form-label">
+          What to expect next class
+        </label>
+        <textarea 
+          id="instructions"
+          [(ngModel)]="lesson.instructions" 
+          name="instructions"
+          class="form-textarea long"
+          placeholder="Write your lesson instructions here."
+        ></textarea>
         <p class="form-hint">The main content students will read. Supports HTML formatting.</p>
       </div>
 
