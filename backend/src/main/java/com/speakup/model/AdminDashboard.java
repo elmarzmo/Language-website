@@ -1,9 +1,9 @@
 package com.speakup.model;
 
-import java.util.List;
+
 
 public class AdminDashboard {
-    private List<LessonModule> upcomingClasses; // Or whatever your class list type is
+   
     private int lessonCount;
     private int classCount;
 

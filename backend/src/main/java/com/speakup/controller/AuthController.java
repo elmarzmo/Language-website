@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,8 +27,7 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    
     @Autowired
     private JwtUtil JwtUtil;
     @Autowired

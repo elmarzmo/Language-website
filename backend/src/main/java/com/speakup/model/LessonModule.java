@@ -26,6 +26,8 @@ public class LessonModule {
 
     private String description;
 
+    private String instructions;
+
 
     private String createdBy; // Teacher ID
 
