@@ -58,7 +58,11 @@ public class ClassSessionService {
         ClassSession session = classSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));  
 
-        session.setStatus(ClassSession.Status.valueOf(status));
+        try{
+        session.setStatus(ClassSession.Status.valueOf(status.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid session status");
+        }
         return mapToDTO(classSessionRepository.save(session));
     }
 
