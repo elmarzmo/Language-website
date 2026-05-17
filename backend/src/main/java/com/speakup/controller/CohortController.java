@@ -1,5 +1,7 @@
 package com.speakup.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.CreateCohortRequest;
 import com.speakup.service.CohortService;
-
-import java.util.List;
 
 import jakarta.validation.Valid;
 
@@ -28,7 +28,7 @@ public class CohortController {
 
     @PostMapping
     public CohortDTO createCohort( @Valid @RequestBody CreateCohortRequest request) {
-        return cohortService.createCohortDTO(request);
+        return cohortService.createCohort(request);
     }
 
     @GetMapping("/teacher/{teacherId}")

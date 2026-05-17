@@ -21,7 +21,7 @@ public class CohortService {
     } 
 
 
-    public CohortDTO createCohortDTO(CreateCohortRequest request){
+    public CohortDTO createCohort(CreateCohortRequest request){
         Cohort cohort = new Cohort();
 
         cohort.setName(request.getName());
