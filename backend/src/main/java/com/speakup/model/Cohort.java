@@ -17,19 +17,25 @@ public class Cohort {
 
     private String name;
 
-    private enum level {
-        BEGINNER,
-        IMTERMEDIATE,
-        ADVANCE
-    };
+
 
     private int maxStudents;
 
-    private String teavherId;
+    private String teacherId;
 
     private List<String> studentIds = new ArrayList<>();
 
     private LocalDate startDate;
 
     private boolean active = true;
+
+
+    private CohortLevel level;
+
+    public CohortLevel getLevel() {
+        return level;
+    }
+    public void setLevel(CohortLevel level){
+        this.level = level;
+    }
 }
