@@ -1,8 +1,9 @@
 package com.speakup.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import java.time.LocalDate;
+import com.speakup.model.CohortLevel;
 
 import lombok.Data;
 
@@ -13,11 +14,7 @@ public class CohortDTO{
 
     private String name;
 
-    private enum leve{
-        BEGINNER,
-        IMTERMEDIATE,
-        ADVANCE
-    }
+    
 
     private int maxStudents;
 
@@ -28,5 +25,7 @@ public class CohortDTO{
     private LocalDate startDate;
 
     private boolean active;
+
+    private CohortLevel level;
 
 }
