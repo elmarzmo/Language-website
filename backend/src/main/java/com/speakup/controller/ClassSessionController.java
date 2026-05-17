@@ -16,6 +16,8 @@ import com.speakup.dto.ClassSessionDTO;
 import com.speakup.dto.CreateClassSessionRequest;
 import com.speakup.service.ClassSessionService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/class-sessions")
 @CrossOrigin
@@ -29,7 +31,7 @@ public class ClassSessionController {
 
     // Create Session
     @PostMapping
-    public ClassSessionDTO createSession(@RequestBody CreateClassSessionRequest request) {
+    public ClassSessionDTO createSession(@Valid @RequestBody CreateClassSessionRequest request) {
         return classSessionService.createSession(request);
     }
 
