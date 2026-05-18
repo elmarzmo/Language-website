@@ -31,6 +31,11 @@ public class CohortController {
         return cohortService.createCohort(request);
     }
 
+    @GetMapping
+    public List<CohortDTO> getAllCohorts(){
+        return cohortService.getAllCohorts();
+    }
+
     @GetMapping("/teacher/{teacherId}")
     public List<CohortDTO> getTeacherCohoList( @PathVariable String teacherId){
         return cohortService.getTeacherCohorts(teacherId);
