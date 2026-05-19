@@ -1,4 +1,4 @@
-export type CohortLevel = 'BEGINNER' | 'INTERMEDITATE' | 'ADVANCED';
+export type CohortLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
 
 export interface Cohort{
     id?: string;
