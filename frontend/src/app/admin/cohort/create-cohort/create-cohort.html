@@ -1,0 +1,126 @@
+<div class="create-cohort-container">
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Create Cohort</h1>
+      <p class="page-subtitle">Create and manage student groups for organized learning</p>
+    </div>
+    <a routerLink="/admin" class="btn btn-secondary">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+    <form [formGroup]="cohortForm" (ngSubmit)="submit()" class="cohort-form">
+
+      <!-- Cohort Name -->
+      <div class="form-group">
+        <label for="name" class="form-label">
+          Cohort Name <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="name"
+          formControlName="name"
+          class="form-input"
+          placeholder="e.g. French Beginners Group 1"
+          required>
+        <p class="form-hint">Give your cohort a descriptive name</p>
+      </div>
+
+      <!-- Level -->
+      <div class="form-group">
+        <label for="levels" class="form-label">
+          Level <span class="required">*</span>
+        </label>
+        <select 
+          id="levels"
+          formControlName="level"
+          class="form-select"
+          required>
+          <option value="">Select a level</option>
+          <option *ngFor="let level of levels" [value]="level.toUpperCase()">
+            {{ level }}
+          </option>
+        </select>
+        <p class="form-hint">Choose the language proficiency level</p>
+      </div>
+
+      <!-- Max Students -->
+      <div class="form-group">
+        <label for="maxStudents" class="form-label">
+          Max Students <span class="required">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="maxStudents"
+          formControlName="maxStudents"
+          class="form-input"
+          placeholder="e.g. 6"
+          min="1"
+          max="6"
+          required>
+        <p class="form-hint">Maximum number of students allowed in this cohort</p>
+      </div>
+
+      <!-- Teacher ID -->
+      <div class="form-group">
+        <label for="teacherId" class="form-label">
+          Teacher ID <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="teacherId"
+          formControlName="teacherId"
+          class="form-input"
+          placeholder="e.g. teacher123"
+          required>
+        <p class="form-hint">ID of the instructor leading this cohort</p>
+      </div>
+
+      <!-- Start Date -->
+      <div class="form-group">
+        <label for="startDate" class="form-label">
+          Start Date <span class="required">*</span>
+        </label>
+        <input 
+          type="date" 
+          id="startDate"
+          formControlName="startDate"
+          class="form-input"
+          required>
+        <p class="form-hint">When will this cohort start?</p>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-section">
+        <div class="success-message" *ngIf="successMessage">
+          <span class="message-icon">✓</span>
+          <span class="message-text">{{ successMessage }}</span>
+        </div>
+
+        <div class="error-message" *ngIf="errorMessage">
+          <span class="message-icon">✕</span>
+          <span class="message-text">{{ errorMessage }}</span>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting">
+          {{ isSubmitting ? '⏳ Creating...' : '✓ Create Cohort' }}
+        </button>
+        <a routerLink="/admin" class="btn btn-secondary">
+          Cancel
+        </a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
