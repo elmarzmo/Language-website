@@ -8,6 +8,8 @@ import { AdminDashboard } from './admin-dashboard/adminDashboard'
 import { LessonEdit } from './lessons/lesson-edit/lesson-edit';
 import { AdminLessonView } from './lessons/admin-lesson-view/admin-lesson-view';
 import { StudentList } from './student-list/student-list'
+import { CreateCohort } from './cohort/create-cohort/create-cohort';
+import { CohortList } from './cohort/cohort/cohort';
 
 const routes: Routes = [
   {path: '', component: AdminDashboard },
@@ -19,7 +21,10 @@ const routes: Routes = [
   {path: 'classes', component: ClassList},
   {path: 'classes/create', component: ClassCreate},
 
-  {path: 'students', component: StudentList}
+  {path: 'students', component: StudentList},
+
+  {path: 'cohorts', component: CohortList},
+  {path: 'cohorts/create', component: CreateCohort}
 ];
 
 @NgModule({
