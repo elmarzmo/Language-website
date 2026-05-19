@@ -10,6 +10,8 @@ import { AdminDashboardService } from '../service/admin-dashboard-service';
 import { ClassSession } from '../models/class-session.model';
 import { User } from '../models/user.model';
 import { StudentListService } from '../service/student-list';
+import { Cohort } from '../models/cohort.model'
+import { CohortService } from '../service/cohort.service';
 
 
 @Component({
@@ -30,7 +32,8 @@ export class AdminDashboard implements OnInit, OnDestroy {
   allClasses: ClassSession[] = [];
   lessons: LessonModule[] = [];
   allStudents: User[] = [];
-  
+  allCohorts: Cohort[] = [];
+   
   isLoading = true;
   private timeInterval: any;
 
@@ -39,6 +42,7 @@ export class AdminDashboard implements OnInit, OnDestroy {
     private admindashboardService: AdminDashboardService,
     private lessonService: LessonService,
     private studentService: StudentListService,
+    private cohortSerivece: CohortService,
     private router: Router
   ) {}
 
@@ -73,12 +77,14 @@ export class AdminDashboard implements OnInit, OnDestroy {
     forkJoin({
       dashboard: this.admindashboardService.getAdminDashboard(), // Keeping service call as is
       allLessons: this.lessonService.getAllLessons(),
-      allStudents: this.studentService.getStudents()
+      allStudents: this.studentService.getStudents(),
+      allCohorts: this.cohortSerivece.getAllCohorts(),
     }).subscribe({
       next: (res) => {
         this.allClasses = res.dashboard.allClasses;
         this.lessons = res.allLessons;
         this.allStudents = res.allStudents;
+        this.allCohorts = res.allCohorts;
         this.isLoading = false;
         console.log('Admin Dashboard synced successfully');
       },

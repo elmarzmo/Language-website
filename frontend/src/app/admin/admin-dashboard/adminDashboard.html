@@ -50,7 +50,7 @@
 
       <!-- Classes Card -->
       <a routerLink="/admin/classes" class="management-card card-link">
-        <div class="card-icon">👥</div>
+        <div class="card-icon">🖥️</div>
         <h3 class="card-title">All Classes</h3>
         <p class="card-description">View and manage all scheduled classes</p>
         <div class="card-stats">
@@ -87,5 +87,37 @@
           View Stduents
         </div>
       </a>
+
+
+
+        <!-- Create cohorts Card -->
+      <a routerLink="/admin/cohorts/create" class="management-card card-link">
+        <div class="card-icon">➕</div>
+        <h3 class="card-title">Create Cohorts</h3>
+        <p class="card-description">Creat a New Group</p>
+        <p class="card-action-text">Invite students and set meeting time</p>
+        <div class="btn btn-primary btn-full">
+          Create New Class
+        </div>
+      </a>
+
+
+      <!-- Classes Card -->
+      <a routerLink="/admin/cohorts" class="management-card card-link">
+        <div class="card-icon">👥</div>
+        <h3 class="card-title">Cohorts</h3>
+        <p class="card-description">View and manage Cohorts list</p>
+        <div class="card-stats">
+          <span class="stat-number">{{ allCohorts.length }}</span>
+          <span class="stat-label">Cohorts</span>
+        </div>
+        <div class="btn btn-secondary btn-full">
+          View Cohorts
+        </div>
+      </a>
+
+
+      
+      
     </div>
   </div>
