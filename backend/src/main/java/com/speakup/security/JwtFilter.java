@@ -53,6 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             String userId = jwtUtil.extractUserId(token);
             String role = jwtUtil.extractRole(token);
+            String username = jwtUtil.extractUsername(token);
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
@@ -68,6 +69,9 @@ public class JwtFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
             request.setAttribute("userId", userId);
+            request.setAttribute("username", username);
+            request.setAttribute("role", role);
+            
         }
 
         filterChain.doFilter(request, response);
