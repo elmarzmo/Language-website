@@ -20,7 +20,7 @@ public class TeacherController {
         this.teacherDashboardService = teacherDashboardService;
     }
 
-    @GetMapping("/teacher/dashboard")
+    @GetMapping("/dashboard")
     public TeacherDashboardDTO getTeacherDashboar(HttpServletRequest request) {
 
         String teacherId = (String) request.getAttribute("userId");

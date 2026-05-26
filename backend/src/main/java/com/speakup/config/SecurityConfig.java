@@ -52,7 +52,7 @@ public class SecurityConfig {
                     
 
                     .requestMatchers("/api/admin/**")
-                    .hasAnyRole("ADMIN")
+                    .hasAnyRole("ADMIN", "TEACHER")
                     
                     // EVERYTHING ELSE REQUIRES JWT
                     .anyRequest().authenticated()

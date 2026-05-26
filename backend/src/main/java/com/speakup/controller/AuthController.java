@@ -8,15 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.speakup.dto.CurrentUserDTO;
 import com.speakup.model.User;
 import com.speakup.model.User.Role;
 import com.speakup.repository.UserRepository;
 import com.speakup.security.JwtUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -48,7 +52,7 @@ public class AuthController {
 
             }
             // force STUDENT role
-            user.setRole(Role.STUDENT);
+            user.setRole(Role.TEACHER);
 
             user.setPassword(
                 passwordEncoder.encode(user.getPassword())
@@ -84,10 +88,11 @@ public class AuthController {
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
            } 
             // Hernerate JWT token
-         String token = JwtUtil.generateToken(dbUser.getId(), dbUser.getEmail(), dbUser.getRole().name() );
+         String token = JwtUtil.generateToken(dbUser.getId(), dbUser.getEmail(), dbUser.getRole().name(), dbUser.getUsername() );
 
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
+            
             response.put("username", dbUser.getUsername());
             response.put("email", dbUser.getEmail());
            response.put("role", dbUser.getRole().name());
@@ -97,6 +102,21 @@ public class AuthController {
             e.printStackTrace(); 
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
+    }
+
+
+    @GetMapping("/me")
+    public CurrentUserDTO getCurrentUserDTO(HttpServletRequest request ) {
+
+        String userId = (String) request.getAttribute("userId");
+        String username = (String) request.getAttribute("username");
+        String role = (String) request.getAttribute("role");
+
+        return CurrentUserDTO.builder()
+        .id(userId)
+        .username(username)
+        .role(role)
+        .build();
     }
 
 }
