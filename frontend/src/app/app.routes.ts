@@ -7,6 +7,7 @@ import { Signin } from './public/signin/signin';
 import { AuthGuard } from './services/auth.guard';
 import { AdminModule } from './admin/admin-module';
 import { LessonView } from './private/lesson-view/lesson-view';
+import { TeacherDashboard } from './private/teacher-dashboard/teacher-dashboard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,8 +22,9 @@ export const routes: Routes = [
     { path: 'dashboard/lesson/:id', component: LessonView, canActivate: [AuthGuard] },
 
 
-    { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule), canActivate: [AuthGuard] }
+    { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule), canActivate: [AuthGuard] },
     
+    {path: 'teacher/dashboard' , component: TeacherDashboard }
 
 ];
 
