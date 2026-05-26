@@ -75,7 +75,12 @@ export class Signin {
         if(response.role === 'ADMIN'){
           console.log('Redirecting to Admin Dashboard')
           this.router.navigate(['/admin']);
-        } else {
+        } 
+        else if(response.role === 'TEACHER'){
+          console.log('Redirecting to TEACHER Dashboard')
+          this.router.navigate(['/teacher/dashboard']);
+        }
+        else {
         // Navigate immediately
         
         this.router.navigate(['/dashboard']).then(success => {
