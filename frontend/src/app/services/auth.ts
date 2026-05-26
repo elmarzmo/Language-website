@@ -62,4 +62,8 @@ export class Auth {
   isLoggedIn(): boolean {
     return this.isLoggedInSubject.value;
   }
+
+  getCurrentUser() {
+    return this.http.get(`${this.apiUrl}/me`);
+  }
 }

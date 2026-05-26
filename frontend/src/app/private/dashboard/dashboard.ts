@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ import { forkJoin } from 'rxjs';
     'style': 'display: block; height: 100%; width: 100%;'
   }
 })
-export class Dashboard implements OnInit {
+export class Dashboard implements OnInit, OnDestroy {
   studentId: string = '';
   studentName: string = '';
   currentTime: string = '';
@@ -30,10 +30,12 @@ export class Dashboard implements OnInit {
   
   // Loading states
   isLoading = true;
-  isLoadingLesson = false;
+ 
 
   lessonLookup: Map<string, LessonModule> = new Map();
   completedLessons: Set<string> = new Set();
+
+  private timeInterval: any;
 
   constructor(
     private auth: Auth,
@@ -43,25 +45,36 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
+    
     this.loadData();
     this.updateTime();
   
-    },0);
-   
-    setInterval(() => this.updateTime(), 60000);
+ 
+   this.timeInterval = setInterval(() => this.updateTime(), 60000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+    }
   }
 
   private loadData(): void {
-    this.studentId = localStorage.getItem('studentId') || '';
-    this.studentName = localStorage.getItem('studentName') || 'Student';
 
-    if (!this.studentId) {
-      this.router.navigate(['/signin']);
-      return;
-    }
+    // To do : change this to get student Id from JWT/session
 
-    this.isLoading = true;
+    this.auth.getCurrentUser().subscribe({
+      next: (user: any) => {
+        this.studentId = user.id;
+        this.studentName = user.username;
+
+        this.isLoading = true;
+      
+   
+    
+
+
+  
 
     forkJoin({
       dashboard: this.dashboardService.getStudentDashboard(),
@@ -94,7 +107,13 @@ export class Dashboard implements OnInit {
         this.isLoading = false;
       }
     });
+  },
+  error: () => {
+    this.router.navigate(['/signin']);
+  
   }
+});
+  } 
 
   private updateTime(): void {
     const now = new Date();

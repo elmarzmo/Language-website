@@ -27,6 +27,7 @@ import { CohortService } from '../service/cohort.service';
 })
 export class AdminDashboard implements OnInit, OnDestroy {
   adminName: string = '';
+  adminId: string = '';
   currentTime: string = '';
   
   allClasses: ClassSession[] = [];
@@ -47,8 +48,8 @@ export class AdminDashboard implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.setAdminInfo();
-    this.loadManagementData();
+  
+    this.loadAdminData();
     this.updateTime();
     
     // Update clock every minute
@@ -61,17 +62,27 @@ export class AdminDashboard implements OnInit, OnDestroy {
     }
   }
 
-  private setAdminInfo(): void {
-    // Using 'adminName' or 'studentName' depending on how you store it in localStorage
-    this.adminName = localStorage.getItem('studentName') || 'Administrator';
-    const adminId = localStorage.getItem('studentId');
+  private loadAdminData(): void {
+    // To do : change this to get student Id from JWT/session
 
-    if (!adminId) {
-      this.router.navigate(['/signin']);
-    }
+     this.auth.getCurrentUser().subscribe({
+      next: (user: any) => {
+        this.adminId = user.id;
+        this.adminName = user.username;
+
+        this.loadManagementData();
+       
+      },
+      error: () => {
+        this.router.navigate(['/signin']);
+      }
+    })
+    
+
   }
 
   private loadManagementData(): void {
+
     this.isLoading = true;
 
     forkJoin({
