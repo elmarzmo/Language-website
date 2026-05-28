@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LessonService } from '../../../services/lesson';
 import { FormsModule } from '@angular/forms';
-import { LessonModule } from '../../../services/lesson.model';
+import { LessonModule } from '../../../model/lesson.model';
 import { RouterLink } from '@angular/router';
 
 

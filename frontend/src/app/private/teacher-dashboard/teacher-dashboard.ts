@@ -11,7 +11,7 @@ import { TeacherDashboardService } from '../../services/teacher-dashboard.servic
 
 // Models
 import { ClassSession } from "../../services/dashboardService";
-import { LessonModule } from '../../services/lesson.model';
+import { LessonModule } from '../../model/lesson.model';
 
 @Component({
   selector: 'app-teacher-dashboard',

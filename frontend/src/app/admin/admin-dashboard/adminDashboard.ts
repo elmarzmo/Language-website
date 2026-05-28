@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth } from '../../services/auth';
-import { LessonModule } from '../../services/lesson.model';
+import { LessonModule } from '../../model/lesson.model';
 import { LessonService } from '../../services/lesson';
 import { forkJoin, Subscription } from 'rxjs';
 import { AdminDashboardService } from '../service/admin-dashboard-service';

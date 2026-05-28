@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LessonModule } from '../../../services/lesson.model';
+import { LessonModule } from '../../../model/lesson.model';
 import { LessonService } from '../../../services/lesson';
 
 @Component({

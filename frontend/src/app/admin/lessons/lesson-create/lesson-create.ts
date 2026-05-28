@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LessonModule } from '../../../services/lesson.model';
+import { LessonModule } from '../../../model/lesson.model';
 import { LessonService } from '../../../services/lesson';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
