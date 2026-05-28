@@ -14,4 +14,7 @@ export class TeacherDashboardService {
   getTeacherDashboard(): Observable<any>{
     return this.http.get(`${this.apiUrl}/teacher/dashboard`);
   }
+  getTeacherLessons(): Observable<any>{
+    return this.http.get(`${this.apiUrl}/teacher/resources`);
+  }
 }
