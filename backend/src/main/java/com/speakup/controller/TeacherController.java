@@ -1,10 +1,15 @@
 package com.speakup.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.speakup.dto.TeacherDashboardDTO;
+import com.speakup.model.LessonModule;
+import com.speakup.service.LessonService;
 import com.speakup.service.TeacherDashboardService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,10 +19,12 @@ import jakarta.servlet.http.HttpServletRequest;
 public class TeacherController {
 
     private final TeacherDashboardService teacherDashboardService;
+    private final LessonService lessonService;
 
-    public TeacherController(TeacherDashboardService teacherDashboardService ){
+    public TeacherController(TeacherDashboardService teacherDashboardService, LessonService lessonService){
 
         this.teacherDashboardService = teacherDashboardService;
+        this.lessonService = lessonService;
     }
 
     @GetMapping("/dashboard")
@@ -28,4 +35,10 @@ public class TeacherController {
         return teacherDashboardService.getTeacherDashboard(teacherId);
     }
     
+
+    @GetMapping("/resources")
+    public ResponseEntity<List<LessonModule>> getTeacherLessons(){
+        List<LessonModule> lessons = lessonService.getAllLessons();
+        return ResponseEntity.ok(lessons);
+    }
 }
