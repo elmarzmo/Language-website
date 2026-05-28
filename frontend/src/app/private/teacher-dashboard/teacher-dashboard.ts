@@ -83,7 +83,7 @@ export class TeacherDashboard implements OnInit, OnDestroy {
 
     forkJoin({
       dashboardData: this.teacherDashboardService.getTeacherDashboard(),
-      allLessons: this.lessonService.getAllLessons()
+      allLessons: this.teacherDashboardService.getTeacherLessons()
     }).subscribe({
       next: (res) => {
         // Safe mappings from your Spring Boot model metrics response package
