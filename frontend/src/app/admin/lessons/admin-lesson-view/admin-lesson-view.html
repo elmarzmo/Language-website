@@ -52,6 +52,12 @@
     <p class="description">{{ lesson.instructions }}</p>
 </div>
 
+<div class="description-container" *ngIf="lesson.notes">  
+    <p class ="description">
+      <strong>Notes:</strong> {{ lesson.notes }}
+    </p>
+</div>
+
  <div style="max-width: 900px; margin: 2rem auto; display: flex; align-items: center; justify-content: space-between;">
   <a routerLink="/admin/lessons" class="back-btn">
     ← Back to Lesson list
