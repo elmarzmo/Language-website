@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Auth } from '../../services/auth';
-import { DashboardService, StudentDashboard, ClassSession } from '../../services/dashboardService';
-import { LessonModule } from '../../model/lesson.model';
-import { LessonService } from '../../services/lesson';
+import { Auth } from '../../../services/auth';
+import { DashboardService, StudentDashboard, ClassSession } from '../../../services/dashboardService';
+import { LessonModule } from '../../../model/lesson.model';
+import { LessonService } from '../../../services/lesson';
 import { forkJoin } from 'rxjs';
 
 @Component({

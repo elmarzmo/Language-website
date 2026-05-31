@@ -1,0 +1,55 @@
+<div *ngIf="lesson; else loading" class="lesson-container">
+
+  <!-- Header -->
+  <div class="lesson-header">
+    <div class="header-content">
+      <a routerLink="/teacher/resources" class="back-link">
+        ← Back to Lessons
+      </a>
+      <h1 class="lesson-title">{{ lesson.title }}</h1>
+      <p class="lesson-meta">Last updated: {{ lesson.createdAt | date:'MMM d, yyyy' }}</p>
+    </div>
+  </div>
+
+  <!-- Description Section -->
+  <div class="lesson-content-wrapper">
+    <div *ngIf="lesson.description" class="section description-section">
+      <div class="section-header">
+        <h2 class="section-title">📖 Lesson Overview</h2>
+      </div>
+      <p class="description">{{ lesson.description }}</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="section content-section">
+      <div class="section-header">
+        <h2 class="section-title">📚 Lesson Content</h2>
+      </div>
+      <div class="content-display" [innerHTML]="lesson.content"></div>
+    </div>
+
+    <!-- Instructions Section -->
+    <div *ngIf="lesson.instructions" class="section instructions-section">
+      <div class="section-header">
+        <h2 class="section-title">🎯 What to Expect Next Class</h2>
+      </div>
+      <p class="instructions">{{ lesson.instructions }}</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="lesson-footer">
+    <a routerLink="/teacher/resources" class="btn btn-secondary">
+      ← Back to Lessons
+    </a>
+  </div>
+
+</div>
+
+<!-- Loading State -->
+<ng-template #loading>
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading lesson details...</p>
+  </div>
+</ng-template>

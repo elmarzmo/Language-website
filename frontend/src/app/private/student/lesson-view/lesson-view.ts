@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { LessonService } from '../../services/lesson';
+import { LessonService } from '../../../services/lesson';
 import { CommonModule } from '@angular/common';
 
 @Component({

@@ -1,0 +1,56 @@
+<div class="resources-container">
+
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">My Teaching Resources</h1>
+      <p class="page-subtitle">Select an assigned lesson to view curriculum materials and instructions</p>
+    </div>
+    <a routerLink="/teacher/dashboard" class="btn btn-secondary">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading your curriculum materials...</p>
+  </div>
+
+  <!-- Lessons List -->
+  <div *ngIf="!isLoading && lessons && lessons.length > 0" class="lessons-list">
+    <div 
+      *ngFor="let item of lessons; let i = index" 
+      [routerLink]="['/teacher/resources', item.id]" 
+      class="lesson-item">
+      
+      <!-- Lesson Number -->
+      <div class="lesson-number">{{ i + 1 }}</div>
+
+      <!-- Lesson Content -->
+      <div class="lesson-content">
+        <h3 class="lesson-title">{{ item.title }}</h3>
+        <p class="lesson-description">{{ item.description || 'No description provided.' }}</p>
+      </div>
+
+      <!-- Action Arrow -->
+      <div class="lesson-arrow">→</div>
+
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <ng-template #noLessons>
+    <div *ngIf="!isLoading" class="empty-state">
+      <div class="empty-icon">📚</div>
+      <h3 class="empty-title">No Resources Available</h3>
+      <p class="empty-text">No educational resources have been assigned to your workspace yet</p>
+    </div>
+  </ng-template>
+
+  <!-- Show empty state if no lessons -->
+  <div *ngIf="!isLoading && (!lessons || lessons.length === 0)">
+    <ng-container *ngTemplateOutlet="noLessons"></ng-container>
+  </div>
+
+</div>

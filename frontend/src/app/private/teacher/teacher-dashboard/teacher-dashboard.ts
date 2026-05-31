@@ -5,13 +5,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
 
 // Services
-import { Auth } from '../../services/auth';
-import { LessonService } from '../../services/lesson';
-import { TeacherDashboardService } from '../../services/teacher-dashboard.service';
+import { Auth } from '../../../services/auth';
+import { LessonService } from '../../../services/lesson';
+import { TeacherDashboardService } from '../../../services/teacher-dashboard.service';
 
 // Models
-import { ClassSession } from "../../services/dashboardService";
-import { LessonModule } from '../../model/lesson.model';
+import { ClassSession } from "../../../services/dashboardService";
+import { LessonModule } from '../../../model/lesson.model';
 
 @Component({
   selector: 'app-teacher-dashboard',
