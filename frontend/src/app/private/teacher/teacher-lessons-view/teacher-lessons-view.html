@@ -37,6 +37,14 @@
     </div>
   </div>
 
+  <!-- Notes Section -->
+  <div *ngIf="lesson.notes" class="section notes-section">
+    <div class="section-header">
+      <h2 class="section-title">📝 Teacher Notes</h2>
+    </div>
+    <p class="notes">{{ lesson.notes }}</p>
+  </div>
+
   <!-- Footer -->
   <div class="lesson-footer">
     <a routerLink="/teacher/resources" class="btn btn-secondary">
