@@ -17,7 +17,8 @@ export class LessonCreate {
     title: '',
     content: '',
     description: '',
-    instructions: ''
+    instructions: '',
+    notes: '',
   };
 
   constructor(

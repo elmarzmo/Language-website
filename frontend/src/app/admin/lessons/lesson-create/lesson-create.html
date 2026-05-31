@@ -75,6 +75,21 @@
         <p class="form-hint">The main content students will read. Supports HTML formatting.</p>
       </div>
 
+      <!-- teacher notes -->
+      <div class="form-group">
+        <label for="content" class="form-label">
+          Teacher Notes
+        </label>
+        <textarea 
+          id="content"
+          [(ngModel)]="lesson.notes" 
+          name="content"
+          class="form-textarea long"
+          placeholder="Write your lesson content here."
+        ></textarea>
+        <p class="form-hint">Teacher instructions for delivering the lesson.</p>
+      </div>
+
       <!-- Form Actions -->
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">
