@@ -28,6 +28,8 @@ public class LessonModule {
 
     private String instructions;
 
+    private String notes;
+
 
     private String createdBy; // Teacher ID
 
