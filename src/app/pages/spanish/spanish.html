@@ -1,0 +1,184 @@
+<!-- spanish.component.html -->
+
+<!-- ══════════════════════════════════════
+  SECTION 1 — HERO
+══════════════════════════════════════ -->
+<section class="spanish-hero text-center d-flex flex-column align-items-center justify-content-center">
+  <div class="container position-relative">
+
+    <a routerLink="/" class="back-btn mb-4 d-inline-flex align-items-center gap-2">
+      ← {{ 'SPANISH.BACK' | translate }}
+    </a>
+
+    <div class="lang-badge d-inline-flex align-items-center gap-2 mb-4">
+      <img src="https://flagcdn.com/w80/es.png" alt="Spanish flag" class="hero-flag" />
+      <span class="badge-txt">{{ 'SPANISH.BADGE' | translate }}</span>
+    </div>
+
+    <h1 class="spanish-hero-title mb-4">
+      {{ 'SPANISH.HERO_TITLE' | translate }}
+      <span class="highlight-red">{{ 'SPANISH.HERO_TITLE_HIGHLIGHT' | translate }}</span>
+      {{ 'SPANISH.HERO_TITLE_END' | translate }}
+    </h1>
+
+    <p class="spanish-hero-sub mb-5">{{ 'SPANISH.HERO_SUBTITLE' | translate }}</p>
+
+    <div class="hero-stats d-flex justify-content-center gap-5 flex-wrap">
+      <div class="stat-item text-center">
+        <div class="stat-num">4</div>
+        <div class="stat-lbl">{{ 'SPANISH.STAT_1' | translate }}</div>
+      </div>
+      <div class="stat-item text-center">
+        <div class="stat-num">6</div>
+        <div class="stat-lbl">{{ 'SPANISH.STAT_2' | translate }}</div>
+      </div>
+      <div class="stat-item text-center">
+        <div class="stat-num">{{ 'SPANISH.STAT_3_NUM' | translate }}</div>
+        <div class="stat-lbl">{{ 'SPANISH.STAT_3_LBL' | translate }}</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+  SECTION 2 — PROGRAMS
+══════════════════════════════════════ -->
+<section class="programs-section py-6">
+  <div class="container">
+
+    <div class="section-header text-center mb-5">
+      <span class="section-tag red-tag">{{ 'SPANISH.PROGRAMS_TAG' | translate }}</span>
+      <h2 class="section-title mt-2">{{ 'SPANISH.PROGRAMS_TITLE' | translate }}</h2>
+      <p class="section-sub">{{ 'SPANISH.PROGRAMS_SUB' | translate }}</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">📖</div>
+          <h3 class="program-title">{{ 'SPANISH.PROG_1_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'SPANISH.PROG_1_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'SPANISH.PROG_1_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">🌍</div>
+          <h3 class="program-title">{{ 'SPANISH.PROG_2_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'SPANISH.PROG_2_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'SPANISH.PROG_2_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">🎓</div>
+          <h3 class="program-title">{{ 'SPANISH.PROG_3_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'SPANISH.PROG_3_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'SPANISH.PROG_3_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">🗣️</div>
+          <h3 class="program-title">{{ 'SPANISH.PROG_4_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'SPANISH.PROG_4_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'SPANISH.PROG_4_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+  SECTION 3 — CEFR LEVELS
+══════════════════════════════════════ -->
+<section class="levels-section py-6">
+  <div class="container">
+
+    <div class="section-header text-center mb-5">
+      <span class="section-tag">{{ 'SPANISH.LEVELS_TAG' | translate }}</span>
+      <h2 class="section-title mt-2">{{ 'SPANISH.LEVELS_TITLE' | translate }}</h2>
+      <p class="section-sub">{{ 'SPANISH.LEVELS_SUB' | translate }}</p>
+    </div>
+
+    <div class="levels-list mx-auto">
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #F5C2B8;"></div>
+        <span class="level-name">{{ 'SPANISH.LEVEL_A1_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 16%; background: #F5C2B8;"></div>
+        </div>
+        <span class="level-desc">{{ 'SPANISH.LEVEL_A1_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #EE9080;"></div>
+        <span class="level-name">{{ 'SPANISH.LEVEL_A2_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 32%; background: #EE9080;"></div>
+        </div>
+        <span class="level-desc">{{ 'SPANISH.LEVEL_A2_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #D94F38;"></div>
+        <span class="level-name">{{ 'SPANISH.LEVEL_B1_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 50%; background: #D94F38;"></div>
+        </div>
+        <span class="level-desc">{{ 'SPANISH.LEVEL_B1_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #B83224;"></div>
+        <span class="level-name">{{ 'SPANISH.LEVEL_B2_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 66%; background: #B83224;"></div>
+        </div>
+        <span class="level-desc">{{ 'SPANISH.LEVEL_B2_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #8C1F15;"></div>
+        <span class="level-name">{{ 'SPANISH.LEVEL_C1_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 82%; background: #8C1F15;"></div>
+        </div>
+        <span class="level-desc">{{ 'SPANISH.LEVEL_C1_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #5C0E09;"></div>
+        <span class="level-name">{{ 'SPANISH.LEVEL_C2_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 100%; background: #5C0E09;"></div>
+        </div>
+        <span class="level-desc">{{ 'SPANISH.LEVEL_C2_DESC' | translate }}</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+  SECTION 4 — CALL TO ACTION
+══════════════════════════════════════ -->
+<section class="cta-section text-center py-6">
+  <div class="container">
+    <div class="cta-box mx-auto">
+      <h2 class="cta-title mb-3">{{ 'SPANISH.CTA_TITLE' | translate }}</h2>
+      <p class="cta-sub mb-5">{{ 'SPANISH.CTA_SUB' | translate }}</p>
+      <a routerLink="/contact" class="btn btn-cta-red px-5 py-3">{{ 'SPANISH.CTA_BTN' | translate }}</a>
+    </div>
+  </div>
+</section>
