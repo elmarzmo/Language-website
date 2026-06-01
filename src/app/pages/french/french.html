@@ -1,0 +1,184 @@
+<!-- french.component.html -->
+
+<!-- ══════════════════════════════════════
+  SECTION 1 — HERO
+══════════════════════════════════════ -->
+<section class="french-hero text-center d-flex flex-column align-items-center justify-content-center">
+  <div class="container position-relative">
+
+    <a routerLink="/" class="back-btn mb-4 d-inline-flex align-items-center gap-2">
+      ← {{ 'FRENCH.BACK' | translate }}
+    </a>
+
+    <div class="lang-badge d-inline-flex align-items-center gap-2 mb-4">
+      <img src="https://flagcdn.com/w80/fr.png" alt="French flag" class="hero-flag" />
+      <span class="badge-txt">{{ 'FRENCH.BADGE' | translate }}</span>
+    </div>
+
+    <h1 class="french-hero-title mb-4">
+      {{ 'FRENCH.HERO_TITLE' | translate }}
+      <span class="highlight-navy">{{ 'FRENCH.HERO_TITLE_HIGHLIGHT' | translate }}</span>
+      {{ 'FRENCH.HERO_TITLE_END' | translate }}
+    </h1>
+
+    <p class="french-hero-sub mb-5">{{ 'FRENCH.HERO_SUBTITLE' | translate }}</p>
+
+    <div class="hero-stats d-flex justify-content-center gap-5 flex-wrap">
+      <div class="stat-item text-center">
+        <div class="stat-num">4</div>
+        <div class="stat-lbl">{{ 'FRENCH.STAT_1' | translate }}</div>
+      </div>
+      <div class="stat-item text-center">
+        <div class="stat-num">6</div>
+        <div class="stat-lbl">{{ 'FRENCH.STAT_2' | translate }}</div>
+      </div>
+      <div class="stat-item text-center">
+        <div class="stat-num">{{ 'FRENCH.STAT_3_NUM' | translate }}</div>
+        <div class="stat-lbl">{{ 'FRENCH.STAT_3_LBL' | translate }}</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+  SECTION 2 — PROGRAMS
+══════════════════════════════════════ -->
+<section class="programs-section py-6">
+  <div class="container">
+
+    <div class="section-header text-center mb-5">
+      <span class="section-tag navy-tag">{{ 'FRENCH.PROGRAMS_TAG' | translate }}</span>
+      <h2 class="section-title mt-2">{{ 'FRENCH.PROGRAMS_TITLE' | translate }}</h2>
+      <p class="section-sub">{{ 'FRENCH.PROGRAMS_SUB' | translate }}</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">📖</div>
+          <h3 class="program-title">{{ 'FRENCH.PROG_1_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'FRENCH.PROG_1_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'FRENCH.PROG_1_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">🥐</div>
+          <h3 class="program-title">{{ 'FRENCH.PROG_2_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'FRENCH.PROG_2_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'FRENCH.PROG_2_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">🎓</div>
+          <h3 class="program-title">{{ 'FRENCH.PROG_3_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'FRENCH.PROG_3_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'FRENCH.PROG_3_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="program-card text-center">
+          <div class="program-icon">🗣️</div>
+          <h3 class="program-title">{{ 'FRENCH.PROG_4_TITLE' | translate }}</h3>
+          <p class="program-desc">{{ 'FRENCH.PROG_4_DESC' | translate }}</p>
+          <span class="level-badge">{{ 'FRENCH.PROG_4_LEVEL' | translate }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+  SECTION 3 — CEFR LEVELS
+══════════════════════════════════════ -->
+<section class="levels-section py-6">
+  <div class="container">
+
+    <div class="section-header text-center mb-5">
+      <span class="section-tag">{{ 'FRENCH.LEVELS_TAG' | translate }}</span>
+      <h2 class="section-title mt-2">{{ 'FRENCH.LEVELS_TITLE' | translate }}</h2>
+      <p class="section-sub">{{ 'FRENCH.LEVELS_SUB' | translate }}</p>
+    </div>
+
+    <div class="levels-list mx-auto">
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #B8C8E8;"></div>
+        <span class="level-name">{{ 'FRENCH.LEVEL_A1_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 16%; background: #B8C8E8;"></div>
+        </div>
+        <span class="level-desc">{{ 'FRENCH.LEVEL_A1_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #7A9DD0;"></div>
+        <span class="level-name">{{ 'FRENCH.LEVEL_A2_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 32%; background: #7A9DD0;"></div>
+        </div>
+        <span class="level-desc">{{ 'FRENCH.LEVEL_A2_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #2B5BA8;"></div>
+        <span class="level-name">{{ 'FRENCH.LEVEL_B1_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 50%; background: #2B5BA8;"></div>
+        </div>
+        <span class="level-desc">{{ 'FRENCH.LEVEL_B1_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #1A3F7A;"></div>
+        <span class="level-name">{{ 'FRENCH.LEVEL_B2_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 66%; background: #1A3F7A;"></div>
+        </div>
+        <span class="level-desc">{{ 'FRENCH.LEVEL_B2_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #0E2650;"></div>
+        <span class="level-name">{{ 'FRENCH.LEVEL_C1_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 82%; background: #0E2650;"></div>
+        </div>
+        <span class="level-desc">{{ 'FRENCH.LEVEL_C1_DESC' | translate }}</span>
+      </div>
+
+      <div class="level-item">
+        <div class="level-dot" style="background: #061330;"></div>
+        <span class="level-name">{{ 'FRENCH.LEVEL_C2_NAME' | translate }}</span>
+        <div class="level-bar-wrap">
+          <div class="level-bar" style="width: 100%; background: #061330;"></div>
+        </div>
+        <span class="level-desc">{{ 'FRENCH.LEVEL_C2_DESC' | translate }}</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+  SECTION 4 — CALL TO ACTION
+══════════════════════════════════════ -->
+<section class="cta-section text-center py-6">
+  <div class="container">
+    <div class="cta-box mx-auto">
+      <h2 class="cta-title mb-3">{{ 'FRENCH.CTA_TITLE' | translate }}</h2>
+      <p class="cta-sub mb-5">{{ 'FRENCH.CTA_SUB' | translate }}</p>
+      <a routerLink="/contact" class="btn btn-cta-navy px-5 py-3">{{ 'FRENCH.CTA_BTN' | translate }}</a>
+    </div>
+  </div>
+</section>
