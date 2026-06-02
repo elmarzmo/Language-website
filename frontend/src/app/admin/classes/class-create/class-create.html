@@ -74,19 +74,20 @@
         <p class="form-hint">Zoom, Google Meet, or other video conference link</p>
       </div>
 
-      <!-- Student IDs -->
+      <!-- Cohort ID -->
       <div class="form-group">
-        <label for="studentIds" class="form-label">
-          Student IDs <span class="required">*</span>
+        <label for="cohortId" class="form-label">
+          Cohort ID <span class="required">*</span>
         </label>
         <input 
           type="text" 
-          id="studentIds" 
-          [(ngModel)]="studentsInput" 
-          name="studentIds" 
+          id="cohortId" 
+          [(ngModel)]="classSession.cohortId" 
+          name="cohortId" 
           class="form-input"
-          placeholder="Comma separated: student1, student2, student3">
-        <p class="form-hint">Enter student IDs separated by commas</p>
+          placeholder="e.g. cohort-001"
+          required>
+        <p class="form-hint">Enter the ID of the cohort for this class</p>
       </div>
 
       <!-- Form Actions -->

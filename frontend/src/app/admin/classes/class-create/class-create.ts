@@ -21,7 +21,8 @@ export class ClassCreate implements OnInit {
     id: '',
     lessonModuleId: '',
     teacherId: '',
-    studentIds: [],
+    //studentIds: [],
+    cohortId: '',
     dateTime: '',
     durationMinutes: 60,
     meetingLink: '',
@@ -53,17 +54,11 @@ export class ClassCreate implements OnInit {
 
   }
 createClassSession() {
-  const payload: ClassSession = {
-    ...this.classSession,
-    studentIds: this.studentsInput
-      .split(',')
-      .map(id => id.trim())
-      .filter(id => id !== '')
-  };
+ 
 
-  console.log('PAYLOAD:', payload); //  this for debugging
+  console.log('PAYLOAD:', this.classSession); //  this for debugging
 
-  this.classSessionService.createClassSession(payload).subscribe({
+  this.classSessionService.createClassSession(this.classSession).subscribe({
     next: () => {
       this.route.navigate(['/admin/classes']);
     },
