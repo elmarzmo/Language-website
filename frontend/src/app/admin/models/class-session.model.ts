@@ -2,7 +2,7 @@ export interface ClassSession {
     id: string;
     lessonModuleId: string;
     teacherId: string;
-    studentIds: string [];
+    cohortId: string;
     dateTime: any;
     durationMinutes: number;
     meetingLink: string;
