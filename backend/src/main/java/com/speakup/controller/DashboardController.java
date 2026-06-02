@@ -4,13 +4,11 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.speakup.dto.StudentDashboardDTO;
 import com.speakup.service.DashboardService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +23,7 @@ public class DashboardController {
     public DashboardController(DashboardService dashboardService) {
         this.dashboardService = dashboardService;
     }
-
+/* 
     @GetMapping("/student")
 
     public StudentDashboardDTO getStudentDashboard(HttpServletRequest request) {
@@ -44,6 +42,7 @@ public class DashboardController {
         return dashboardService.getStudentDashboard(studentId);
 
     }
+    */
    
     @PostMapping("/student/completed-lessons")
     public ResponseEntity<?> markComplete(@RequestBody Map<String, String> payload, HttpServletRequest request) {

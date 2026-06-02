@@ -35,13 +35,13 @@ public class ClassSessionController {
         return classSessionService.createSession(request);
     }
 
-
+/* 
     // Get student sessions
     @GetMapping("/student/{studentId}")
     public List<ClassSessionDTO> getSessionsByStudent(@PathVariable String studentId) {
         return classSessionService.getSessionsByStudent(studentId);
     }
-
+*/
     // Get teacher sessions
     @GetMapping("/teacher/{teacherId}")
     public List<ClassSessionDTO> getSessionsByTeacher(@PathVariable String teacherId) {
