@@ -1,7 +1,6 @@
 package com.speakup.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import lombok.Data;
 
@@ -9,7 +8,7 @@ import lombok.Data;
 public class ClassSessionDTO {
     private String id;
     private String teacherId;
-    private List<String> studentIds;
+    private String cohortId;
     private String lessonModuleId;
     private LocalDateTime dateTime;
     private int durationMinutes;
