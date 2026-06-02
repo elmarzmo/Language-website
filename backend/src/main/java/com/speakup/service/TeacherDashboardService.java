@@ -57,7 +57,7 @@ public class TeacherDashboardService {
 
         dto.setId(session.getId());
         dto.setTeacherId(session.getTeacherId());
-        dto.setStudentIds(session.getStudentIds());
+      
         dto.setLessonModuleId(session.getLessonModuleId());
         dto.setDateTime(session.getDateTime());
         dto.setDurationMinutes(session.getDurationMinutes());

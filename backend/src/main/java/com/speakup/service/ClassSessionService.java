@@ -25,7 +25,7 @@ public class ClassSessionService {
         ClassSession session = new ClassSession();
 
         session.setTeacherId(request.getTeacherId());
-        session.setStudentIds(request.getStudentIds());
+       
         session.setLessonModuleId(request.getLessonModuleId());
         session.setDateTime(request.getDateTime());
         session.setDurationMinutes(request.getDurationMinutes());
@@ -38,12 +38,14 @@ public class ClassSessionService {
     }
 
     // Get by student
+    /* 
     public List<ClassSessionDTO> getSessionsByStudent(String studentId) {
         return classSessionRepository.findByStudentIdsContaining(studentId)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+    */
 
     // Get by teacher
     public List<ClassSessionDTO> getSessionsByTeacher(String teacherId) {
@@ -80,7 +82,7 @@ public class ClassSessionService {
 
         dto.setId(session.getId());
         dto.setTeacherId(session.getTeacherId());
-        dto.setStudentIds(session.getStudentIds());
+       
         dto.setLessonModuleId(session.getLessonModuleId());
         dto.setDateTime(session.getDateTime());
         dto.setDurationMinutes(session.getDurationMinutes());

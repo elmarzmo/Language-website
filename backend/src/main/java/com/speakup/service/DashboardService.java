@@ -1,14 +1,9 @@
 package com.speakup.service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.speakup.dto.ClassSessionDTO;
-import com.speakup.dto.StudentDashboardDTO;
 import com.speakup.model.StudentProgress;
 import com.speakup.repository.ClassSessionRepository;
 import com.speakup.repository.StudentProgressRepository;
@@ -24,6 +19,7 @@ public class DashboardService {
         this.studentProgressRepository = studentProgressRepository;
     }
 
+/* 
     public StudentDashboardDTO getStudentDashboard(String studentId) {
         List<ClassSessionDTO> classes = classSessionRepository
             .findByStudentIdsContaining(studentId)
@@ -33,7 +29,7 @@ public class DashboardService {
                 ClassSessionDTO dto = new ClassSessionDTO();
                 dto.setId(session.getId());
                 dto.setTeacherId(session.getTeacherId());
-                dto.setStudentIds(session.getStudentIds());
+                
                 dto.setLessonModuleId(session.getLessonModuleId());
                 dto.setDateTime(session.getDateTime());
                 dto.setDurationMinutes(session.getDurationMinutes());
@@ -50,7 +46,7 @@ public class DashboardService {
     dto.setProgressList(progresses);
 
     return dto;
-}
+}*/
 
 public void markLessonAsComplete(String studentId, String lessonId){
     StudentProgress progress = studentProgressRepository
