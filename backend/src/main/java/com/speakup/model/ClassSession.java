@@ -1,7 +1,6 @@
 package com.speakup.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,9 +14,11 @@ public class ClassSession {
     @Id
     private String id;
 
+    private String cohortId;
+
     private String teacherId;
 
-    private List<String> studentIds;
+    
 
     private String lessonModuleId;
 
