@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 export interface ClassSession {
   id: string;
   teacherId: string;
-  studentIds: string[];
+  cohortId: string;
   lessonModuleId: string;
   dateTime: string; // ISO format
   durationMinutes: number; // in minutes
