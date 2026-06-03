@@ -64,6 +64,33 @@ public class CohortService {
 
         return mapToDTO(cohortRepository.save(cohort));
     }
+
+    public CohortDTO removeStudent(String cohortId, String studentId){
+        Cohort cohort = cohortRepository.findById(cohortId)
+            .orElseThrow(() -> new RuntimeException("Cohort not found"));
+
+        cohort.getStudentIds().remove(studentId);
+
+        return mapToDTO(cohortRepository.save(cohort));
+    }
+
+    public CohortDTO getCohortById(String cohortId){
+        Cohort cohort = cohortRepository.findById(cohortId)
+            .orElseThrow(() -> new RuntimeException("Cohort not found"));
+
+        return mapToDTO(cohort);
+    }
+    
+    public CohortDTO getCohortByStudentId(String studentId){
+        Cohort cohort = cohortRepository.findByStudentIdsContaining(studentId)
+            .orElseThrow(() -> new RuntimeException("Cohort not found for student"));
+           
+
+        return mapToDTO(cohort);
+    }
+
+
+
     
     private CohortDTO mapToDTO(Cohort cohort){
         CohortDTO dto = new CohortDTO();
