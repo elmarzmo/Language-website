@@ -9,6 +9,7 @@ import com.speakup.model.ClassSession;
 public interface ClassSessionRepository extends MongoRepository<ClassSession, String> {
 
     
-
+    List<ClassSession> findByCohortId(String cohortId);
+    
     List<ClassSession> findByTeacherId(String teacherId);
 }
