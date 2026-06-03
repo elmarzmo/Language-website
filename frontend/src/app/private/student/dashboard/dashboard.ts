@@ -6,7 +6,7 @@ import { Auth } from '../../../services/auth';
 import { DashboardService, StudentDashboard, ClassSession } from '../../../services/dashboardService';
 import { LessonModule } from '../../../model/lesson.model';
 import { LessonService } from '../../../services/lesson';
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -23,14 +23,14 @@ export class Dashboard implements OnInit, OnDestroy {
   studentId: string = '';
   studentName: string = '';
   currentTime: string = '';
-  
+
   dashboardData!: StudentDashboard;
   upcomingClasses: ClassSession[] = [];
   lessons: LessonModule[] = [];
-  
-  // Loading states
+
   isLoading = true;
- 
+  isEnrolled = false;       // ← only flipped to true when dashboard API call succeeds
+  private dashboardLoaded = false; // internal flag to track API success
 
   lessonLookup: Map<string, LessonModule> = new Map();
   completedLessons: Set<string> = new Set();
@@ -45,12 +45,9 @@ export class Dashboard implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    
     this.loadData();
     this.updateTime();
-  
- 
-   this.timeInterval = setInterval(() => this.updateTime(), 60000);
+    this.timeInterval = setInterval(() => this.updateTime(), 60000);
   }
 
   ngOnDestroy(): void {
@@ -60,60 +57,65 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   private loadData(): void {
-
-    // To do : change this to get student Id from JWT/session
-
     this.auth.getCurrentUser().subscribe({
       next: (user: any) => {
         this.studentId = user.id;
         this.studentName = user.username;
-
         this.isLoading = true;
-      
-   
-    
 
+        forkJoin({
+          dashboard: this.dashboardService.getStudentDashboard().pipe(
+            tap(() => { this.dashboardLoaded = true; }), // ← only runs on API success
+            catchError(err => {
+              console.warn('Dashboard load failed (student likely not in cohort):', err?.error?.message || err);
+              this.dashboardLoaded = false;
+              return of({ upcomingClasses: [], progressList: [] } as unknown as StudentDashboard);
+            })
+          ),
+          allLessons: this.lessonService.getStudentLessons().pipe(
+            catchError(err => {
+              console.error('Error loading lessons:', err);
+              return of([] as LessonModule[]);
+            })
+          )
+        }).subscribe({
+          next: (res) => {
+            this.dashboardData = res.dashboard;
+            this.upcomingClasses = res.dashboard.upcomingClasses ?? [];
+            this.lessons = res.allLessons;
 
-  
+            // isEnrolled is ONLY true when the dashboard API actually succeeded
+            this.isEnrolled = this.dashboardLoaded;
 
-    forkJoin({
-      dashboard: this.dashboardService.getStudentDashboard(),
-      allLessons: this.lessonService.getStudentLessons()
-    }).subscribe({
-      next: (res) => {
-        this.dashboardData = res.dashboard;
-        this.upcomingClasses = res.dashboard.upcomingClasses;
-        this.lessons = res.allLessons;
+            this.lessonLookup.clear();
+            res.allLessons.forEach(lesson => {
+              this.lessonLookup.set(lesson.id, lesson);
+            });
 
+            this.completedLessons.clear();
+            if (res.dashboard.progressList) {
+              res.dashboard.progressList.forEach(p => {
+                if (p.completed) {
+                  this.completedLessons.add(p.lessonModuleId);
+                }
+              });
+            }
 
-        this.lessonLookup.clear();
-        res.allLessons.forEach(lesson => {
-          this.lessonLookup.set(lesson.id, lesson);
-        });
-
-        this.completedLessons.clear();
-        if (res.dashboard.progressList) {
-          res.dashboard.progressList.forEach(p => {
-          if (p.completed) {
-            this.completedLessons.add(p.lessonModuleId);
+            this.isLoading = false;
+            console.log('Dashboard fully synced — enrolled:', this.isEnrolled);
+          },
+          error: (err) => {
+            console.error('Failed to sync dashboard data', err);
+            this.isEnrolled = false;
+            this.isLoading = false;
           }
-         });
-        }
-        this.isLoading = false;
-        console.log('Dashboard fully synced');
+        });
       },
-      error: (err) => {
-        console.error('Failed to sync dashboard data', err);
-        this.isLoading = false;
+      error: () => {
+        this.router.navigate(['/signin']);
       }
     });
-  },
-  error: () => {
-    this.router.navigate(['/signin']);
-  
   }
-});
-  } 
 
   private updateTime(): void {
     const now = new Date();
@@ -149,10 +151,8 @@ export class Dashboard implements OnInit, OnDestroy {
     if (classSession.status === 'COMPLETED' || classSession.status === 'CANCELLED') {
       return 'PAST';
     }
-  
     const now = new Date();
     const classDate = new Date(classSession.dateTime);
-
     if (classDate.toDateString() === now.toDateString()) {
       return 'TODAY';
     }
@@ -163,12 +163,9 @@ export class Dashboard implements OnInit, OnDestroy {
     return this.lessonLookup.get(lessonId) || null;
   }
 
- 
-
-    isCompleted(lessonId: string): boolean {
-      return this.completedLessons.has(lessonId);
-    }
-    
+  isCompleted(lessonId: string): boolean {
+    return this.completedLessons.has(lessonId);
+  }
 
   logout(): void {
     this.auth.logout();

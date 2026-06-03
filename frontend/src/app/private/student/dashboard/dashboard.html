@@ -1,6 +1,8 @@
+<!-- dashboard.html -->
+
 <div class="dashboard-container">
 
-  <!-- Header -->
+  <!-- ── HEADER ── -->
   <div class="dashboard-header">
     <div class="header-left">
       <h1 class="welcome-title">Welcome, {{ studentName }} 👋</h1>
@@ -12,129 +14,140 @@
     </button>
   </div>
 
-  <!-- Loading State -->
+  <!-- ── LOADING ── -->
   <div *ngIf="isLoading" class="loading">
     <div class="spinner"></div>
     <p>Syncing your learning data...</p>
   </div>
 
-  <!-- Top Alert (Next Class) -->
-  <div class="top-alert" *ngIf="!isLoading && upcomingClasses.length > 0">
-    <div class="alert-content">
-      <span class="alert-icon">🚀</span>
-      <div class="alert-text">
-        <p class="alert-title">
-          Next Lesson: {{ getLessonInfo(upcomingClasses[0].lessonModuleId)?.title || 'Scheduled Session' }}
-        </p>
-        <p class="alert-time">
-          {{ upcomingClasses[0].dateTime | date:'MMM d, yyyy h:mm a' }}
-        </p>
-      </div>
-    </div>
-    <button class="btn-join-now" (click)="joinClass(upcomingClasses[0])">
-      📞 Join Now
-    </button>
+  <!-- ── NOT ENROLLED — shown only when loading is done and student has no cohort ── -->
+  <div class="not-enrolled-state" *ngIf="!isLoading && !isEnrolled">
+    <div class="not-enrolled-icon">🎓</div>
+    <h2 class="not-enrolled-title">You are not in any group yet</h2>
+    <p class="not-enrolled-message">
+      Our team is currently setting up your classroom placement and learning schedule.
+      Once your teacher adds you to a group, your lessons and classes will appear right here.
+    </p>
+    <p class="not-enrolled-hint">💡 No action needed — just check back soon!</p>
   </div>
 
-  <!-- Learning Path Section -->
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title">📚 Your Learning Path</h2>
-      <p class="section-subtitle">Progress through lessons at your own pace</p>
-    </div>
+  <!-- ══════════════════════════════════════
+    ALL CONTENT BELOW — only for enrolled students
+  ══════════════════════════════════════ -->
+  <ng-container *ngIf="!isLoading && isEnrolled">
 
-    <div *ngIf="lessons.length === 0" class="empty-state">
-      <p>Curriculum is being prepared.</p>
-    </div>
-
-    <!-- Lessons Grid -->
-    <div class="lessons-grid" *ngIf="lessons.length > 0">
-      <div 
-        *ngFor="let l of lessons; let i = index"
-        [routerLink]="['/dashboard/lesson', l.id]" 
-        class="lesson-card"
-        [class.completed]="isCompleted(l.id)">
-        
-        <!-- Lesson Badge (with completion checkmark) -->
-        <div class="lesson-badge">
-          <span class="badge-number">{{ i + 1 }}</span>
-          <span class="badge-icon" *ngIf="isCompleted(l.id)">✓</span>
+    <!-- ── NEXT CLASS ALERT ── -->
+    <div class="top-alert" *ngIf="upcomingClasses.length > 0">
+      <div class="alert-content">
+        <span class="alert-icon">🚀</span>
+        <div class="alert-text">
+          <p class="alert-title">
+            Next Lesson: {{ getLessonInfo(upcomingClasses[0].lessonModuleId)?.title || 'Scheduled Session' }}
+          </p>
+          <p class="alert-time">
+            {{ upcomingClasses[0].dateTime | date:'MMM d, yyyy h:mm a' }}
+          </p>
         </div>
-
-        <!-- Card Header -->
-        <div class="card-header">
-          <h3 class="lesson-title">{{ l.title }}</h3>
-        </div>
-
-        <!-- Card Content -->
-        <div class="card-content">
-          <p class="lesson-description">{{ l.description }}</p>
-        </div>
-
-        <!-- Card Footer -->
-        <div class="card-footer">
-          <span class="lesson-number">Lesson {{ i + 1 }}</span>
-          <span class="cta-arrow">→</span>
-        </div>
-
       </div>
+      <button class="btn-join-now" (click)="joinClass(upcomingClasses[0])">
+        📞 Join Now
+      </button>
     </div>
-  </div>
 
-  <!-- Upcoming Classes Section -->
-  <div *ngIf="!isLoading" class="dashboard-main">
+    <!-- ── LEARNING PATH ── -->
     <div class="section">
       <div class="section-header">
-        <h2 class="section-title">📅 Your Upcoming Classes</h2>
-        <p class="section-subtitle">Join your scheduled classes to learn with instructors</p>
+        <h2 class="section-title">📚 Your Learning Path</h2>
+        <p class="section-subtitle">Progress through lessons at your own pace</p>
       </div>
 
-      <div *ngIf="upcomingClasses.length === 0" class="empty-state">
-        <p>No upcoming classes found for your account.</p>
+      <div *ngIf="lessons.length === 0" class="empty-state">
+        <p>Curriculum is being prepared.</p>
       </div>
 
-      <div class="class-list" *ngIf="upcomingClasses.length > 0">
-        <div 
-          *ngFor="let c of upcomingClasses" 
-          class="class-card"
-          [class]="'status-' + getClassStatus(c)">
+      <div class="lessons-grid" *ngIf="lessons.length > 0">
+        <div
+          *ngFor="let l of lessons; let i = index"
+          [routerLink]="['/dashboard/lesson', l.id]"
+          class="lesson-card"
+          [class.completed]="isCompleted(l.id)">
 
-          <div class="class-header">
-            <div>
-              <h3 class="lesson-display-name">
-                {{ getLessonInfo(c.lessonModuleId)?.title || 'Special Session' }}
-              </h3>
-              <p class="class-date">
-                {{ c.dateTime | date:'MMM d, yyyy h:mm a' }}
-              </p>
-              <p class="class-duration">
-                ⏱️ {{ c.durationMinutes }} minutes
-              </p>
-            </div>
-
-            <span class="status-badge">
-              {{ getClassStatus(c) }}
-            </span>
+          <div class="lesson-badge">
+            <span class="badge-number">{{ i + 1 }}</span>
+            <span class="badge-icon" *ngIf="isCompleted(l.id)">✓</span>
           </div>
 
-          <div class="class-actions">
-            <button 
-              class="btn btn-primary"
-              (click)="joinClass(c)"
-              *ngIf="getClassStatus(c) !== 'PAST'">
-              📞 Join Class
-            </button>
+          <div class="card-header">
+            <h3 class="lesson-title">{{ l.title }}</h3>
+          </div>
 
-            <button 
-              class="btn btn-secondary"
-              disabled
-              *ngIf="getClassStatus(c) === 'PAST'">
-              ✓ Completed
-            </button>
+          <div class="card-content">
+            <p class="lesson-description">{{ l.description }}</p>
+          </div>
+
+          <div class="card-footer">
+            <span class="lesson-number">Lesson {{ i + 1 }}</span>
+            <span class="cta-arrow">→</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── UPCOMING CLASSES ── -->
+    <div class="dashboard-main">
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">📅 Your Upcoming Classes</h2>
+          <p class="section-subtitle">Join your scheduled classes to learn with instructors</p>
+        </div>
+
+        <div *ngIf="upcomingClasses.length === 0" class="empty-state">
+          <p>No upcoming classes found for your account.</p>
+        </div>
+
+        <div class="class-list" *ngIf="upcomingClasses.length > 0">
+          <div
+            *ngFor="let c of upcomingClasses"
+            class="class-card"
+            [class]="'status-' + getClassStatus(c)">
+
+            <div class="class-header">
+              <div>
+                <h3 class="lesson-display-name">
+                  {{ getLessonInfo(c.lessonModuleId)?.title || 'Special Session' }}
+                </h3>
+                <p class="class-date">
+                  {{ c.dateTime | date:'MMM d, yyyy h:mm a' }}
+                </p>
+                <p class="class-duration">
+                  ⏱️ {{ c.durationMinutes }} minutes
+                </p>
+              </div>
+              <span class="status-badge">{{ getClassStatus(c) }}</span>
+            </div>
+
+            <div class="class-actions">
+              <button
+                class="btn btn-primary"
+                (click)="joinClass(c)"
+                *ngIf="getClassStatus(c) !== 'PAST'">
+                📞 Join Class
+              </button>
+
+              <button
+                class="btn btn-secondary"
+                disabled
+                *ngIf="getClassStatus(c) === 'PAST'">
+                ✓ Completed
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
-  </div>
+
+  </ng-container>
 
 </div>

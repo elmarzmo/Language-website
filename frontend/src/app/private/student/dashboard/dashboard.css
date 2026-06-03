@@ -87,7 +87,61 @@
 }
 
 /* ══════════════════════════════════════
-   TOP ALERT / NEXT CLASS
+   UNENROLLED STATE / WELCOME CARD
+════════════════════════════════════════ */
+.not-enrolled-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: white;
+  border: 1px solid rgba(124, 111, 207, 0.1);
+  border-radius: 16px;
+  padding: 4rem 2rem;
+  margin: 3rem auto;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(124, 111, 207, 0.05);
+}
+
+.not-enrolled-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.not-enrolled-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.not-enrolled-message {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.not-enrolled-hint {
+  font-size: 0.9rem;
+  color: #7c6fcf;
+  font-weight: 500;
+  background: rgba(124, 111, 207, 0.06);
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* ══════════════════════════════════════
+   TOP ALERT / NEXT CLASS BANNER
 ════════════════════════════════════════ */
 .top-alert {
   background: linear-gradient(135deg, #7c6fcf 0%, #a89ee3 100%);
@@ -189,7 +243,7 @@
 }
 
 /* ══════════════════════════════════════
-   SECTIONS
+   SECTIONS CORE LAYOUT
 ════════════════════════════════════════ */
 .section {
   margin-bottom: 2rem;
@@ -218,8 +272,20 @@
   font-weight: 400;
 }
 
+.empty-state {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: #999;
+  font-size: 0.95rem;
+}
+
+.dashboard-main {
+  padding: 1.5rem;
+  flex: 1;
+}
+
 /* ══════════════════════════════════════
-   LEARNING PATH / LESSON CARDS
+   LEARNING PATH / LESSON MODULE CARDS
 ════════════════════════════════════════ */
 .lessons-grid {
   display: grid;
@@ -268,7 +334,7 @@
   border-color: #44a08d;
 }
 
-/* Lesson Badge */
+/* Lesson Grid Badges */
 .lesson-badge {
   position: absolute;
   top: 1rem;
@@ -302,7 +368,6 @@
   display: block;
 }
 
-/* Card Header */
 .card-header {
   padding: 1rem 0 0.5rem;
   position: relative;
@@ -319,7 +384,6 @@
   margin: 0;
 }
 
-/* Card Content */
 .card-content {
   padding: 0.5rem 0;
   flex: 1;
@@ -334,7 +398,6 @@
   margin: 0;
 }
 
-/* Card Footer */
 .card-footer {
   display: flex;
   justify-content: space-between;
@@ -362,23 +425,8 @@
   transform: translateX(4px);
 }
 
-.empty-state {
-  text-align: center;
-  padding: 2rem 1.5rem;
-  color: #999;
-  font-size: 0.95rem;
-}
-
 /* ══════════════════════════════════════
-   MAIN CONTENT
-════════════════════════════════════════ */
-.dashboard-main {
-  padding: 1.5rem;
-  flex: 1;
-}
-
-/* ══════════════════════════════════════
-   CLASS LIST & CARDS
+   CLASS LIST TRACKING ROW
 ════════════════════════════════════════ */
 .class-list {
   display: grid;
@@ -464,6 +512,7 @@
   color: #888;
 }
 
+/* Badges and Interactive Action Triggers */
 .status-badge {
   font-size: 0.75rem;
   font-weight: 700;
@@ -491,9 +540,6 @@
   color: #999;
 }
 
-/* ══════════════════════════════════════
-   CLASS ACTIONS
-════════════════════════════════════════ */
 .class-actions {
   display: flex;
   gap: 0.75rem;
@@ -534,7 +580,7 @@
 }
 
 /* ══════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE LAYOUT (TABLETS)
 ════════════════════════════════════════ */
 @media (max-width: 768px) {
   .dashboard-header {
@@ -544,11 +590,7 @@
     padding: 1.5rem;
   }
 
-  .section-title {
-    padding: 0 1rem;
-  }
-
-  .section-header {
+  .section-title, .section-header {
     padding: 0 1rem;
   }
 
@@ -606,6 +648,9 @@
   }
 }
 
+/* ══════════════════════════════════════
+   RESPONSIVE LAYOUT (PHONES)
+════════════════════════════════════════ */
 @media (max-width: 480px) {
   .welcome-title {
     font-size: 1.3rem;
@@ -631,17 +676,20 @@
     font-size: 0.75rem;
   }
 
-  .status-badge.pending,
-  .status-badge.completed {
-    font-size: 0.65rem;
-    padding: 4px 8px;
-  }
-
   .lesson-title {
     font-size: 0.95rem;
   }
 
   .lesson-card {
     padding: 1rem;
+  }
+
+  .not-enrolled-state {
+    margin: 2rem 1rem;
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .not-enrolled-title {
+    font-size: 1.35rem;
   }
 }
