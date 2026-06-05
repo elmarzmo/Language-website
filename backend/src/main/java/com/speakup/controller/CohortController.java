@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.CreateCohortRequest;
+import com.speakup.dto.UpdateCohortRequest;
 import com.speakup.service.CohortService;
 
 import jakarta.validation.Valid;
@@ -46,4 +48,15 @@ public class CohortController {
 
         return cohortService.addStudent(cohortId, studentId);
     }
+
+    @GetMapping("/{cohortId}")
+    public CohortDTO getCohortById(@PathVariable String cohortId){
+        return cohortService.getCohortById(cohortId);
+    }
+
+    @PutMapping("/{cohortId}/update")
+    public CohortDTO updateCohort(@PathVariable String cohortId, @Valid @RequestBody UpdateCohortRequest request){
+        return cohortService.updateCohort(cohortId, request);
+    }
+
 }
