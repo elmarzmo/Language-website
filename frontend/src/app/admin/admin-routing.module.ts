@@ -10,6 +10,7 @@ import { AdminLessonView } from './lessons/admin-lesson-view/admin-lesson-view';
 import { StudentList } from './student-list/student-list'
 import { CreateCohort } from './cohort/create-cohort/create-cohort';
 import { CohortList } from './cohort/cohort/cohort';
+import { EditCohort } from './cohort/edit-cohort/edit-cohort';
 
 const routes: Routes = [
   {path: '', component: AdminDashboard },
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path: 'students', component: StudentList},
 
   {path: 'cohorts', component: CohortList},
-  {path: 'cohorts/create', component: CreateCohort}
+  {path: 'cohorts/create', component: CreateCohort},
+  {path: 'cohorts/:id/edit', component: EditCohort},
 ];
 
 @NgModule({
