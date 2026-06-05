@@ -20,4 +20,11 @@ public class UserService {
 
         return userRepository.findByRole(User.Role.STUDENT);
     }
+
+    public List<User> searchUnassignedStudents(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return List.of(); // Return empty list if query is null or empty
+        }
+        return userRepository.findTop10ByRoleAndUsernameContainingIgnoreCase(User.Role.STUDENT, query);
+    }
 }
