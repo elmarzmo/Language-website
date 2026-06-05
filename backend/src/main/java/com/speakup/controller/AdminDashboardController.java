@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.speakup.dto.AdminDashboardDTO;
 import com.speakup.dto.ClassSessionDTO;
 import com.speakup.model.LessonModule;
+import com.speakup.model.User;
 import com.speakup.service.ClassSessionService;
 import com.speakup.service.LessonService;
 import com.speakup.service.UserService;
@@ -94,4 +96,11 @@ public class AdminDashboardController {
     public ResponseEntity<?> getAllStudents(){
         return ResponseEntity.ok(userService.getAllStudents());
     }
+
+    @GetMapping("/students/search")
+    public ResponseEntity<List<User>> searchUnassignedStudents(@RequestParam("query") String query) {
+        List<User> students = userService.searchUnassignedStudents(query);
+        return ResponseEntity.ok(students);
+    }
+
 }
