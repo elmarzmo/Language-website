@@ -19,6 +19,11 @@ export class StudentListService {
     return this.http.get<User[]>(`${this.apiUrl}/admin/students`);
   }
 
+  searchUnassignedStudents(query: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/admin/students/search`, {
+      params: { query }
+    });
+  }
 
 
 }
