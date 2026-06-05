@@ -11,5 +11,7 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
     
     List<User> findByRole(User.Role role);
+
+    List<User> findTop10ByRoleAndUsernameContainingIgnoreCase(User.Role role, String username);
 }
 
