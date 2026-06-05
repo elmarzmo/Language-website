@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.CreateCohortRequest;
+import com.speakup.dto.UpdateCohortRequest;
 import com.speakup.model.Cohort;
 import com.speakup.repository.CohortRepository;
 
@@ -50,7 +52,7 @@ public class CohortService {
             .collect(Collectors.toList());
     }
 
-    public CohortDTO addStudent(String cohortId, String studentId){
+    public CohortDTO addStudent(@PathVariable String cohortId, String studentId){
         Cohort cohort = cohortRepository.findById(cohortId)
             .orElseThrow(() -> new RuntimeException("Cohort not found"));
 
@@ -87,6 +89,16 @@ public class CohortService {
            
 
         return mapToDTO(cohort);
+    }
+
+    public CohortDTO updateCohort(String cohortId, UpdateCohortRequest request){
+        Cohort cohort = cohortRepository.findById(cohortId)
+            .orElseThrow(() -> new RuntimeException("Cohort not found" + cohortId));
+
+        cohort.setName(request.getName());
+        // Add other fields to update as needed
+
+        return mapToDTO(cohortRepository.save(cohort));
     }
 
 
