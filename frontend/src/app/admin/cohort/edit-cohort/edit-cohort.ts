@@ -43,10 +43,11 @@ export class EditCohort implements OnInit, OnDestroy {
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(query => {
-        if (query.trim() ||  query.trim().length > 2) {
+        const trimmed = query.trim();
+        if (!trimmed || trimmed.length < 3) {
           return of([]);
-        } 
-        return this.studentListService.searchUnassignedStudents(query).pipe(
+        }
+        return this.studentListService.searchUnassignedStudents(trimmed).pipe(
           catchError(err => {
             console.error('Search error:', err);
             return of([]);
@@ -73,11 +74,30 @@ export class EditCohort implements OnInit, OnDestroy {
     this.cohortService.getCohortById(this.cohortId).subscribe({
       next: (cohort: any) => {
         this.cohortName = cohort.name;
-        this.enrolledStudents = cohort.students || [];
-        this.isLoading = false;
+        const studentIds: string[] = cohort.studentIds || [];
+        if (studentIds.length > 0) {
+          this.loadEnrolledStudents(studentIds);
+        } else {
+          this.enrolledStudents = [];
+          this.isLoading = false;
+        }
       },
       error: (error: any) => {
         console.error('Error loading cohort:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private loadEnrolledStudents(studentIds: string[]): void {
+    this.studentListService.getStudents().subscribe({
+      next: (allStudents: any[]) => {
+        this.enrolledStudents = allStudents.filter(student => studentIds.includes(student.id));
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading enrolled students:', error);
+        this.enrolledStudents = [];
         this.isLoading = false;
       }
     });
