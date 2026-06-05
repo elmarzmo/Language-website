@@ -1,0 +1,98 @@
+<div class="edit-cohort-container">
+  
+  <div class="page-header">
+    <div class="header-left">
+      <button class="btn-back" [routerLink]="['/admin/cohorts']">← Back to Cohorts</button>
+      <h1 class="page-title">Edit Cohort Configuration</h1>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading cohort data profiles...</p>
+  </div>
+
+  <div class="workspace-grid" *ngIf="!isLoading">
+    
+    <div class="panel settings-panel">
+      <h2 class="panel-title">📝 General Metadata</h2>
+      <form (ngSubmit)="saveCohort()">
+        <div class="form-group">
+          <label for="cohortName">Cohort Designation Group Name</label>
+          <input 
+            type="text" 
+            id="cohortName" 
+            name="cohortName"
+            [(ngModel)]="cohortName" 
+            required 
+            class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-save" [disabled]="isSaving">
+          {{ isSaving ? 'Saving Changes...' : '💾 Update Details' }}
+        </button>
+      </form>
+    </div>
+
+    <div class="panel roster-panel">
+      <h2 class="panel-title">🎓 Student Roster Management</h2>
+      
+      <div class="search-input-wrapper">
+        <label>Add Student to Roster</label>
+        <div class="interactive-field">
+          <input 
+            type="text" 
+            class="form-control search-input" 
+            placeholder="Search by student username..."
+            [(ngModel)]="searchQuery"
+            (input)="onTypeSearch($event)"
+            (focus)="searchResults.length > 0 ? showDropdown = true : null">
+          <span class="search-clear-indicator" *ngIf="searchQuery" (click)="clearSearch()">✕</span>
+        </div>
+
+        <div class="search-dropdown-overlay" *ngIf="showDropdown && searchResults.length > 0">
+          <div 
+            *ngFor="let student of searchResults" 
+            class="dropdown-row-item"
+            (click)="addStudent(student)">
+            <span class="row-avatar">👤</span>
+            <div class="row-meta">
+              <span class="meta-name">{{ student.username }}</span>
+              <span class="meta-email">{{ student.email || 'No email registered' }}</span>
+            </div>
+            <button type="button" class="btn-inline-add">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="active-roster-list">
+        <h3>Currently Enrolled ({{ enrolledStudents.length }})</h3>
+        
+        <div *ngIf="enrolledStudents.length === 0" class="empty-roster-state">
+          No students are assigned to this cohort group yet. Use the tool above to add active profiles.
+        </div>
+
+        <div class="roster-grid-rows" *ngIf="enrolledStudents.length > 0">
+          <div *ngFor="let student of enrolledStudents" class="roster-member-card">
+            <div class="member-info">
+              <span class="member-avatar">✏️</span>
+              <div class="member-details">
+                <p class="member-name">{{ student.username }}</p>
+                <p class="member-email">{{ student.email || 'N/A' }}</p>
+              </div>
+            </div>
+            <button 
+              type="button" 
+              class="btn-remove-member" 
+              (click)="removeStudent(student.id)" 
+              title="Remove student from cohort">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

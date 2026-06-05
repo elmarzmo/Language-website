@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+.edit-cohort-container {
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #f7f5ff 0%, #fdf9f3 50%, #f0f7ff 100%);
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ══════════════════════════════════════
+   HEADER CONTROLS
+════════════════════════════════════════ */
+.page-header {
+  margin-bottom: 2.5rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #7c6fcf;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-back:hover {
+  transform: translateX(-4px);
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════════
+   WORKSPACE TWO-COLUMN GRID
+════════════════════════════════════════ */
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(124, 111, 207, 0.05);
+  border: 1px solid rgba(124, 111, 207, 0.08);
+}
+
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f7f5ff;
+  padding-bottom: 0.75rem;
+}
+
+/* Form Styling */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label, .search-input-wrapper label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(124, 111, 207, 0.15);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #7c6fcf;
+  box-shadow: 0 0 0 3px rgba(124, 111, 207, 0.15);
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #7c6fcf 0%, #6a5dbf 100%);
+  color: white;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(124, 111, 207, 0.2);
+}
+
+.btn-save:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(124, 111, 207, 0.3);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════
+   SEARCH INTERACTIVE TYPEAHEAD OVERLAY
+════════════════════════════════════════ */
+.search-input-wrapper {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.interactive-field {
+  position: relative;
+}
+
+.search-clear-indicator {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.search-clear-indicator:hover {
+  color: #333;
+}
+
+.search-dropdown-overlay {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(124, 111, 207, 0.15);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.dropdown-row-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.dropdown-row-item:hover {
+  background: #f7f5ff;
+}
+
+.row-avatar {
+  font-size: 1.2rem;
+}
+
+.row-meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.meta-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.meta-email {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.btn-inline-add {
+  background: rgba(124, 111, 207, 0.08);
+  color: #7c6fcf;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dropdown-row-item:hover .btn-inline-add {
+  background: #7c6fcf;
+  color: white;
+}
+
+/* ══════════════════════════════════════
+   ROSTER LIST AND MEMBER CARDS
+════════════════════════════════════════ */
+.active-roster-list h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.empty-roster-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #888;
+  font-size: 0.9rem;
+  background: #fafafa;
+  border: 1.5px dashed #eee;
+  border-radius: 8px;
+}
+
+.roster-grid-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.roster-member-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fcfbfe;
+  border: 1px solid rgba(124, 111, 207, 0.06);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.roster-member-card:hover {
+  background: #f7f5ff;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.member-avatar {
+  font-size: 1rem;
+}
+
+.member-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.member-email {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.btn-remove-member {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  opacity: 0.4;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.roster-member-card:hover .btn-remove-member {
+  opacity: 1;
+}
+
+.btn-remove-member:hover {
+  transform: scale(1.15);
+}
+
+/* ══════════════════════════════════════
+   LOADING STATE SPINNER
+════════════════════════════════════════ */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  gap: 1.5rem;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(124, 111, 207, 0.15);
+  border-top-color: #7c6fcf;
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE DESIGN INTERFACES
+════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .workspace-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-cohort-container {
+    padding: 1.25rem;
+  }
+  .panel {
+    padding: 1.25rem;
+  }
+  .page-title {
+    font-size: 1.5rem;
+  }
+}
