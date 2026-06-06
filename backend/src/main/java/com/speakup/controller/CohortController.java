@@ -3,6 +3,7 @@ package com.speakup.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,11 @@ public class CohortController {
     public CohortDTO addStudent(@PathVariable String cohortId, String studentId){
 
         return cohortService.addStudent(cohortId, studentId);
+    }
+
+    @DeleteMapping("/{cohortId}/students/{studentId}")
+    public CohortDTO removeStudent(@PathVariable String cohortId, @PathVariable String studentId){
+        return cohortService.removeStudent(cohortId, studentId);
     }
 
     @GetMapping("/{cohortId}")
