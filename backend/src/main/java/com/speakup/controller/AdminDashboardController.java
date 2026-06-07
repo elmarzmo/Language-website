@@ -103,4 +103,8 @@ public class AdminDashboardController {
         return ResponseEntity.ok(students);
     }
 
+    @GetMapping("/teachers")
+    public ResponseEntity<?> getAllTeachers(){
+        return ResponseEntity.ok(userService.getAllTeachers());
+    }
 }
