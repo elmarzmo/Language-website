@@ -27,4 +27,15 @@ public class UserService {
         }
         return userRepository.findTop10ByRoleAndUsernameContainingIgnoreCase(User.Role.STUDENT, query);
     }
+
+    public List<User> getAllTeachers(){
+        return userRepository.findByRole(User.Role.TEACHER);
+    }
+
+    public List<User> searchUnassignedTeachers(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return List.of(); // Return empty list if query is null or empty
+        }
+        return userRepository.findTop10ByRoleAndUsernameContainingIgnoreCase(User.Role.TEACHER, query);
+    }
 }
