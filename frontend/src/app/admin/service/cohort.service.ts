@@ -35,4 +35,8 @@ export class CohortService {
   updateCohort(cohortId: string, payload: Partial<Cohort>): Observable<Cohort> {
     return this.http.put<Cohort>(`${this.apiUrl}/admin/cohorts/${cohortId}/update`, payload);
   }
+
+  deleteCohort(cohortId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/admin/cohorts/${cohortId}`);
+  }
 }
