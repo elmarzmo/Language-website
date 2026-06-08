@@ -6,8 +6,8 @@
       <h1 class="page-title">Create Cohort</h1>
       <p class="page-subtitle">Create and manage student groups for organized learning</p>
     </div>
-    <a routerLink="/admin" class="btn btn-secondary">
-      ← Back to Dashboard
+    <a routerLink="/admin/cohorts" class="btn btn-secondary">
+      ← Back to Cohorts
     </a>
   </div>
 
@@ -115,7 +115,7 @@
           [disabled]="isSubmitting">
           {{ isSubmitting ? '⏳ Creating...' : '✓ Create Cohort' }}
         </button>
-        <a routerLink="/admin" class="btn btn-secondary">
+        <a routerLink="/admin/cohorts" class="btn btn-secondary">
           Cancel
         </a>
       </div>
