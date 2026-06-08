@@ -98,6 +98,10 @@ public class CohortService {
         cohort.setName(request.getName());
         // Add other fields to update as needed
 
+        if(request.getTeacherId() != null){
+            cohort.setTeacherId(request.getTeacherId().isBlank() ? null : request.getTeacherId());
+        }
+
         return mapToDTO(cohortRepository.save(cohort));
     }
 
