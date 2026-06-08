@@ -107,4 +107,11 @@ public class AdminDashboardController {
     public ResponseEntity<?> getAllTeachers(){
         return ResponseEntity.ok(userService.getAllTeachers());
     }
+
+    @GetMapping("/teachers/search")
+    public ResponseEntity<List<User>> searchUnassignedTeachers(@RequestParam("query") String query) {
+        List<User> teachers = userService.searchUnassignedTeachers(query);
+        return ResponseEntity.ok(teachers);
+    }
+    
 }
