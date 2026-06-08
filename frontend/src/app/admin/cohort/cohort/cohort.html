@@ -19,7 +19,7 @@
         type="text" 
         [(ngModel)]="searchQuery" 
         (input)="onSearch()" 
-        placeholder="Search by cohort name, level, or teacher ID..."
+        placeholder="Search by cohort name, level, or teacher name..."
         class="search-input"
       >
     </div>
@@ -51,7 +51,7 @@
 
   <!-- Cohorts Grid -->
   <div class="cohorts-grid" *ngIf="!isLoading && filteredCohorts.length > 0">
-    <div class="cohort-card" *ngFor="let cohort of filteredCohorts; let i = index">
+    <div class="cohort-card" *ngFor="let cohort of filteredCohorts; let i = index; trackBy: trackCohortById">
       
       <!-- Card Number Badge -->
       <div class="cohort-badge">{{ i + 1 }}</div>
@@ -71,8 +71,13 @@
         <div class="info-block">
           <span class="info-icon">👨‍🏫</span>
           <div class="info-text">
-            <p class="info-label">Teacher</p>
-            <p class="info-value">{{ cohort.teacherId }}</p>
+           <p class="info-label">Teacher</p>
+           <p class="info-value">
+            {{ teacherMap[cohort.teacherId] || 'Unknown Teacher' }}
+          </p>
+
+          <p class="info-label">Teacher ID</p>
+          <p class="info-value">{{ cohort.teacherId }}</p>
           </div>
         </div>
 
@@ -98,13 +103,12 @@
 
       <!-- Card Actions -->
       <div class="card-actions">
-        <a [routerLink]="['/admin/cohorts', cohort.id, 'view']" class="btn-action view">
-          👁️ View
-        </a>
         <a [routerLink]="['/admin/cohorts', cohort.id, 'edit']" class="btn-action edit">
           ✏️ Edit
         </a>
-        <button class="btn-action delete">
+        <button 
+          (click)="confirmDelete(cohort.id)" 
+          class="btn-action delete">
           🗑️ Delete
         </button>
       </div>
