@@ -44,15 +44,15 @@
             type="text" 
             class="form-control search-input" 
             placeholder="Search by student username..."
-            [(ngModel)]="searchQuery"
-            (input)="onTypeSearch($event)"
-            (focus)="searchResults.length > 0 ? showDropdown = true : null">
-          <span class="search-clear-indicator" *ngIf="searchQuery" (click)="clearSearch()">✕</span>
+            [(ngModel)]="studentSearchQuery"
+            (input)="onStudentType($event)"
+            (focus)="studentSearchResults.length > 0 ? showStudentDropdown = true : null">
+          <span class="search-clear-indicator" *ngIf="studentSearchQuery" (click)="clearSearch()">✕</span>
         </div>
 
-        <div class="search-dropdown-overlay" *ngIf="showDropdown && searchResults.length > 0">
+        <div class="search-dropdown-overlay" *ngIf="showStudentDropdown && studentSearchResults.length > 0">
           <div 
-            *ngFor="let student of searchResults" 
+            *ngFor="let student of studentSearchResults" 
             class="dropdown-row-item"
             (click)="addStudent(student)">
             <span class="row-avatar">👤</span>
@@ -90,8 +90,74 @@
             </button>
           </div>
         </div>
-
       </div>
+    </div>
+
+    <div class="panel teacher-panel">
+      <h2 class="panel-title">👩‍🏫 Instructor Assignment</h2>
+
+      <div *ngIf="cohortTeachers.length > 0 && !showTeacherSearchField">
+        <div class="teacher-card">
+          <span class="teacher-avatar">👩‍🏫</span>
+          <div class="teacher-info">
+            <p class="teacher-name">{{ cohortTeachers[0].username }}</p>
+            <p class="teacher-email">{{ cohortTeachers[0].email }}</p>
+          </div>
+          <button type="button" class="btn-remove-member" (click)="removeTeacher()" title="Remove Teacher">🗑️</button>
+        </div>
+
+        <button type="button" class="btn-manage-teachers" (click)="showTeacherSearchField = true">
+          Change Teacher
+        </button>
+      </div>
+
+      <div *ngIf="cohortTeachers.length === 0 && !showTeacherSearchField">
+        <p>No teacher assigned.</p>
+        <button type="button" class="btn-manage-teachers" (click)="showTeacherSearchField = true">
+          Assign Teacher
+        </button>
+      </div>
+
+      <div class="search-input-wrapper" *ngIf="showTeacherSearchField">
+        <label>Search for Instructor</label>
+        <div class="interactive-field">
+          <input 
+            type="text" 
+            class="form-control search-input" 
+            placeholder="Search by teacher username..."
+            [(ngModel)]="teacherSearchQuery"
+            (input)="onTeacherType($event)">
+          <span class="search-clear-indicator" (click)="showTeacherSearchField = false; clearSearch()">Cancel</span>
+        </div>
+
+        <div class="search-dropdown-overlay" *ngIf="showTeacherDropdown && teacherSearchResults.length > 0">
+          <div 
+            *ngFor="let teacher of teacherSearchResults" 
+            class="dropdown-row-item"
+            (click)="assignTeacher(teacher)">
+            <span class="row-avatar">👩‍🏫</span>
+            <div class="row-meta">
+              <span class="meta-name">{{ teacher.username }}</span>
+              <span class="meta-email">{{ teacher.email }}</span>
+            </div>
+            <button type="button" class="btn-inline-add">Select</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="panel delete-panel">
+      <h2 class="panel-title">⚠️ Danger Zone</h2>
+      <p class="delete-warning-text">
+        Deleting this cohort group will permanently remove all associated data and cannot be undone. Please proceed with caution.
+      </p>
+      <button 
+        type="button" 
+        class="btn btn-delete" 
+        (click)="confirmDelete()"
+        [disabled]="isDeleting">
+        {{ isDeleting ? 'Deleting Record...' : '🗑️ Delete Cohort Group' }}
+      </button>
     </div>
 
   </div>

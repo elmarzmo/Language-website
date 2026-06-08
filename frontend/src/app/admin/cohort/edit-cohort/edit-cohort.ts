@@ -6,6 +6,8 @@ import { Subject, Subscription, catchError, distinctUntilChanged, of } from 'rxj
 import { CohortService } from '../../service/cohort.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { StudentListService } from '../../service/student-list';
+import { TeacherListService } from '../../service/teacher-list';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-edit-cohort',
@@ -14,59 +16,91 @@ import { StudentListService } from '../../service/student-list';
   styleUrl: './edit-cohort.css',
 })
 export class EditCohort implements OnInit, OnDestroy {
-
   cohortId: string = '';
   cohortName: string = '';
-  enrolledStudents: any[] = [];
-
+  enrolledStudents: User[] = [];
+  cohortTeachers: User[] = [];
+  
   isLoading = true;
   isSaving = false;
-  showDropdown = false;
+  isDeleting = false;
 
-  searchQuery: string = '';
-  searchResults: any[] = [];
-  private searchSubject = new Subject<string>();
-  private searchSubscription!: Subscription;
+  // Search States
+  studentSearchQuery: string = '';
+  teacherSearchQuery: string = '';
+  studentSearchResults: User[] = [];
+  teacherSearchResults: User[] = [];
+  
+  showStudentDropdown = false;
+  showTeacherDropdown = false;
+  showTeacherSearchField = false;
+
+  private studentSearchSubject = new Subject<string>();
+  private teacherSearchSubject = new Subject<string>();
+  private subscriptions = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     private cohortService: CohortService,
     private router: Router,
-    private studentListService: StudentListService
+    private studentListService: StudentListService,
+    private teacherListService: TeacherListService
   ) {} 
 
   ngOnInit(): void {
     this.cohortId = this.route.snapshot.paramMap.get('id') || '';
     this.loadCohort();
 
-    this.searchSubscription = this.searchSubject.pipe(
+    // Student Search Stream
+    const studentSub = this.studentSearchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(query => {
         const trimmed = query.trim();
-        if (!trimmed || trimmed.length < 3) {
-          return of([]);
-        }
+        if (trimmed.length < 3) return of([]);
         return this.studentListService.searchUnassignedStudents(trimmed).pipe(
           catchError(err => {
-            console.error('Search error:', err);
+            console.error('Student search error:', err);
             return of([]);
           })
         );
-    })
+      })
     ).subscribe(results => {
-      this.searchResults = results.filter(
+      this.studentSearchResults = results.filter(
         student => !this.enrolledStudents.some(enrolled => enrolled.id === student.id)
       );
-      this.showDropdown = this.searchResults.length > 0;
-
+      this.showStudentDropdown = this.studentSearchResults.length > 0;
     });
+
+    // Teacher Search Stream
+    const teacherSub = this.teacherSearchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => {
+        const trimmed = query.trim();
+        if (trimmed.length < 2) return of([]); // Teachers list might be smaller, 2 chars is fine
+        return this.teacherListService.searchUnassignedTeachers(trimmed).pipe(
+          catchError(err => {
+            console.error('Teacher search error:', err);
+            return of([]);
+          })
+        );
+      })
+    ).subscribe(results => {
+      // Basic client-side filter example if backend doesn't search natively
+      const query = this.teacherSearchQuery.toLowerCase();
+      this.teacherSearchResults = results.filter(teacher => 
+        !this.cohortTeachers.some(current => current.id === teacher.id)
+      );
+      this.showTeacherDropdown = this.teacherSearchResults.length > 0;
+    });
+
+    this.subscriptions.add(studentSub);
+    this.subscriptions.add(teacherSub);
   }
 
   ngOnDestroy(): void {
-    if (this.searchSubscription) {
-      this.searchSubscription.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 
   loadCohort(): void {
@@ -74,12 +108,20 @@ export class EditCohort implements OnInit, OnDestroy {
     this.cohortService.getCohortById(this.cohortId).subscribe({
       next: (cohort: any) => {
         this.cohortName = cohort.name;
-        const studentIds: string[] = cohort.studentIds || [];
-        if (studentIds.length > 0) {
-          this.loadEnrolledStudents(studentIds);
+        
+        // Handle Students
+        if (cohort.studentIds?.length > 0) {
+          this.loadEnrolledStudents(cohort.studentIds);
         } else {
           this.enrolledStudents = [];
           this.isLoading = false;
+        }
+
+        // Handle Teachers
+        if (cohort.teacherId) {
+          this.loadAssignedTeacher(cohort.teacherId);
+        } else {
+          this.cohortTeachers = [];
         }
       },
       error: (error: any) => {
@@ -91,24 +133,40 @@ export class EditCohort implements OnInit, OnDestroy {
 
   private loadEnrolledStudents(studentIds: string[]): void {
     this.studentListService.getStudents().subscribe({
-      next: (allStudents: any[]) => {
+      next: (allStudents: User[]) => {
         this.enrolledStudents = allStudents.filter(student => studentIds.includes(student.id));
         this.isLoading = false;
       },
       error: (error: any) => {
         console.error('Error loading enrolled students:', error);
-        this.enrolledStudents = [];
         this.isLoading = false;
       }
     });
   }
 
-  onTypeSearch(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.searchSubject.next(value);
+  private loadAssignedTeacher(teacherId: string): void {
+    this.teacherListService.getTeachers().subscribe({
+      next: (allTeachers: User[]) => {
+        const teacher = allTeachers.find(t => t.id === teacherId);
+        this.cohortTeachers = teacher ? [teacher] : [];
+      },
+      error: (error: any) => {
+        console.error('Error loading assigned teacher:', error);
+      }
+    });
   }
 
-  addStudent(student: any): void {
+  onStudentType(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.studentSearchSubject.next(value);
+  }
+
+  onTeacherType(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.teacherSearchSubject.next(value);
+  }
+
+  addStudent(student: User): void {
     this.cohortService.addStudentToCohort(this.cohortId, student.id).subscribe({
       next: () => {
         this.enrolledStudents.push(student);
@@ -127,17 +185,42 @@ export class EditCohort implements OnInit, OnDestroy {
     });
   }
 
+  assignTeacher(teacher: User): void {
+    const payload = { name: this.cohortName, teacherId: teacher.id };
+    this.cohortService.updateCohort(this.cohortId, payload).subscribe({
+      next: () => {
+        this.cohortTeachers = [teacher];
+        this.showTeacherSearchField = false;
+        this.clearSearch();
+      },
+      error: (err) => console.error('Error assigning teacher:', err)
+    });
+  }
+
+  removeTeacher(): void {
+    if (confirm('Are you sure you want to remove this teacher from the cohort?')) {
+      const payload = { name: this.cohortName, teacherId: '' };
+      this.cohortService.updateCohort(this.cohortId, payload).subscribe({
+        next: () => {
+          this.cohortTeachers = [];
+        },
+        error: (err) => console.error('Error removing teacher:', err)
+      });
+    }
+  }
+
   clearSearch(): void {
-    this.searchQuery = '';
-    this.searchResults = [];
-    this.showDropdown = false;
+    this.studentSearchQuery = '';
+    this.teacherSearchQuery = '';
+    this.studentSearchResults = [];
+    this.teacherSearchResults = [];
+    this.showStudentDropdown = false;
+    this.showTeacherDropdown = false;
   }
 
   saveCohort(): void {
     this.isSaving = true;
-    const payload = {
-      name: this.cohortName,
-    };
+    const payload = { name: this.cohortName };
     this.cohortService.updateCohort(this.cohortId, payload).subscribe({
       next: () => {
         this.isSaving = false;
@@ -149,6 +232,17 @@ export class EditCohort implements OnInit, OnDestroy {
       }
     });
   }
+
+  confirmDelete(): void {
+    if (confirm('🛑 WARNING: This will permanently delete this cohort group. Are you absolutely sure?')) {
+      this.isDeleting = true;
+      this.cohortService.deleteCohort(this.cohortId).subscribe({
+        next: () => this.router.navigate(['/admin/cohorts']),
+        error: (err) => {
+          console.error('Error deleting cohort:', err);
+          this.isDeleting = false;
+        }
+      });
+    } 
+  }
 }
-
-
