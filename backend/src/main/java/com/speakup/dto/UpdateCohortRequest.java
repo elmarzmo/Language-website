@@ -7,5 +7,7 @@ import lombok.Data;
 public class UpdateCohortRequest {
     @NotBlank(message = "Cohort name is required")
     private String name;
+
+    private String teacherId;
     
 }
