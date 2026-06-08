@@ -2,6 +2,7 @@ package com.speakup.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.CreateCohortRequest;
 import com.speakup.dto.UpdateCohortRequest;
+import com.speakup.repository.CohortRepository;
 import com.speakup.service.CohortService;
 
 import jakarta.validation.Valid;
@@ -24,9 +26,11 @@ import jakarta.validation.Valid;
 @CrossOrigin
 public class CohortController {
     private final CohortService cohortService;
+    private final CohortRepository cohortRepository;
 
-    public CohortController( CohortService cohortService){
+    public CohortController( CohortService cohortService, CohortRepository cohortRepository){
         this.cohortService = cohortService;
+        this.cohortRepository = cohortRepository;
     }
 
     @PostMapping
@@ -64,5 +68,12 @@ public class CohortController {
     public CohortDTO updateCohort(@PathVariable String cohortId, @Valid @RequestBody UpdateCohortRequest request){
         return cohortService.updateCohort(cohortId, request);
     }
+
+    @DeleteMapping("/{cohortId}")
+    public ResponseEntity<Void> deleteCohort(@PathVariable String cohortId){
+        cohortRepository.deleteById(cohortId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
