@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Subject, Subscription, catchError, distinctUntilChanged, of } from 'rxjs';
+import { Subject, Subscription, catchError, distinctUntilChanged, forkJoin, of } from 'rxjs';
 import { CohortService } from '../../service/cohort.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { StudentListService } from '../../service/student-list';
 import { TeacherListService } from '../../service/teacher-list';
 import { User } from '../../models/user.model';
+import { Cohort } from '../../models/cohort.model';
 
 @Component({
   selector: 'app-edit-cohort',
@@ -88,7 +89,7 @@ export class EditCohort implements OnInit, OnDestroy {
       })
     ).subscribe(results => {
       // Basic client-side filter example if backend doesn't search natively
-      const query = this.teacherSearchQuery.toLowerCase();
+     
       this.teacherSearchResults = results.filter(teacher => 
         !this.cohortTeachers.some(current => current.id === teacher.id)
       );
@@ -105,56 +106,47 @@ export class EditCohort implements OnInit, OnDestroy {
 
   loadCohort(): void {
     this.isLoading = true;
+
     this.cohortService.getCohortById(this.cohortId).subscribe({
-      next: (cohort: any) => {
+      next: (cohort: Cohort) => {
+console.log('Cohort details loaded:', cohort);
+        forkJoin({
+          students: this.studentListService.getStudents(),
+          teachers: this.teacherListService.getTeachers()
+          
+        }).subscribe({
+          next: ({ students, teachers }) => {
+
         this.cohortName = cohort.name;
+        this.enrolledStudents = students.filter(
+          student => cohort.studentIds?.includes(student.id)
+        );
+        console.log('Enrolled students:', this.enrolledStudents);
+
         
-        // Handle Students
-        if (cohort.studentIds?.length > 0) {
-          this.loadEnrolledStudents(cohort.studentIds);
-        } else {
-          this.enrolledStudents = [];
-          this.isLoading = false;
-        }
-
-        // Handle Teachers
-        if (cohort.teacherId) {
-          this.loadAssignedTeacher(cohort.teacherId);
-        } else {
-          this.cohortTeachers = [];
-        }
-      },
-      error: (error: any) => {
-        console.error('Error loading cohort:', error);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  private loadEnrolledStudents(studentIds: string[]): void {
-    this.studentListService.getStudents().subscribe({
-      next: (allStudents: User[]) => {
-        this.enrolledStudents = allStudents.filter(student => studentIds.includes(student.id));
-        this.isLoading = false;
-      },
-      error: (error: any) => {
-        console.error('Error loading enrolled students:', error);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  private loadAssignedTeacher(teacherId: string): void {
-    this.teacherListService.getTeachers().subscribe({
-      next: (allTeachers: User[]) => {
-        const teacher = allTeachers.find(t => t.id === teacherId);
+        const teacher = teachers.find((t => t.id === cohort.teacherId));
         this.cohortTeachers = teacher ? [teacher] : [];
+        this.isLoading = false;
+            console.log('Assigned teacher:', this.cohortTeachers);
+
       },
-      error: (error: any) => {
-        console.error('Error loading assigned teacher:', error);
-      }
+      error: err => {
+        console.error('Error loading cohort details:', err);
+        this.isLoading = false;
+      } 
+    });
+            
+
+        
+      },
+      error: (err) => {
+        console.error('Error loading cohort:', err);
+        this.isLoading = false;
+      } 
     });
   }
+
+ 
 
   onStudentType(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
@@ -199,7 +191,7 @@ export class EditCohort implements OnInit, OnDestroy {
 
   removeTeacher(): void {
     if (confirm('Are you sure you want to remove this teacher from the cohort?')) {
-      const payload = { name: this.cohortName, teacherId: '' };
+      const payload = { name: this.cohortName, teacherId: this.cohortTeachers[0]?.id ? '' : undefined };
       this.cohortService.updateCohort(this.cohortId, payload).subscribe({
         next: () => {
           this.cohortTeachers = [];
@@ -245,4 +237,6 @@ export class EditCohort implements OnInit, OnDestroy {
       });
     } 
   }
+  
+  
 }
