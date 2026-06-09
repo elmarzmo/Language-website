@@ -109,7 +109,6 @@ export class EditCohort implements OnInit, OnDestroy {
 
     this.cohortService.getCohortById(this.cohortId).subscribe({
       next: (cohort: Cohort) => {
-console.log('Cohort details loaded:', cohort);
         forkJoin({
           students: this.studentListService.getStudents(),
           teachers: this.teacherListService.getTeachers()
@@ -121,13 +120,12 @@ console.log('Cohort details loaded:', cohort);
         this.enrolledStudents = students.filter(
           student => cohort.studentIds?.includes(student.id)
         );
-        console.log('Enrolled students:', this.enrolledStudents);
+       
 
         
         const teacher = teachers.find((t => t.id === cohort.teacherId));
         this.cohortTeachers = teacher ? [teacher] : [];
         this.isLoading = false;
-            console.log('Assigned teacher:', this.cohortTeachers);
 
       },
       error: err => {
