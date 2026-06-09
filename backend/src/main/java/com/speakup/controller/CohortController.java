@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.speakup.dto.AddStudentRequest;
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.CreateCohortRequest;
 import com.speakup.dto.UpdateCohortRequest;
@@ -49,9 +50,11 @@ public class CohortController {
     }
 
     @PostMapping("/{cohortId}/students")
-    public CohortDTO addStudent(@PathVariable String cohortId, String studentId){
+    public CohortDTO addStudent(@PathVariable String cohortId,
+                                @RequestBody AddStudentRequest request){
 
-        return cohortService.addStudent(cohortId, studentId);
+
+        return cohortService.addStudent(cohortId, request.getStudentId());
     }
 
     @DeleteMapping("/{cohortId}/students/{studentId}")
