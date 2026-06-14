@@ -67,6 +67,15 @@
           </p>
         </div>
        
+        <div class="info-block">
+          <span class="info-label"> Cohort</span>
+          <p class="info-value">{{ c.cohortId }}</p>
+        </div>
+
+        <div class="info-block">
+          <span class="info-label"> Status</span>
+          <p class="info-value">{{ c.status }}</p>
+        </div>
       </div>
 
       <!-- Card Actions -->
@@ -81,7 +90,7 @@
         <button class="btn btn-secondary btn-sm">
           ✏️ Edit
         </button>
-        <button class="btn btn-danger btn-sm">
+        <button class="btn btn-danger btn-sm" (click)="deleteClassSession(c.id)">
           🗑️ Delete
         </button>
       </div>

@@ -37,4 +37,17 @@ export class ClassList implements OnInit {
     });
   }
 
+  deleteClassSession(sessionId: string) {
+    if (confirm('Are you sure you want to delete this class session?')) {
+      this.classSessionService.deleteClassSession(sessionId).subscribe({
+        next: () => {
+          this.loadClassSessions(); // Refresh the list after deletion
+        },
+        error: (err) => {
+          console.error('Error deleting class session:', err);
+        }
+      });
+    }
+  }
+
 }
