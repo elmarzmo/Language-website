@@ -75,6 +75,10 @@ public class ClassSessionService {
                 .collect(Collectors.toList());
     }
     
+    public void deleteSession(String sessionId) {
+        classSessionRepository.deleteById(sessionId);
+    }
+    
 
     // mapper
     private ClassSessionDTO mapToDTO(ClassSession session) {
