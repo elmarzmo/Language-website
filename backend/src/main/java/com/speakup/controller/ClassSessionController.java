@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.speakup.dto.ClassSessionDTO;
 import com.speakup.dto.CreateClassSessionRequest;
@@ -60,6 +61,11 @@ public class ClassSessionController {
     @GetMapping("/all")
     public List<ClassSessionDTO> getAllSessions() {
         return classSessionService.getAllSessions();
+    }
+
+    @DeleteMapping("/{sessionId}")
+    public void deleteSession(@PathVariable String sessionId) {
+        classSessionService.deleteSession(sessionId);
     }
 
 
