@@ -20,19 +20,19 @@ export class ClassSessionService {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/all`);
   }
 
-  getSessionsByStudent(studentId: number): Observable<ClassSession[]> {
+  getSessionsByStudent(studentId: string): Observable<ClassSession[]> {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/students/${studentId}`);
   }
 
-  getSessionsByTeacher(teacherId: number): Observable<ClassSession[]> {
+  getSessionsByTeacher(teacherId: string): Observable<ClassSession[]> {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/teachers/${teacherId}`);
   }
 
-  updateClassSession(sessionId: number, session: ClassSession): Observable<ClassSession> {
+  updateClassSession(sessionId: string, session: ClassSession): Observable<ClassSession> {
     return this.http.put<ClassSession>(`${this.apiUrl}/class-sessions/${sessionId}`, session);
   }
 
-  deleteClassSession(sessionId: number): Observable<void> {
+  deleteClassSession(sessionId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/class-sessions/${sessionId}`);
   }
 
