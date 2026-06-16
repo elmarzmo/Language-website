@@ -20,6 +20,9 @@ export class ClassSessionService {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/all`);
   }
 
+  getAllClassSessions(): Observable<ClassSession[]> {
+    return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/admin`);
+  }
   getSessionsByStudent(studentId: string): Observable<ClassSession[]> {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/students/${studentId}`);
   }
