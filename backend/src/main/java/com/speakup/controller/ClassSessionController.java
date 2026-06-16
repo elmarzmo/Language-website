@@ -3,6 +3,7 @@ package com.speakup.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.speakup.dto.ClassSessionDTO;
+import com.speakup.dto.ClassSessionListDTO;
 import com.speakup.dto.CreateClassSessionRequest;
 import com.speakup.service.ClassSessionService;
 
@@ -61,6 +62,11 @@ public class ClassSessionController {
     @GetMapping("/all")
     public List<ClassSessionDTO> getAllSessions() {
         return classSessionService.getAllSessions();
+    }
+ 
+    @GetMapping("/admin")
+    public List<ClassSessionListDTO> getAllClassSessions() {
+        return classSessionService.getAllClassSessions();
     }
 
     @DeleteMapping("/{sessionId}")
