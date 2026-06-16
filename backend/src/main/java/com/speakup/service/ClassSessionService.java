@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.speakup.dto.ClassSessionDTO;
+import com.speakup.dto.ClassSessionListDTO;
 import com.speakup.dto.CreateClassSessionRequest;
 import com.speakup.model.ClassSession;
 import com.speakup.repository.ClassSessionRepository;
@@ -24,7 +25,15 @@ public class ClassSessionService {
 
         ClassSession session = new ClassSession();
 
+
+    // later you will fetch real names:
+    // dto.setTeacherName(user.getUsername())
+    // dto.setCohortName(cohort.getName())
+    // dto.setLessonModuleTitle(lesson.getTitle())
+
         session.setTeacherId(request.getTeacherId());
+        session.setCohortId(request.getCohortId());
+      //  session.setStudentIds(request.getStudentIds());
        
         session.setLessonModuleId(request.getLessonModuleId());
         session.setDateTime(request.getDateTime());
@@ -75,10 +84,18 @@ public class ClassSessionService {
                 .collect(Collectors.toList());
     }
     
+    public List<ClassSessionListDTO> getAllClassSessions(){
+        return classSessionRepository.findAll()
+                .stream()
+                .map(this::mapToClassListDTO)
+                .collect(Collectors.toList());
+    }
+    
     public void deleteSession(String sessionId) {
         classSessionRepository.deleteById(sessionId);
     }
-    
+
+
 
     // mapper
     private ClassSessionDTO mapToDTO(ClassSession session) {
@@ -87,11 +104,34 @@ public class ClassSessionService {
         dto.setId(session.getId());
         dto.setTeacherId(session.getTeacherId());
        
+        dto.setCohortId(session.getCohortId());
         dto.setLessonModuleId(session.getLessonModuleId());
         dto.setDateTime(session.getDateTime());
         dto.setDurationMinutes(session.getDurationMinutes());
         dto.setMeetingLink(session.getMeetingLink());
         dto.setStatus(session.getStatus().name());
+
+        return dto;
+    }
+
+    // NEW: Distinct mapper targeting the admin list DTO structure
+    private ClassSessionListDTO mapToClassListDTO(ClassSession session) {
+        ClassSessionListDTO dto = new ClassSessionListDTO();
+        
+        dto.setId(session.getId());
+        dto.setDateTime(session.getDateTime());
+        dto.setDurationMinutes(session.getDurationMinutes());
+        dto.setMeetingLink(session.getMeetingLink());
+        dto.setStatus(session.getStatus().name());
+        
+        // TODO: Inject your respective services/repositories to fetch real values by ID
+        // e.g., String teacherName = userRepository.findNameById(session.getTeacherId());
+        dto.setTeacherName("Teacher ID: " + session.getTeacherId()); 
+        dto.setCohortName("Cohort ID: " + session.getCohortId());
+        dto.setLessonModuleTitle("Lesson ID: " + session.getLessonModuleId());
+        
+        // Mocking student count until collection fields are ready
+        dto.setEnrolledStudentCount(0); 
 
         return dto;
     }
