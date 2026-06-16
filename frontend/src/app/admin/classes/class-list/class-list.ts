@@ -25,10 +25,11 @@ export class ClassList implements OnInit {
 
   loadClassSessions() {
     this.isLoading = true;
-    this.classSessionService.getAllSessions().subscribe({
+    this.classSessionService.getAllClassSessions().subscribe({
       next: (data) => {
         this.classes = data;
         this.isLoading = false;
+        console.log("classes" + this.classes);
       },
       error: (err) => {
         console.error('Error fetching class sessions:', err);
