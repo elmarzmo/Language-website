@@ -10,6 +10,7 @@ import { LessonView } from './private/student/lesson-view/lesson-view';
 import { TeacherDashboard } from './private/teacher/teacher-dashboard/teacher-dashboard';
 import { TeacherLessonsView } from './private/teacher/teacher-lessons-view/teacher-lessons-view';
 import { TeacherLessonsList } from './private/teacher/teacher-lessons-list/teacher-lessons-list';
+import { TeacherCohortsList } from './private/teacher/teacher-cohorts-list/teacher-cohorts-list';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,7 +29,8 @@ export const routes: Routes = [
     
     {path: 'teacher/dashboard' , component: TeacherDashboard },
     {path: 'teacher/resources' , component: TeacherLessonsList },
-    {path: 'teacher/resources/:id' , component: TeacherLessonsView }
+    {path: 'teacher/resources/:id' , component: TeacherLessonsView },
+    {path: 'teacher/cohorts', component: TeacherCohortsList}
 
 
 ];
