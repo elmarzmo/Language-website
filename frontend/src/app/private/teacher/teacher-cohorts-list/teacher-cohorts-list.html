@@ -1,0 +1,119 @@
+<div class="cohort-list-container">
+
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Cohorts</h1>
+      <p class="page-subtitle">Manage and organize student groups</p>
+    </div>
+    <a routerLink="/admin/cohorts/create" class="btn btn-primary">
+      + Create Cohort
+    </a>
+  </div>
+
+  <!-- Filter & Search Bar -->
+  <div class="filter-section">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (input)="onSearch()" 
+        placeholder="Search by cohort name, level, or teacher name..."
+        class="search-input"
+      >
+    </div>
+    <div class="stats-display">
+      <span class="stat-label">Total Cohorts:</span>
+      <span class="stat-value">{{ filteredCohorts.length }}</span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading cohorts...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredCohorts.length === 0" class="empty-state">
+    <div class="empty-icon">👥</div>
+    <h3 class="empty-title">No Cohorts Found</h3>
+    <p class="empty-text" *ngIf="searchQuery">No cohorts matching "{{ searchQuery }}"</p>
+    <p class="empty-text" *ngIf="!searchQuery">Get started by creating your first cohort</p>
+    <button (click)="searchQuery = ''; onSearch()" class="btn btn-primary" *ngIf="searchQuery">
+      Clear Search
+    </button>
+    <a routerLink="/admin/cohorts/create" class="btn btn-primary" *ngIf="!searchQuery">
+      Create First Cohort
+    </a>
+  </div>
+
+  <!-- Cohorts Grid -->
+  <div class="cohorts-grid" *ngIf="!isLoading && filteredCohorts.length > 0">
+    <div class="cohort-card" *ngFor="let cohort of filteredCohorts; let i = index; trackBy: trackCohortById">
+      
+      <!-- Card Number Badge -->
+      <div class="cohort-badge">{{ i + 1 }}</div>
+
+      <!-- Card Header -->
+      <div class="card-header">
+        <h3 class="cohort-name">{{ cohort.name }}</h3>
+        <span class="level-badge" [class]="getLevelBadgeColor(cohort.level)">
+          {{ cohort.level }}
+        </span>
+      </div>
+
+      <!-- Card Content -->
+      <div class="card-content">
+        
+        <!-- Teacher Info -->
+        <div class="info-block">
+          <span class="info-icon">👨‍🏫</span>
+          <div class="info-text">
+           <p class="info-label">Teacher</p>
+           <p class="info-value">
+            {{ teacherMap[cohort.teacherId] || 'Unknown Teacher' }}
+          </p>
+
+          <p class="info-label">Teacher ID</p>
+          <p class="info-value">{{ cohort.teacherId }}</p>
+          </div>
+        </div>
+
+        <!-- Students Info -->
+        <div class="info-block">
+          <span class="info-icon">👥</span>
+          <div class="info-text">
+            <p class="info-label">Students Enrolled</p>
+            <p class="info-value">{{ getStudentStatus(cohort) }}</p>
+          </div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="info-block">
+          <span class="info-icon">📅</span>
+          <div class="info-text">
+            <p class="info-label">Start Date</p>
+            <p class="info-value">{{ cohort.startDate | date:'MMM d, yyyy' }}</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Card Actions -->
+      <div class="card-actions">
+        <a [routerLink]="['/admin/cohorts', cohort.id, 'edit']" class="btn-action edit">
+          ✏️ Edit
+        </a>
+        <button 
+          (click)="confirmDelete(cohort.id)" 
+          class="btn-action delete">
+          🗑️ Delete
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
