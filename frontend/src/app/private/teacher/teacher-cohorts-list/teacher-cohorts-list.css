@@ -1,0 +1,64 @@
+.name-display-group, .meeting-display-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-inline-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.btn-inline-edit:hover {
+  opacity: 1;
+}
+
+.inline-edit-form {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inline-input {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.btn-save, .btn-cancel {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px;
+}
+
+.meeting-link-anchor {
+  color: #0066cc;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.no-link-text {
+  color: #888;
+  font-style: italic;
+}
+
+.btn-action.view-details {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: background-color 0.2s;
+}
+
+.btn-action.view-details:hover {
+  background-color: #e5e7eb;
+}
