@@ -1,3 +1,5 @@
+import { ClassSession } from "./classSession.model";
+
 export type CohortLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
 
 export interface Cohort{
@@ -9,4 +11,5 @@ export interface Cohort{
     studentIds?: string[];
     startDate: string;
     active?:boolean;
+    upcomingSession?: ClassSession;
 }
