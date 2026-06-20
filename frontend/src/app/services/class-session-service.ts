@@ -12,7 +12,7 @@ export class ClassSessionService {
 
   constructor(private http: HttpClient) {}
 
-  getSessionByTeacher(teacherId: string): Observable<ClassSession[]> {
+  getSessionsByTeacher(teacherId: string): Observable<ClassSession[]> {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/teacher/sessions?teacherId=${teacherId}`);
 
   }
