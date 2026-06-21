@@ -14,11 +14,11 @@ export class CohortService {
 
 
       getAllCohorts(): Observable<Cohort[]>{
-          return this.http.get<Cohort[]>(`${this.apiUrl}/admin/cohorts`);
+          return this.http.get<Cohort[]>(`${this.apiUrl}/teacher/cohorts`);
         }
 
       updateCohort(cohortId: string, payload: Partial<Cohort>): Observable<Cohort> {
-          return this.http.put<Cohort>(`${this.apiUrl}/admin/cohorts/${cohortId}/update`, payload);
+          return this.http.put<Cohort>(`${this.apiUrl}/teacher/cohorts/${cohortId}/update`, payload);
         }
   
 }
