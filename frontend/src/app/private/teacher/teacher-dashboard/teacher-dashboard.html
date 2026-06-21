@@ -1,157 +1,140 @@
+<!-- teacher-dashboard.html -->
+
 <div class="dashboard-container">
 
-  <!-- Header -->
+  <!-- ── HEADER ── -->
   <div class="dashboard-header">
     <div class="header-left">
-      <h1 class="welcome-title">Welcome, {{ teacherName || 'Teacher' }} 👋</h1>
+      <h1 class="welcome-title">Welcome back, {{ teacherName || 'Teacher' }} 👋</h1>
       <p class="current-date">{{ currentTime }}</p>
     </div>
     <button class="btn-logout" (click)="logout()">
       <span>Logout</span>
-      <span class="icon">🚪</span>
     </button>
   </div>
 
-  <!-- Loading State -->
+  <!-- ── LOADING ── -->
   <div *ngIf="isLoading" class="loading">
     <div class="spinner"></div>
     <p>Syncing your teaching workspace...</p>
   </div>
 
-  <!-- Quick Stats -->
-  <div class="quick-stats" *ngIf="!isLoading">
-    <div class="stat-card">
-      <div class="stat-icon">👥</div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ cohortCount }}</h3>
-        <p class="stat-label">Cohorts Managed</p>
+  <ng-container *ngIf="!isLoading">
+
+    <!-- ── STATS ROW ── -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon-wrap purple">👥</div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ cohortCount }}</h3>
+          <p class="stat-label">Cohorts managed</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap blue">🎓</div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ studentCount }}</h3>
+          <p class="stat-label">Total students</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap teal">📅</div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ upcomingClasses.length }}</h3>
+          <p class="stat-label">Upcoming sessions</p>
+        </div>
       </div>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-icon">👨‍🎓</div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ studentCount }}</h3>
-        <p class="stat-label">Total Students</p>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">📅</div>
-      <div class="stat-content">
-        <h3 class="stat-number">{{ upcomingClasses.length }}</h3>
-        <p class="stat-label">Upcoming Sessions</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Management Section -->
-  <div class="management-section" *ngIf="!isLoading">
-    <div class="section-header">
-      <h2 class="section-title">🎯 Teaching Workspace</h2>
-      <p class="section-subtitle">Manage your resources, cohorts, and classes</p>
-    </div>
-
-    <!-- Management Cards -->
-    <div class="management-cards">
-      <!-- My Resources Card -->
-      <a 
-        routerLink="/teacher/resources" 
-        class="management-card card-link">
-        <div class="card-icon">📚</div>
-        <h3 class="card-title">My Resources</h3>
-        <p class="card-description">View all assigned lessons and educational material</p>
-        <div class="card-stats">
-          <span class="stat-number">{{ lessons.length }}</span>
-          <span class="stat-label">lessons available</span>
-        </div>
-        <div class="btn btn-secondary btn-full">
-          View Curriculum →
-        </div>
-      </a>
-
-      <!-- My Cohorts Card -->
-      <a 
-        routerLink="/teacher/cohorts" 
-        class="management-card card-link">
-        <div class="card-icon">👥</div>
-        <h3 class="card-title">My Cohorts</h3>
-        <p class="card-description">View active learning groups and progress reports</p>
-        <div class="card-stats">
-          <span class="stat-number">{{ cohortCount }}</span>
-          <span class="stat-label">cohorts managed</span>
-        </div>
-        <div class="btn btn-secondary btn-full">
-          View Cohorts →
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!-- Upcoming Classes Section -->
-  <div class="dashboard-main" *ngIf="!isLoading">
+    <!-- ── TEACHING WORKSPACE ── -->
     <div class="section">
       <div class="section-header">
-        <h2 class="section-title">🖥️ Your Upcoming Classes</h2>
+        <h2 class="section-title">Teaching workspace</h2>
+        <p class="section-subtitle">Manage your resources, cohorts, and classes</p>
+      </div>
+
+      <div class="mgmt-grid">
+        <a routerLink="/teacher/resources" class="mgmt-card">
+          <div class="mgmt-top">
+            <div class="mgmt-icon purple">📚</div>
+            <div class="mgmt-count-block">
+              <span class="mgmt-count">{{ lessons.length }}</span>
+              <span class="mgmt-count-label">lessons</span>
+            </div>
+          </div>
+          <h3 class="mgmt-title">My resources</h3>
+          <p class="mgmt-desc">View all assigned lessons and educational material for your cohorts.</p>
+          <span class="mgmt-link">View curriculum →</span>
+        </a>
+
+        <a routerLink="/teacher/cohorts" class="mgmt-card">
+          <div class="mgmt-top">
+            <div class="mgmt-icon blue">👥</div>
+            <div class="mgmt-count-block">
+              <span class="mgmt-count">{{ cohortCount }}</span>
+              <span class="mgmt-count-label">cohorts</span>
+            </div>
+          </div>
+          <h3 class="mgmt-title">My cohorts</h3>
+          <p class="mgmt-desc">View active learning groups, student rosters, and progress reports.</p>
+          <span class="mgmt-link">View cohorts →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── UPCOMING CLASSES ── -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Upcoming classes</h2>
         <p class="section-subtitle">Launch your scheduled sessions to host live instruction</p>
       </div>
 
-      <!-- Empty State -->
       <div *ngIf="upcomingClasses.length === 0" class="empty-state">
-        <div class="empty-icon">📚</div>
-        <h3 class="empty-title">No Upcoming Sessions</h3>
-        <p class="empty-text">No upcoming live sessions found on your schedule roster</p>
+        <div class="empty-icon">📭</div>
+        <p class="empty-title">No upcoming sessions</p>
+        <p class="empty-text">No live sessions found on your schedule</p>
       </div>
 
-      <!-- Class List -->
       <div class="class-list" *ngIf="upcomingClasses.length > 0">
-        <div 
-          *ngFor="let c of upcomingClasses" 
+        <div
+          *ngFor="let c of upcomingClasses"
           class="class-card"
-          [class]="'status-' + getClassStatus(c).toLowerCase()">
+          [ngClass]="'accent-' + getClassStatus(c).toLowerCase()">
 
-          <!-- Status Indicator -->
-          <div class="status-indicator">
-            <span class="status-badge" [class]="'badge-' + getClassStatus(c).toLowerCase()">
-              {{ getClassStatus(c) }}
-            </span>
-          </div>
-
-          <!-- Card Header -->
-          <div class="class-header">
-            <div class="header-content">
-              <h3 class="lesson-display-name">
-                {{ getLessonInfo(c.lessonModuleId)?.title || 'Special Session' }}
-              </h3>
-              <p class="class-date">
-                {{ c.dateTime | date:'MMM d, yyyy h:mm a' }}
-              </p>
-              <p class="class-duration">
-                ⏱️ {{ c.durationMinutes }} minutes
-              </p>
+          <div class="class-left">
+            <h3 class="class-name">
+              {{ getLessonInfo(c.lessonModuleId)?.title || 'Special Session' }}
+            </h3>
+            <div class="class-meta">
+              <span>📅 {{ c.dateTime | date:'MMM d, yyyy h:mm a' }}</span>
+              <span>⏱️ {{ c.durationMinutes }} min</span>
             </div>
           </div>
 
-          <!-- Card Actions -->
-          <div class="class-actions">
-            <button 
-              class="btn btn-primary"
+          <div class="class-right">
+            <span class="status-badge" [ngClass]="'badge-' + getClassStatus(c).toLowerCase()">
+              {{ getClassStatus(c) === 'LIVE' ? 'Live now' : getClassStatus(c) === 'UPCOMING' ? 'Upcoming' : 'Completed' }}
+            </span>
+
+            <button
+              class="btn-start"
               (click)="joinClass(c)"
               *ngIf="getClassStatus(c) !== 'PAST'">
-              🎥 Start Class
+              🎥 Start class
             </button>
 
-            <button 
-              class="btn btn-secondary"
+            <button
+              class="btn-done"
               disabled
               *ngIf="getClassStatus(c) === 'PAST'">
-              ✓ Completed
+              ✓ Done
             </button>
           </div>
 
         </div>
       </div>
     </div>
-  </div>
+
+  </ng-container>
 
 </div>
