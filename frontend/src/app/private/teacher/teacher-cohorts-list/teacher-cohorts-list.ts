@@ -1,68 +1,99 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
-import { Cohort } from '../../../model/cohort.model';
-import { ClassSession } from '../../../model/classSession.model';
-import { CohortService } from '../../../services/cohort-service';
-import { ClassSessionService } from '../../../services/class-session-service'
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 
+import { Cohort } from '../../../model/cohort.model';
+import { ClassSession } from '../../../model/classSession.model';
+
+import { CohortService } from '../../../services/cohort-service';
+import { ClassSessionService } from '../../../services/class-session-service';
+import { Auth } from '../../../services/auth';
+
 @Component({
   selector: 'app-teacher-cohorts-list',
+  standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './teacher-cohorts-list.html',
-  styleUrl: './teacher-cohorts-list.css', 
+  styleUrls: ['./teacher-cohorts-list.css']
 })
 export class TeacherCohortsList implements OnInit {
+
   cohorts: Cohort[] = [];
   filteredCohorts: Cohort[] = [];
+
   isLoading = true;
-  searchQuery: string = '';
-  
-  // Track which cohort is currently having its name edited inline
+  searchQuery = '';
+
+  teacherId = '';
+  teacherName = '';
+
   editingCohortId: string | null = null;
-  tempName: string = '';
+  tempName = '';
 
-  // Track session meeting link editing inline using the session ID
   editingSessionId: string | null = null;
-  tempMeetingLink: string = '';
-
-  // Replace this with your actual Auth/Session Service logic to get the logged-in teacher's ID
-  currentTeacherId: string = 'TEACHER_ID_FROM_AUTH_SERVICE'; 
+  tempMeetingLink = '';
 
   constructor(
+    private auth: Auth,
     private cohortService: CohortService,
-    private sessionService: ClassSessionService
+    private sessionService: ClassSessionService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadTeacherDashboardData();
+    this.loadTeacherProfile();
   }
 
-  loadTeacherDashboardData(): void {
+  private loadTeacherProfile(): void {
+    this.auth.getCurrentUser().subscribe({
+      next: (user: any) => {
+        this.teacherId = user.id;
+        this.teacherName = user.username;
+
+        this.loadTeacherDashboardData();
+      },
+      error: () => {
+        this.router.navigate(['/signin']);
+      }
+    });
+  }
+
+  private loadTeacherDashboardData(): void {
     this.isLoading = true;
 
     forkJoin({
       allCohorts: this.cohortService.getAllCohorts(),
-      allSessions: this.sessionService.getSessionsByTeacher(this.currentTeacherId)
+      allSessions: this.sessionService.getSessionsByTeacher(this.teacherId)
     }).subscribe({
       next: ({ allCohorts, allSessions }) => {
-        // 1. Filter cohorts assigned to this teacher
-        this.cohorts = allCohorts.filter(c => c.teacherId === this.currentTeacherId);
 
-        // 2. Map the closest upcoming/active session to each cohort based on cohortId
+        this.cohorts = allCohorts.filter(
+          cohort => cohort.teacherId === this.teacherId
+        );
+
         this.cohorts.forEach(cohort => {
+
           cohort.upcomingSession = allSessions
-            .filter(s => s.cohortId === cohort.id && s.status === 'SCHEDULED')
-            .sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime())[0]; // Gets the soonest session
+            .filter(session =>
+              session.cohortId === cohort.id &&
+              session.status === 'SCHEDULED'
+            )
+            .sort(
+              (a, b) =>
+                new Date(a.dateTime).getTime() -
+                new Date(b.dateTime).getTime()
+            )[0];
+
         });
 
         this.filteredCohorts = [...this.cohorts];
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading dashboard datasets:', err);
+        console.error('Failed to load teacher cohorts:', err);
         this.isLoading = false;
       }
     });
@@ -70,76 +101,88 @@ export class TeacherCohortsList implements OnInit {
 
   onSearch(): void {
     const query = this.searchQuery.toLowerCase().trim();
+
     if (!query) {
-      this.filteredCohorts = this.cohorts;
+      this.filteredCohorts = [...this.cohorts];
       return;
     }
+
     this.filteredCohorts = this.cohorts.filter(cohort =>
       (cohort.name || '').toLowerCase().includes(query) ||
       (cohort.level || '').toLowerCase().includes(query)
     );
   }
 
-  // --- Inline Name Editing (Cohort Level) ---
-
   startEditName(cohort: Cohort): void {
-    this.editingCohortId = cohort.id || null;
+    this.editingCohortId = cohort.id ?? null;
     this.tempName = cohort.name;
   }
 
   saveName(cohort: Cohort): void {
-    if (!this.tempName.trim() || !cohort.id) return;
-    
-    this.cohortService.updateCohort(cohort.id, { name: this.tempName }).subscribe({
+
+    if (!cohort.id || !this.tempName.trim()) {
+      return;
+    }
+
+    this.cohortService.updateCohort(
+      cohort.id,
+      { name: this.tempName }
+    ).subscribe({
       next: () => {
         cohort.name = this.tempName;
         this.editingCohortId = null;
       },
-      error: (err) => console.error('Failed to update name:', err)
+      error: err => {
+        console.error('Failed to update cohort name:', err);
+      }
     });
   }
 
-  // --- Inline Meeting Link Editing (ClassSession Level) ---
-
   startEditMeeting(session: ClassSession): void {
-    this.editingSessionId = session.id || null;
-    this.tempMeetingLink = session.meetingLink || ''; 
+    this.editingSessionId = session.id ?? null;
+    this.tempMeetingLink = session.meetingLink || '';
   }
 
   saveMeetingLink(cohort: Cohort): void {
+
     const session = cohort.upcomingSession;
-    if (!session || !session.id) {
-      console.error('No class session instance available to link to.');
+
+    if (!session?.id) {
       return;
     }
 
-    this.sessionService.updateSession(session.id, { meetingLink: this.tempMeetingLink }).subscribe({
+    this.sessionService.updateSession(
+      session.id,
+      {
+        meetingLink: this.tempMeetingLink
+      }
+    ).subscribe({
       next: () => {
         session.meetingLink = this.tempMeetingLink;
         this.editingSessionId = null;
       },
-      error: (err) => console.error('Failed to update meeting link:', err)
+      error: err => {
+        console.error('Failed to update meeting link:', err);
+      }
     });
   }
 
-  // --- Helpers ---
-
   getLevelBadgeColor(level: string): string {
-    const colors: { [key: string]: string } = {
-      'BEGINNER': 'badge-beginner',
-      'INTERMEDIATE': 'badge-intermediate',
-      'ADVANCED': 'badge-advanced'
+    const colors: Record<string, string> = {
+      BEGINNER: 'badge-beginner',
+      INTERMEDIATE: 'badge-intermediate',
+      ADVANCED: 'badge-advanced'
     };
+
     return colors[level] || 'badge-beginner';
   }
 
   getStudentStatus(cohort: Cohort): string {
     const enrolled = cohort.studentIds?.length || 0;
-    const max = cohort.maxStudents;
-    return `${enrolled}/${max} Students`;
+    return `${enrolled}/${cohort.maxStudents} Students`;
   }
 
   trackCohortById(index: number, cohort: Cohort): string {
-    return cohort.id!;
+    return cohort.id ?? index.toString();
   }
 }

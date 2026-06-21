@@ -1,64 +1,438 @@
-.name-display-group, .meeting-display-group {
+/* teacher-cohorts-list.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500&display=swap');
+
+/* ══════════════════════════════════════
+   GLOBAL
+══════════════════════════════════════ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.cohort-list-container {
+  font-family: 'DM Sans', sans-serif;
+  background: #f7f5ff;
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ══════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════ */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ══════════════════════════════════════
+   TOOLBAR
+══════════════════════════════════════ */
+.toolbar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.btn-inline-edit {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 2px;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.btn-inline-edit:hover {
-  opacity: 1;
-}
-
-.inline-edit-form {
+.search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
 }
 
-.inline-input {
-  padding: 4px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.9rem;
+.search-icon {
+  position: absolute;
+  left: 11px;
+  font-size: 14px;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
-.btn-save, .btn-cancel {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 2px;
+.search-input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: #1a1a1a;
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.meeting-link-anchor {
-  color: #0066cc;
-  text-decoration: underline;
+.search-input:focus {
+  border-color: #7c6fcf;
+  box-shadow: 0 0 0 3px rgba(124, 111, 207, 0.1);
+}
+
+.count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #888;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.count-pill strong {
+  color: #1a1a1a;
   font-weight: 500;
 }
 
-.no-link-text {
+/* ══════════════════════════════════════
+   LOADING
+══════════════════════════════════════ */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  gap: 1rem;
   color: #888;
-  font-style: italic;
+  font-size: 14px;
 }
 
-.btn-action.view-details {
-  background-color: #f3f4f6;
-  color: #1f2937;
-  border: 1px solid #e5e7eb;
+.spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #e0dcf7;
+  border-top-color: #7c6fcf;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════ */
+.empty-state {
+  background: #ffffff;
+  border: 0.5px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.empty-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.empty-text {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* ══════════════════════════════════════
+   COHORTS GRID
+══════════════════════════════════════ */
+.cohorts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* ══════════════════════════════════════
+   COHORT CARD
+══════════════════════════════════════ */
+.cohort-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.07);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.15s ease;
+}
+
+.cohort-card:hover {
+  border-color: rgba(124, 111, 207, 0.25);
+}
+
+/* Card top row */
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card-top-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cohort-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f0eeff;
+  color: #7c6fcf;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cohort-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-icon-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 4px;
+  opacity: 0.4;
+  border-radius: 4px;
+  transition: opacity 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.btn-icon-edit:hover {
+  opacity: 1;
+  background: #f0eeff;
+}
+
+/* Level badges */
+.level-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge-beginner    { background: #E1F5EE; color: #085041; }
+.badge-intermediate { background: #f0eeff; color: #3C3489; }
+.badge-advanced    { background: #FAEEDA; color: #633806; }
+
+/* Divider */
+.card-divider {
+  height: 0.5px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* ── Info rows ── */
+.info-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.info-icon-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #fafaf8;
+  border: 0.5px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.info-value {
+  font-size: 13px;
+  color: #1a1a1a;
+}
+
+.meeting-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meeting-link {
+  font-size: 13px;
+  color: #7c6fcf;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.meeting-link:hover {
+  text-decoration: underline;
+}
+
+.no-link-text {
+  font-size: 13px;
+  color: #bbb;
+}
+
+/* ── Inline edit form ── */
+.inline-edit-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.inline-input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  color: #1a1a1a;
+  background: #fafaf8;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
-  padding: 8px 12px;
-  transition: background-color 0.2s;
+  outline: none;
+  min-width: 0;
+  transition: border-color 0.15s ease;
 }
 
-.btn-action.view-details:hover {
-  background-color: #e5e7eb;
+.inline-input:focus {
+  border-color: #7c6fcf;
+}
+
+.btn-save {
+  background: #7c6fcf;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.btn-save:hover {
+  background: #6a5dbf;
+}
+
+.btn-cancel {
+  background: #f2f2f2;
+  color: #888;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.btn-cancel:hover {
+  background: #e8e8e8;
+}
+
+/* ── View details button ── */
+.btn-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #fafaf8;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.btn-view:hover {
+  background: #f0eeff;
+  border-color: rgba(124, 111, 207, 0.25);
+  color: #7c6fcf;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .cohort-list-container {
+    padding: 1.25rem;
+  }
+
+  .cohorts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .count-pill {
+    justify-content: center;
+  }
 }

@@ -1,120 +1,143 @@
+<!-- teacher-cohorts-list.html -->
+
 <div class="cohort-list-container">
 
-  <div class="header-section">
-    <div class="header-content">
-      <h1 class="page-title">My Cohorts</h1>
-      <p class="page-subtitle">Manage your active classes, updates, and schedule</p>
-    </div>
+  <!-- ── PAGE HEADER ── -->
+  <div class="page-header">
+    <h1 class="page-title">My cohorts</h1>
+    <p class="page-subtitle">Manage your active classes, updates, and schedule</p>
   </div>
 
-  <div class="filter-section">
-    <div class="search-wrapper">
+  <!-- ── TOOLBAR ── -->
+  <div class="toolbar">
+    <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input 
-        type="text" 
-        [(ngModel)]="searchQuery" 
-        (input)="onSearch()" 
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
         placeholder="Search by cohort name or level..."
         class="search-input"
-      >
+      />
     </div>
-    <div class="stats-display">
-      <span class="stat-label">Your Classes:</span>
-      <span class="stat-value">{{ filteredCohorts.length }}</span>
+    <div class="count-pill">
+      Your classes: <strong>{{ filteredCohorts.length }}</strong>
     </div>
   </div>
 
+  <!-- ── LOADING ── -->
   <div *ngIf="isLoading" class="loading-state">
     <div class="spinner"></div>
     <p>Loading your schedule...</p>
   </div>
 
+  <!-- ── EMPTY STATE ── -->
   <div *ngIf="!isLoading && filteredCohorts.length === 0" class="empty-state">
     <div class="empty-icon">🎓</div>
-    <h3 class="empty-title">No Cohorts Assigned</h3>
+    <h3 class="empty-title">No cohorts assigned</h3>
     <p class="empty-text">You are not currently assigned to any active cohorts.</p>
   </div>
 
+  <!-- ── COHORTS GRID ── -->
   <div class="cohorts-grid" *ngIf="!isLoading && filteredCohorts.length > 0">
-    <div class="cohort-card" *ngFor="let cohort of filteredCohorts; let i = index; trackBy: trackCohortById">
-      
-      <div class="cohort-badge">{{ i + 1 }}</div>
+    <div
+      class="cohort-card"
+      *ngFor="let cohort of filteredCohorts; let i = index; trackBy: trackCohortById">
 
-      <div class="card-header">
-        <div *ngIf="editingCohortId !== cohort.id; else editNameTpl" class="name-display-group">
-          <h3 class="cohort-name">{{ cohort.name }}</h3>
-          <button class="btn-inline-edit" (click)="startEditName(cohort)">✏️</button>
+      <!-- Card top: number badge + name + level -->
+      <div class="card-top">
+        <div class="card-top-left">
+          <div class="cohort-num">{{ i + 1 }}</div>
+
+          <ng-container *ngIf="editingCohortId !== cohort.id; else editNameTpl">
+            <span class="cohort-name">{{ cohort.name }}</span>
+            <button class="btn-icon-edit" (click)="startEditName(cohort)" title="Edit name">✏️</button>
+          </ng-container>
+
+          <ng-template #editNameTpl>
+            <div class="inline-edit-form">
+              <input [(ngModel)]="tempName" class="inline-input" type="text" />
+              <button class="btn-save" (click)="saveName(cohort)">✔️</button>
+              <button class="btn-cancel" (click)="editingCohortId = null">✕</button>
+            </div>
+          </ng-template>
         </div>
-        <ng-template #editNameTpl>
-          <div class="inline-edit-form">
-            <input [(ngModel)]="tempName" class="inline-input" type="text" />
-            <button class="btn-save" (click)="saveName(cohort)">✔️</button>
-            <button class="btn-cancel" (click)="editingCohortId = null">❌</button>
-          </div>
-        </ng-template>
 
         <span class="level-badge" [class]="getLevelBadgeColor(cohort.level)">
           {{ cohort.level }}
         </span>
       </div>
 
-      <div class="card-content">
-        
-        <div class="info-block">
-          <span class="info-icon">👥</span>
-          <div class="info-text">
-            <p class="info-label">Roster Enrollment</p>
-            <p class="info-value">{{ getStudentStatus(cohort) }}</p>
+      <div class="card-divider"></div>
+
+      <!-- Info rows -->
+      <div class="info-rows">
+
+        <div class="info-row">
+          <div class="info-icon-wrap">👥</div>
+          <div class="info-body">
+            <span class="info-label">Roster</span>
+            <span class="info-value">{{ getStudentStatus(cohort) }}</span>
           </div>
         </div>
 
-        <div class="info-block">
-          <span class="info-icon">📅</span>
-          <div class="info-text">
-            <p class="info-label">Term Commencement</p>
-            <p class="info-value">{{ cohort.startDate | date:'MMM d, yyyy' }}</p>
+        <div class="info-row">
+          <div class="info-icon-wrap">📅</div>
+          <div class="info-body">
+            <span class="info-label">Term start</span>
+            <span class="info-value">{{ cohort.startDate | date:'MMM d, yyyy' }}</span>
           </div>
         </div>
 
-        <div class="info-block">
-          <span class="info-icon">🔗</span>
-          <div class="info-text" style="width: 100%;">
-            <p class="info-label">Next Scheduled Session Meeting Link</p>
-            
-            <div *ngIf="cohort.upcomingSession; else noSessionTpl">
-              
-              <div *ngIf="editingSessionId !== cohort.upcomingSession.id; else editMeetingTpl" class="meeting-display-group">
-                <a *ngIf="cohort.upcomingSession.meetingLink" [href]="cohort.upcomingSession.meetingLink" target="_blank" class="meeting-link-anchor">
-                  Join Scheduled Session
-                </a>
-                <span *ngIf="!cohort.upcomingSession.meetingLink" class="no-link-text">No link set for this session</span>
-                <button class="btn-inline-edit" (click)="startEditMeeting(cohort.upcomingSession)">✏️</button>
-              </div>
-              
+        <div class="info-row">
+          <div class="info-icon-wrap">🔗</div>
+          <div class="info-body" style="min-width: 0; flex: 1;">
+            <span class="info-label">Next session link</span>
+
+            <ng-container *ngIf="cohort.upcomingSession; else noSessionTpl">
+              <ng-container *ngIf="editingSessionId !== cohort.upcomingSession.id; else editMeetingTpl">
+                <div class="meeting-display">
+                  <a
+                    *ngIf="cohort.upcomingSession.meetingLink"
+                    [href]="cohort.upcomingSession.meetingLink"
+                    target="_blank"
+                    class="meeting-link">
+                    Join session →
+                  </a>
+                  <span *ngIf="!cohort.upcomingSession.meetingLink" class="no-link-text">
+                    No link set
+                  </span>
+                  <button class="btn-icon-edit" (click)="startEditMeeting(cohort.upcomingSession)" title="Edit link">✏️</button>
+                </div>
+              </ng-container>
+
               <ng-template #editMeetingTpl>
                 <div class="inline-edit-form">
-                  <input [(ngModel)]="tempMeetingLink" placeholder="https://meet.google.com/..." class="inline-input" type="text" />
+                  <input
+                    [(ngModel)]="tempMeetingLink"
+                    placeholder="https://meet.google.com/..."
+                    class="inline-input"
+                    type="text" />
                   <button class="btn-save" (click)="saveMeetingLink(cohort)">✔️</button>
-                  <button class="btn-cancel" (click)="editingSessionId = null">❌</button>
+                  <button class="btn-cancel" (click)="editingSessionId = null">✕</button>
                 </div>
               </ng-template>
-
-            </div>
+            </ng-container>
 
             <ng-template #noSessionTpl>
-              <span class="no-link-text">No active scheduled class session found.</span>
+              <span class="no-link-text">No session scheduled</span>
             </ng-template>
           </div>
         </div>
 
       </div>
 
-      <div class="card-actions">
-        <a [routerLink]="['/teacher/cohorts', cohort.id]" class="btn-action view-details" style="width: 100%; text-align: center;">
-          👁️ View Details & Full Information
-        </a>
-      </div>
+      <!-- View details button -->
+      <a [routerLink]="['/teacher/cohorts', cohort.id]" class="btn-view">
+        View details →
+      </a>
 
-    </div> </div>
+    </div>
+  </div>
 
 </div>
