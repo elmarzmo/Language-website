@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.speakup.dto.ClassSessionDTO;
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.TeacherDashboardDTO;
 import com.speakup.dto.UpdateCohortRequest;
+import com.speakup.dto.UpdateMeetingLinkRequest;
+
 import com.speakup.model.LessonModule;
 import com.speakup.service.ClassSessionService;
 import com.speakup.service.CohortService;
@@ -66,11 +68,11 @@ public class TeacherController {
 
 
     // Update session status
-    @PutMapping("/sessions/{sessionId}/update")
-    public ClassSessionDTO updateStatus(
+    @PutMapping("/sessions/{sessionId}/meeting-link")
+    public ClassSessionDTO updateMeetingLink(
             @PathVariable String sessionId,
-            @RequestParam String status) {
-        return classSessionService.updateStatus(sessionId, status);
+            @RequestBody UpdateMeetingLinkRequest request) {
+        return classSessionService.updateMeetingLink(sessionId, request.getMeetingLink());
     }
 
 
