@@ -18,7 +18,7 @@ export class ClassSessionService {
   }
 
   updateSession(sessionId: string, payload: Partial<ClassSession>): Observable<ClassSession> {
-    return this.http.put<ClassSession>(`${this.apiUrl}/teacher/sessions/${sessionId}/update`, payload);
+    return this.http.put<ClassSession>(`${this.apiUrl}/teacher/sessions/${sessionId}/meeting-link`, payload);
   }
   
 }
