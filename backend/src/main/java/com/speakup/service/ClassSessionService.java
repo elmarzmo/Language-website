@@ -95,6 +95,18 @@ public class ClassSessionService {
         classSessionRepository.deleteById(sessionId);
     }
 
+    public ClassSessionDTO updateMeetingLink(String sessionId, String meetingLink) {
+        ClassSession session = classSessionRepository.findById(sessionId)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+       
+        session.setMeetingLink(meetingLink);
+
+        ClassSession saved = classSessionRepository.save(session);
+
+       
+        return mapToDTO(saved);
+
+    }
 
 
     // mapper
