@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.speakup.dto.AdminDashboardDTO;
 import com.speakup.dto.ClassSessionDTO;
+import com.speakup.dto.ClassSessionListDTO;
 import com.speakup.model.LessonModule;
 import com.speakup.model.User;
 import com.speakup.service.ClassSessionService;
@@ -90,6 +91,12 @@ public class AdminDashboardController {
     @PutMapping("/lessons/{id}")
     public ResponseEntity<LessonModule> updateLesson(@PathVariable String id, @RequestBody LessonModule lesson) {
         return  ResponseEntity.ok(lessonService.updateLesson(id, lesson));
+    }
+
+
+    @GetMapping("/classes-list")
+    public List<ClassSessionListDTO> getAllClassSessions() {
+        return classSessionService.getAllClassSessions();
     }
 
     @GetMapping("/students")

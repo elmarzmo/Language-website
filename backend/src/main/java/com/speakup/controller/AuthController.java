@@ -52,7 +52,7 @@ public class AuthController {
 
             }
             // force STUDENT role
-            user.setRole(Role.TEACHER);
+            user.setRole(Role.STUDENT);
 
             user.setPassword(
                 passwordEncoder.encode(user.getPassword())
