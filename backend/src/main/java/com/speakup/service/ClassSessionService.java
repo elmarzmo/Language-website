@@ -1,5 +1,6 @@
 package com.speakup.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,7 +113,39 @@ public class ClassSessionService {
 
     }
 
-    
+public void updateCompletedSessions() {
+
+    LocalDateTime now = LocalDateTime.now();
+
+    List<ClassSession> sessions = classSessionRepository.findAll();
+
+    for(ClassSession session : sessions) {
+
+        LocalDateTime start = session.getDateTime();
+
+        LocalDateTime end = start.plusMinutes(
+                session.getDurationMinutes()
+        );
+
+
+        if(now.isAfter(end) &&
+           session.getStatus() != ClassSession.Status.COMPLETED) {
+
+            session.setStatus(ClassSession.Status.COMPLETED);
+            classSessionRepository.save(session);
+
+        }
+        else if(now.isAfter(start)
+                && now.isBefore(end)
+                && session.getStatus() == ClassSession.Status.SCHEDULED) {
+
+            session.setStatus(ClassSession.Status.ONGOING);
+            classSessionRepository.save(session);
+        }
+    }
+}
+
+
 
     // mapper
     private ClassSessionDTO mapToDTO(ClassSession session) {
