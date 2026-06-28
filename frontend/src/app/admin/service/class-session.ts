@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ClassSession } from '../models/class-session.model';
 import { Observable } from 'rxjs';
+import { ClassSessionList } from '../../model/ClassSessionList.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +21,8 @@ export class ClassSessionService {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/all`);
   }
 
-  getAllClassSessions(): Observable<ClassSession[]> {
-    return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/admin`);
+  getAllClassSessions(): Observable<ClassSessionList[]> {
+    return this.http.get<ClassSessionList[]>(`${this.apiUrl}/admin/classes-list`);
   }
   getSessionsByStudent(studentId: string): Observable<ClassSession[]> {
     return this.http.get<ClassSession[]>(`${this.apiUrl}/class-sessions/students/${studentId}`);
@@ -38,5 +39,7 @@ export class ClassSessionService {
   deleteClassSession(sessionId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/class-sessions/${sessionId}`);
   }
+
+  
 
 }
