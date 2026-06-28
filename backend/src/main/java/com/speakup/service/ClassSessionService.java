@@ -9,15 +9,19 @@ import com.speakup.dto.ClassSessionDTO;
 import com.speakup.dto.ClassSessionListDTO;
 import com.speakup.dto.CreateClassSessionRequest;
 import com.speakup.model.ClassSession;
+import com.speakup.model.Cohort;
 import com.speakup.repository.ClassSessionRepository;
+import com.speakup.repository.CohortRepository;
 
 @Service
 public class ClassSessionService {
 
     private final ClassSessionRepository classSessionRepository;
+    private final CohortRepository cohortRepository;
 
-    public ClassSessionService(ClassSessionRepository classSessionRepository) {
+    public ClassSessionService(ClassSessionRepository classSessionRepository, CohortRepository cohortRepository) {
         this.classSessionRepository = classSessionRepository;
+        this.cohortRepository = cohortRepository;
     }
 
     // Create, update, delete class sessions would go here (ADMIN)
@@ -108,6 +112,7 @@ public class ClassSessionService {
 
     }
 
+    
 
     // mapper
     private ClassSessionDTO mapToDTO(ClassSession session) {
@@ -128,6 +133,10 @@ public class ClassSessionService {
 
     // NEW: Distinct mapper targeting the admin list DTO structure
     private ClassSessionListDTO mapToClassListDTO(ClassSession session) {
+
+         System.out.println("Session ID: " + session.getId());
+            System.out.println("Cohort ID: " + session.getCohortId());
+
         ClassSessionListDTO dto = new ClassSessionListDTO();
         
         dto.setId(session.getId());
@@ -142,8 +151,20 @@ public class ClassSessionService {
         dto.setCohortName("Cohort ID: " + session.getCohortId());
         dto.setLessonModuleTitle("Lesson ID: " + session.getLessonModuleId());
         
-        // Mocking student count until collection fields are ready
-        dto.setEnrolledStudentCount(0); 
+       Cohort cohort = cohortRepository.findById(session.getCohortId())
+                .orElse(null);
+
+        if(cohort != null) {
+            dto.setCohortName(cohort.getName());
+
+            dto.setEnrolledStudentCount(
+                cohort.getStudentIds() == null ? 0 : cohort.getStudentIds().size());
+        } else {
+        
+            dto.setCohortName("Unknown");
+            dto.setEnrolledStudentCount(0);
+
+        }
 
         return dto;
     }
