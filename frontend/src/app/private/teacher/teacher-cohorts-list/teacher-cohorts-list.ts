@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 
@@ -15,7 +14,7 @@ import { Auth } from '../../../services/auth';
 @Component({
   selector: 'app-teacher-cohorts-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './teacher-cohorts-list.html',
   styleUrls: ['./teacher-cohorts-list.css']
 })

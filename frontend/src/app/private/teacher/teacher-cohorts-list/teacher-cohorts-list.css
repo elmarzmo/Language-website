@@ -205,6 +205,7 @@
   min-width: 0;
 }
 
+
 .cohort-num {
   width: 26px;
   height: 26px;
@@ -339,7 +340,13 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  width: 100%;
+  width: auto;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-top-left{
+  overflow: hidden;
 }
 
 .inline-input {

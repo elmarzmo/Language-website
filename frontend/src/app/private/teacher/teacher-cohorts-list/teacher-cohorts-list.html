@@ -132,10 +132,21 @@
 
       </div>
 
-      <!-- View details button -->
-      <a [routerLink]="['/teacher/cohorts', cohort.id]" class="btn-view">
-        View details →
-      </a>
+      <div>
+         <span class="info-label">Next Session Time</span>
+         <span 
+      class="info-value"
+      *ngIf="cohort.upcomingSession; else noTimeTpl">
+      {{ cohort.upcomingSession.dateTime | date:'MMM d, yyyy - h:mm a' }}
+    </span>
+
+    <ng-template #noTimeTpl>
+      <span class="no-link-text">
+        No session scheduled
+      </span>
+    </ng-template>
+
+      </div>
 
     </div>
   </div>
