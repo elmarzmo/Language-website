@@ -87,7 +87,15 @@ export class TeacherDashboard implements OnInit, OnDestroy {
     }).subscribe({
       next: (res) => {
         // Safe mappings from your Spring Boot model metrics response package
-        this.upcomingClasses = res.dashboardData.upcomingClasses || [];
+      
+
+       this.upcomingClasses = [
+        ...(res.dashboardData.upcomingClasses || [])
+      ]
+      .sort((a, b) => {
+        return new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime();
+      });
+
         this.cohortCount = res.dashboardData.cohortCount || 0;
         this.studentCount = res.dashboardData.studentCount || 0;
         
@@ -95,7 +103,7 @@ export class TeacherDashboard implements OnInit, OnDestroy {
         this.lessons = res.allLessons || [];
         
         this.isLoading = false;
-        console.log('Teacher Dashboard components synchronized with Java API.');
+        
       },
       error: (err) => {
         console.error('Failed to resolve sync pipeline for data models:', err);
