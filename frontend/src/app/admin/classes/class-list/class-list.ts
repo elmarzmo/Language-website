@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClassSession } from '../../models/class-session.model';
+import { ClassSessionList } from '../../../model/ClassSessionList.model';
 import { ClassSessionService } from '../../service/class-session';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -12,7 +12,8 @@ import { RouterLink } from '@angular/router';
 })
 export class ClassList implements OnInit {
 
-  classes: ClassSession[] = [];
+  classes: ClassSessionList[] = [];
+
   isLoading = true;
 
   constructor(
@@ -25,11 +26,12 @@ export class ClassList implements OnInit {
 
   loadClassSessions() {
     this.isLoading = true;
+   
     this.classSessionService.getAllClassSessions().subscribe({
       next: (data) => {
         this.classes = data;
         this.isLoading = false;
-        console.log("classes" + this.classes);
+        console.log(this.classes);
       },
       error: (err) => {
         console.error('Error fetching class sessions:', err);

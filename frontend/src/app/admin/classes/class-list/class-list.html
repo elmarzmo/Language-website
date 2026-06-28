@@ -36,65 +36,45 @@
 
       <!-- Card Content -->
       <div class="card-content">
-        
-        <!-- Lesson ID -->
-        <div class="info-block">
-          <span class="info-label">📚 Lesson ID</span>
-          <p class="info-value">{{ c.lessonModuleId }}</p>
-        </div>
+  
+  <div class="info-block">
+    <span class="info-label">📚 Lesson Module</span>
+    <p class="info-value">{{ c.lessonModuleTitle }}</p> 
+  </div>
 
-        <!-- Teacher ID -->
-        <div class="info-block">
-          <span class="info-label">👨‍🏫 Teacher</span>
-          <p class="info-value">{{ c.teacherId }}</p>
-        </div>
+  <div class="info-block">
+    <span class="info-label">👨‍🏫 Teacher</span>
+    <p class="info-value">{{ c.teacherName }}</p>
+  </div>
 
-        <!-- Date & Time -->
-        <div class="info-block">
-          <span class="info-label">📅 Date & Time</span>
-          <p class="info-value">{{ c.dateTime | date:'MMM d, yyyy h:mm a' }}</p>
-        </div>
+  <div class="info-block">
+    <span class="info-label">📅 Date & Time</span>
+    <p class="info-value">{{ c.dateTime | date:'MMM d, yyyy h:mm a' }}</p>
+  </div>
 
-        <!-- Students Count -->
-        <div class="info-block">
-          <span class="info-label">👥 Students Enrolled</span>
-          <p class="info-value">
-            <!--
-            <span class="student-count">{{ c.studentIds.length }}</span>
-            <span class="student-text">{{ c.studentIds.length === 1 ? 'student' : 'students' }}</span>
-          -->
-        
-          </p>
-        </div>
-       
-        <div class="info-block">
-          <span class="info-label"> Cohort</span>
-          <p class="info-value">{{ c.cohortId }}</p>
-        </div>
+  <div class="info-block">
+    <span class="info-label">👥 Students Enrolled</span>
+    <p class="info-value">
+      <span class="student-count">{{ c.enrolledStudentCount }}</span>
+      <span class="student-text">{{ c.enrolledStudentCount === 1 ? 'student' : 'students' }}</span>
+    </p>
+  </div>
+ 
+  <div class="info-block">
+    <span class="info-label">Cohort</span>
+    <p class="info-value">{{ c.cohortName }}</p>
+  </div>
 
-        <div class="info-block">
-          <span class="info-label"> Status</span>
-          <p class="info-value">{{ c.status }}</p>
-        </div>
-      </div>
-
-      <!-- Card Actions -->
-      <div class="card-actions">
-        <a 
-          [href]="c.meetingLink" 
-          target="_blank"
-          class="btn btn-secondary btn-sm"
-          *ngIf="c.meetingLink">
-          🔗 Join Meeting
-        </a>
-        <button class="btn btn-secondary btn-sm">
-          ✏️ Edit
-        </button>
-        <button class="btn btn-danger btn-sm" (click)="deleteClassSession(c.id)">
+  <div class="info-block">
+    <span class="info-label">Status</span>
+    <p class="info-value">{{ c.status }}</p>
+  </div>
+</div>
+<div>
+  <button class="btn btn-danger btn-sm" (click)="deleteClassSession(c.id)">
           🗑️ Delete
         </button>
       </div>
-
     </div>
   </div>
 
