@@ -1,7 +1,6 @@
 package com.speakup.service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +39,8 @@ public class StudentDashboardService {
         List<ClassSessionDTO> classes = classSessionRepository
             .findByCohortId(studentCohort.getId())
             .stream()
-            .filter(session -> session.getDateTime().isAfter(LocalDateTime.now()) && session.getStatus() == ClassSession.Status.SCHEDULED)
+            .filter(session ->  session.getStatus() == ClassSession.Status.SCHEDULED ||
+        session.getStatus() == ClassSession.Status.ONGOING)
             .map(this::mapToDTO)
             .collect(Collectors.toList());
 

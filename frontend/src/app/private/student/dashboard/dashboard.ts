@@ -82,7 +82,10 @@ export class Dashboard implements OnInit, OnDestroy {
           next: (res) => {
             this.dashboardData = res.dashboard;
             this.upcomingClasses = res.dashboard.upcomingClasses ?? [];
+
             this.lessons = res.allLessons;
+
+
 
             // isEnrolled is ONLY true when the dashboard API actually succeeded
             this.isEnrolled = this.dashboardLoaded;
@@ -147,17 +150,20 @@ export class Dashboard implements OnInit, OnDestroy {
     return icons[type] || '📎';
   }
 
-  getClassStatus(classSession: ClassSession): string {
-    if (classSession.status === 'COMPLETED' || classSession.status === 'CANCELLED') {
-      return 'PAST';
-    }
-    const now = new Date();
-    const classDate = new Date(classSession.dateTime);
-    if (classDate.toDateString() === now.toDateString()) {
-      return 'TODAY';
-    }
-    return 'UPCOMING';
+ getClassStatus(classSession: ClassSession): string {
+  if (classSession.status === 'COMPLETED' || classSession.status === 'CANCELLED') {
+    return 'PAST';
   }
+
+  const now = new Date();
+  const classDate = new Date(classSession.dateTime);
+
+  if (classDate.toDateString() === now.toDateString()) {
+    return 'TODAY';
+  }
+
+  return 'UPCOMING';
+}
 
   getLessonInfo(lessonId: string): LessonModule | null {
     return this.lessonLookup.get(lessonId) || null;
