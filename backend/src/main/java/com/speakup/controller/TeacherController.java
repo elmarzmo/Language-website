@@ -3,6 +3,7 @@ package com.speakup.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.speakup.dto.ClassSessionDTO;
+import com.speakup.dto.ClassSessionListDTO;
 import com.speakup.dto.CohortDTO;
 import com.speakup.dto.TeacherDashboardDTO;
 import com.speakup.dto.UpdateCohortRequest;
 import com.speakup.dto.UpdateMeetingLinkRequest;
-
 import com.speakup.model.LessonModule;
 import com.speakup.service.ClassSessionService;
 import com.speakup.service.CohortService;
@@ -65,6 +65,22 @@ public class TeacherController {
 
         return classSessionService.getSessionsByTeacher(teacherId);
     }
+
+     @GetMapping("/sessions/all")
+    public List<ClassSessionListDTO> getAllClassSessions(HttpServletRequest request) {
+      
+
+        return classSessionService.getAllClassSessions();
+    }
+
+    @DeleteMapping("/sessions/{sessionId}")
+    public ResponseEntity<Void> deleteClassSession(@PathVariable String sessionId) {
+
+        classSessionService.deleteSession(sessionId);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
     // Update session status
