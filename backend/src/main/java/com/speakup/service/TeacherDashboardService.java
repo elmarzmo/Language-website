@@ -1,6 +1,5 @@
 package com.speakup.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,23 +17,28 @@ public class TeacherDashboardService {
     private final CohortRepository cohortRepository;
 
     private final ClassSessionRepository classSessionRepository;
+    
+    private final ClassSessionService classSessionService;
 
-    public TeacherDashboardService( CohortRepository cohortRepository, ClassSessionRepository classSessionRepository) {
+    public TeacherDashboardService( CohortRepository cohortRepository, ClassSessionRepository classSessionRepository, ClassSessionService classSessionService) {
 
         this.cohortRepository = cohortRepository;
         this.classSessionRepository = classSessionRepository;
+        this.classSessionService = classSessionService;
+
 
     }
 
     public TeacherDashboardDTO getTeacherDashboard(String teacherId) {
 
+        classSessionService.updateCompletedSessions();;
+
+
         List<Cohort> cohorts = cohortRepository.findByTeacherId(teacherId);
 
-        List<ClassSessionDTO> upcomingClasses = classSessionRepository
+        List<ClassSessionDTO> classes  = classSessionRepository
                 .findByTeacherId(teacherId)
                 .stream()
-                .filter(session -> session.getDateTime()
-                                            .isAfter(LocalDateTime.now()))
                 .map(this::mapToDTO)
                 .toList();
 
@@ -42,7 +46,7 @@ public class TeacherDashboardService {
 
         TeacherDashboardDTO dto = new TeacherDashboardDTO();
 
-        dto.setUpcomingClasses(upcomingClasses);
+        dto.setUpcomingClasses(classes);
         dto.setCohortCount(cohorts.size());
         dto.setStudentCount(totalStudents);
 
