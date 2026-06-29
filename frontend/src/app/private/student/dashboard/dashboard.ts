@@ -81,7 +81,19 @@ export class Dashboard implements OnInit, OnDestroy {
         }).subscribe({
           next: (res) => {
             this.dashboardData = res.dashboard;
-            this.upcomingClasses = res.dashboard.upcomingClasses ?? [];
+           
+            const now = Date.now();
+            this.upcomingClasses = (res.dashboard.upcomingClasses ?? [])
+            .filter(c => {
+              const end =
+              new Date(c.dateTime).getTime() +
+              c.durationMinutes * 60 * 1000;
+              return end >= now;
+            })
+            .sort((a, b) =>
+              new Date(a.dateTime).getTime() -
+              new Date(b.dateTime).getTime()
+            )
 
             this.lessons = res.allLessons;
 
