@@ -147,6 +147,13 @@ export class TeacherDashboard implements OnInit, OnDestroy {
     }
   }
 
+  getUpcomingCount(): number {
+  return this.upcomingClasses.filter(c => {
+    const status = this.getClassStatus(c);
+    return status === 'UPCOMING' || status === 'LIVE';
+  }).length;
+}
+
   /**
    * Formats real-time text layouts
    */
