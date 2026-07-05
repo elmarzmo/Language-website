@@ -3,6 +3,7 @@ package com.speakup.controller;
 import java.util.List; // Import the DTO
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ import com.speakup.service.UserService;
 @RestController
 @RequestMapping("/api/admin")
 @CrossOrigin
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminDashboardController {
 
     
@@ -72,13 +74,13 @@ public class AdminDashboardController {
 
      // ADMIN: create lesson
     @PostMapping("/lessons/create")
-    public ResponseEntity<?> createLesson( @RequestBody LessonModule lesson) {
+    public ResponseEntity<LessonModule> createLesson( @RequestBody LessonModule lesson) {
 
         return ResponseEntity.ok(lessonService.createLesson(lesson));
     }
 
     @DeleteMapping("/lessons/{id}")
-    public ResponseEntity<?> deleteLesson( @PathVariable String id) {
+    public ResponseEntity<Void> deleteLesson( @PathVariable String id) {
         lessonService.deleteLesson(id);
         return ResponseEntity.noContent().build();
     }
@@ -100,7 +102,7 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/students")
-    public ResponseEntity<?> getAllStudents(){
+    public ResponseEntity<List<User>> getAllStudents(){
         return ResponseEntity.ok(userService.getAllStudents());
     }
 
@@ -111,7 +113,7 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/teachers")
-    public ResponseEntity<?> getAllTeachers(){
+    public ResponseEntity<List<User>> getAllTeachers(){
         return ResponseEntity.ok(userService.getAllTeachers());
     }
 
