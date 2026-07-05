@@ -2,6 +2,7 @@ package com.speakup.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,25 +33,21 @@ public class ClassSessionController {
 
     // Create Session
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ClassSessionDTO createSession(@Valid @RequestBody CreateClassSessionRequest request) {
         return classSessionService.createSession(request);
     }
 
-/* 
-    // Get student sessions
-    @GetMapping("/student/{studentId}")
-    public List<ClassSessionDTO> getSessionsByStudent(@PathVariable String studentId) {
-        return classSessionService.getSessionsByStudent(studentId);
-    }
-*/
     // Get teacher sessions
     @GetMapping("/teacher/{teacherId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public List<ClassSessionDTO> getSessionsByTeacher(@PathVariable String teacherId) {
         return classSessionService.getSessionsByTeacher(teacherId);
     }
 
     // Update session status
     @PutMapping("/{sessionId}/status")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ClassSessionDTO updateStatus(
             @PathVariable String sessionId,
             @RequestParam String status) {
@@ -59,16 +56,13 @@ public class ClassSessionController {
 
     // get all sessions (for admin)
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ClassSessionDTO> getAllSessions() {
         return classSessionService.getAllSessions();
     }
- /* 
-    @GetMapping("/admin")
-    public List<ClassSessionListDTO> getAllClassSessions() {
-        return classSessionService.getAllClassSessions();
-    }*/
-
+ 
     @DeleteMapping("/{sessionId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteSession(@PathVariable String sessionId) {
         classSessionService.deleteSession(sessionId);
     }
@@ -77,14 +71,3 @@ public class ClassSessionController {
 
 
 }
-/*
-next BCrypt password hashing
-
-later:
-Spring Security config
-Role-based route protection
-Refresh tokens
-Proper exception handling
-DTO validation
-Rate limiting on login
-Production deployment security */

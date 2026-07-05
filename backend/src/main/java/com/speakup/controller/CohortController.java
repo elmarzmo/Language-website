@@ -3,6 +3,7 @@ package com.speakup.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/admin/cohorts")
 @CrossOrigin
+@PreAuthorize("hasRole('ADMIN')")
 public class CohortController {
     private final CohortService cohortService;
     private final CohortRepository cohortRepository;
@@ -74,7 +76,7 @@ public class CohortController {
 
     @DeleteMapping("/{cohortId}")
     public ResponseEntity<Void> deleteCohort(@PathVariable String cohortId){
-        cohortRepository.deleteById(cohortId);
+        cohortService.deleteCohort(cohortId);
         return ResponseEntity.noContent().build();
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api/dashboard/student")
 @CrossOrigin
+@PreAuthorize("hasRole('STUDENT')")
 public class StudentDashboardController {
 
    
@@ -36,23 +38,13 @@ public class StudentDashboardController {
 
     @GetMapping
 
-    public ResponseEntity<?> getStudentDashboard(HttpServletRequest request) {
-
+    public ResponseEntity<StudentDashboardDTO> getStudentDashboard(HttpServletRequest request) {
 
         String studentId = (String) request.getAttribute("userId");
 
-
-        if (studentId == null) {
-
-            return ResponseEntity.status(401).body("Unauthorized: No user ID found in request");
-        }
-        try{
-            StudentDashboardDTO dashboard = studentDashboardService.getStudentDashboard(studentId);
-            return ResponseEntity.ok(dashboard);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(500).body("Error fetching dashboard: " + e.getMessage());
-        }
-
+        StudentDashboardDTO dashboard = 
+                studentDashboardService.getStudentDashboard(studentId);
+        return ResponseEntity.ok(dashboard);
 
 
     }
@@ -64,15 +56,12 @@ public class StudentDashboardController {
     }
     
     
-    @PostMapping("/student/completed-lessons")
-    public ResponseEntity<?> markComplete(@RequestBody Map<String, String> payload, HttpServletRequest request) {
+    @PostMapping("/completed-lessons")
+    public ResponseEntity<Void> markComplete(@RequestBody Map<String, String> payload, HttpServletRequest request) {
         String studentId = (String) request.getAttribute("userId");
         String lessonId = payload.get("lessonId");
 
 
-        if(studentId == null || lessonId == null) {
-            return ResponseEntity.badRequest().body("User Id or lesson Id missing");
-        }
 
         studentDashboardService.markLessonAsComplete(studentId, lessonId);
         return ResponseEntity.ok().build();
