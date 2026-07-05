@@ -8,19 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.speakup.dto.CurrentUserDTO;
 import com.speakup.model.User;
 import com.speakup.model.User.Role;
 import com.speakup.repository.UserRepository;
 import com.speakup.security.JwtUtil;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.speakup.security.RefreshToken;
+import com.speakup.service.RefreshTokenService;
 
 
 @RestController
@@ -31,6 +29,9 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
     
     @Autowired
     private JwtUtil JwtUtil;
@@ -69,6 +70,7 @@ public class AuthController {
         }
     }
 
+    
   
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {
@@ -90,9 +92,12 @@ public class AuthController {
             // Hernerate JWT token
          String token = JwtUtil.generateToken(dbUser.getId(), dbUser.getEmail(), dbUser.getRole().name(), dbUser.getUsername() );
 
+         RefreshToken refreshToken = refreshTokenService.createRefreshToken(dbUser);
+
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            
+            response.put("refreshToken", refreshToken.getToken());
+
             response.put("username", dbUser.getUsername());
             response.put("email", dbUser.getEmail());
            response.put("role", dbUser.getRole().name());
@@ -104,19 +109,49 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/refresh")
 
-    @GetMapping("/me")
-    public CurrentUserDTO getCurrentUserDTO(HttpServletRequest request ) {
+    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
 
-        String userId = (String) request.getAttribute("userId");
-        String username = (String) request.getAttribute("username");
-        String role = (String) request.getAttribute("role");
 
-        return CurrentUserDTO.builder()
-        .id(userId)
-        .username(username)
-        .role(role)
-        .build();
+        String refreshToken = request.get("refreshToken");
+
+
+        RefreshToken token = refreshTokenService.verify(refreshToken);
+
+
+        String newAccessToken = JwtUtil.generateToken(token.getUserId(), token.getEmail(), token.getRole(), token.getUsername());
+
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("accessToken", newAccessToken);
+
+
+        return ResponseEntity.ok(response);
+
+
     }
 
+    @PostMapping("/logout")
+
+    public ResponseEntity<?> logoutUser(@RequestBody Map<String, String> request) {
+
+        String refreshToken = request.get("refreshToken");
+    
+
+        if (refreshToken != null) {
+
+            refreshTokenService.logout(refreshToken);
+
+        }
+    
+
+        return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
+
+    }
+
+
+
+    
 }
