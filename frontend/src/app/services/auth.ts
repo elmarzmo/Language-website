@@ -64,6 +64,6 @@ export class Auth {
   }
 
   getCurrentUser() {
-    return this.http.get(`${this.apiUrl}/me`);
+    return this.http.get(`${this.apiUrl}/current-user`);
   }
 }

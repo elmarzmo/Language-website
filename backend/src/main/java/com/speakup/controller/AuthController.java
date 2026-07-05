@@ -156,7 +156,7 @@ public class AuthController {
     }
 
 
-    @GetMapping("/me")
+    @GetMapping("/current-user")
     public CurrentUserDTO getCurrentUserDTO(HttpServletRequest request ) {
 
         String userId = (String) request.getAttribute("userId");
