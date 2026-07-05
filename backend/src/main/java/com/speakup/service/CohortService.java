@@ -107,6 +107,10 @@ public class CohortService {
 
 
 
+    public void deleteCohort(String cohortId){
+        cohortRepository.deleteById(cohortId);
+    }
+    
     
     private CohortDTO mapToDTO(Cohort cohort){
         CohortDTO dto = new CohortDTO();
