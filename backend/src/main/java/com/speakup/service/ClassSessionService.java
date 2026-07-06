@@ -100,10 +100,23 @@ public class ClassSessionService {
         classSessionRepository.deleteById(sessionId);
     }
 
-    public ClassSessionDTO updateMeetingLink(String sessionId, String meetingLink) {
+    public ClassSessionDTO updateMeetingLink(String currentTeacherId, String sessionId, String meetingLink) {
         ClassSession session = classSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
        
+
+        if (meetingLink == null || meetingLink.trim().isEmpty()) {
+            throw new RuntimeException("Meeting link cannot be empty");
+        }
+
+        if (!meetingLink.startsWith("http://") && !meetingLink.startsWith("https://")) {
+            throw new RuntimeException("Invalid meeting link format. It should start with http:// or https://");
+        }
+
+        if (!session.getTeacherId().equals(currentTeacherId)) {
+            throw new RuntimeException("You are not authorized to update this session's meeting link");
+        }
+        
         session.setMeetingLink(meetingLink);
 
         ClassSession saved = classSessionRepository.save(session);

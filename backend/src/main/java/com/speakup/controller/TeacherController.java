@@ -37,6 +37,7 @@ public class TeacherController {
     private final CohortService cohortService;
     private final ClassSessionService classSessionService;
 
+
     public TeacherController(TeacherDashboardService teacherDashboardService, LessonService lessonService, CohortService cohortService, ClassSessionService classSessionService){
 
         this.teacherDashboardService = teacherDashboardService;
@@ -89,8 +90,14 @@ public class TeacherController {
     @PutMapping("/sessions/{sessionId}/meeting-link")
     public ClassSessionDTO updateMeetingLink(
             @PathVariable String sessionId,
-            @RequestBody UpdateMeetingLinkRequest request) {
-        return classSessionService.updateMeetingLink(sessionId, request.getMeetingLink());
+            @RequestBody UpdateMeetingLinkRequest request,
+            HttpServletRequest httpRequest) {
+
+                String teacherId = (String) httpRequest.getAttribute("userId");
+                
+                return classSessionService.updateMeetingLink(teacherId, 
+            sessionId, 
+            request.getMeetingLink());
     }
 
 
