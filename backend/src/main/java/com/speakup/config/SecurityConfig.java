@@ -46,7 +46,7 @@ public class SecurityConfig {
 
                     
                     // Teacher Routes
-                    .requestMatchers("/api/teachers/**")
+                    .requestMatchers("/api/teacher/**")
                     .hasAnyRole("TEACHER", "ADMIN")
 
                     
