@@ -40,6 +40,9 @@ export class Auth {
       tap((response: AuthResponse) => {
         if (response.token) {
           localStorage.setItem('Token', response.token);
+          if (response.role) {
+            localStorage.setItem('Role', response.role);
+          }
           this.isLoggedInSubject.next(true);
         }
       })
@@ -48,11 +51,16 @@ export class Auth {
 
   logout(): void {
     localStorage.removeItem('Token');
+    localStorage.removeItem('Role');
     this.isLoggedInSubject.next(false);
   }
 
   getToken(): string | null {
     return localStorage.getItem('Token');
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('Role');
   }
 
   private hasToken(): boolean {
