@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { Auth } from '../../services/auth';
   styleUrls: ['./signin.css'],
   host: { class: 'signin-host' }
 })
-export class Signin {
+export class Signin implements OnInit {
   activeTab: 'login' | 'signup' = 'login';
   isLoading = false;
   errorMessage = '';
@@ -38,6 +38,23 @@ export class Signin {
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    // If the user is already logged in, redirect them to the dashboard
+    if (this.authService.isLoggedIn()) {
+      this.redirectToDashboard(this.authService.getRole());
+    }
+  }
+
+  private redirectToDashboard(role: string | null): void {
+    if (role === 'ADMIN') {
+      this.router.navigate(['/admin']);
+    } else if (role === 'TEACHER') {
+      this.router.navigate(['/teacher/dashboard']);
+    } else if (role === 'STUDENT') {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
   switchTab(tab: 'login' | 'signup'): void {
     this.activeTab = tab;
     this.errorMessage = '';
@@ -57,40 +74,24 @@ export class Signin {
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('Login successful:', response);
+      
         
         // Store user data in localStorage for dashboard
-        const studentId = response.token || response.id || response.role ||'';
-        const studentName = response.username || '';
+        const userId =  response.id ||response.token ||'';
+        const userName = response.username || '';
         
-        localStorage.setItem('studentId', studentId);
-        localStorage.setItem('studentName', studentName);
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('userName', userName);
         
-        console.log('Stored studentId:', localStorage.getItem('studentId'));
-        console.log('Stored studentName:', localStorage.getItem('studentName'));
-        console.log('Token in localStorage:', this.authService.getToken());
         
         this.successMessage = 'Login successful! Redirecting...';
-        
-        if(response.role === 'ADMIN'){
-          console.log('Redirecting to Admin Dashboard')
-          this.router.navigate(['/admin']);
-        } 
-        else if(response.role === 'TEACHER'){
-          console.log('Redirecting to TEACHER Dashboard')
-          this.router.navigate(['/teacher/dashboard']);
-        }
-        else {
-        // Navigate immediately
-        
-        this.router.navigate(['/dashboard']).then(success => {
-          console.log('Navigation result:', success);
-        });
-      }
+
+        // Use our new smart helper to route them correctly on login submit
+        this.redirectToDashboard(response.role || null);
+
     },
       error: (error) => {
         this.isLoading = false;
-        console.error('Login failed:', error);
         this.errorMessage = error.error?.message || 'Login failed. Please try again.';
       }
     });
@@ -123,11 +124,11 @@ export class Signin {
     ).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('Registration successful:', response);
         this.successMessage = 'Registration successful! Please log in.';
         
         // Clear signup form and switch to login
         setTimeout(() => {
+          const savedEmail = this.signupData.email; // Save the email before clearing
           this.signupData = {
             username: '',
             email: '',
@@ -136,14 +137,15 @@ export class Signin {
           };
           this.activeTab = 'login';
           this.successMessage = '';
-          this.loginData.email = this.signupData.email; // Pre-fill email in login form
+          this.loginData.email = savedEmail; // Pre-fill email in login form
         }, 500);
       },
       error: (error) => {
         this.isLoading = false;
-        console.error('Registration failed:', error);
         this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
       }
     });
   }
+
+
 }
