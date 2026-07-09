@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 
 interface AuthResponse {
   token?: string;
+  refreshToken?: string;
   message?: string;
   success?: boolean;
   error?: string;
@@ -40,6 +41,10 @@ export class Auth {
       tap((response: AuthResponse) => {
         if (response.token) {
           localStorage.setItem('Token', response.token);
+          if (response.refreshToken) {
+            localStorage.setItem('RefreshToken', response.refreshToken);
+          }
+
           if (response.role) {
             localStorage.setItem('Role', response.role);
           }
@@ -50,9 +55,28 @@ export class Auth {
   }
 
   logout(): void {
-    localStorage.removeItem('Token');
-    localStorage.removeItem('Role');
-    this.isLoggedInSubject.next(false);
+    const refreshToken = localStorage.getItem('RefreshToken');
+    const clearAuthData = () => {
+      localStorage.removeItem('Token');
+      localStorage.removeItem('RefreshToken');
+      localStorage.removeItem('Role');
+      this.isLoggedInSubject.next(false);
+    };
+
+    clearAuthData();
+
+    if (!refreshToken) {
+      return;
+    }
+
+    this.http.post<AuthResponse>(`${this.apiUrl}/logout`, { refreshToken }).subscribe({
+      next: () => {
+        console.log('Logout successful');
+      },
+      error: () => {
+        console.warn('Logout request failed, but local auth session was cleared.');
+      }
+    });
   }
 
   getToken(): string | null {
