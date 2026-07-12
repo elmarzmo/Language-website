@@ -13,15 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.speakup.dto.CurrentUserDTO;
+import com.speakup.dto.ForgotPasswordRequest;
+import com.speakup.dto.ResetPasswordRequest;
 import com.speakup.model.User;
 import com.speakup.model.User.Role;
 import com.speakup.repository.UserRepository;
 import com.speakup.security.JwtUtil;
 import com.speakup.security.RefreshToken;
 import com.speakup.service.RefreshTokenService;
+import com.speakup.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -32,6 +37,9 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RefreshTokenService refreshTokenService;
@@ -170,5 +178,27 @@ public class AuthController {
     }
 
 
-    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        String email = request.getEmail();
+       try{
+        userService.generateResetToken(email);
+       } catch(Exception ignored){
+        // Ignore the exception to prevent email enumeration
+       }
+        return ResponseEntity.ok(Map.of("message", "If the email exists, a reset link has been sent."));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        String resetToken = request.getResetToken();
+        String newPassword = request.getNewPassword();
+        try {
+            userService.resetPassword(resetToken, newPassword);
+            return ResponseEntity.ok(Map.of("message", "Password reset successful"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
+    }
+
 }
