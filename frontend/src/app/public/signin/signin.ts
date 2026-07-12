@@ -80,7 +80,7 @@ export class Signin implements OnInit {
       next: (response) => {
         this.isLoading = false;
         
-        const userId = response.id || response.resetToken || '';
+        const userId = response.id || '';
         const userName = response.username || '';
         
         localStorage.setItem('userId', userId);
@@ -139,7 +139,7 @@ export class Signin implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+        this.errorMessage = error.error?.error || 'Registration failed. Please try again.';
       }
     });
   }
