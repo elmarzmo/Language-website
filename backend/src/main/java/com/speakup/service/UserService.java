@@ -5,19 +5,58 @@ import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.speakup.service.RefreshTokenService;
+
+import com.speakup.security.JwtUtil;
 
 import com.speakup.model.User;
 import com.speakup.repository.UserRepository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.speakup.dto.RegisterRequest;
+import com.speakup.dto.RegisterResponse;
+import com.speakup.dto.LoginRequest;
+import com.speakup.security.RefreshToken;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
+    private final JwtUtil jwtUtil;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
+        this.jwtUtil = jwtUtil;
+    }
+
+    public RegisterResponse registerUser(RegisterRequest request) {
+        // Check if email already exists
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already registered");
+        }
+
+        //crete new user 
+        User newUser = new User();
+        newUser.setUsername(request.getUsername());
+        newUser.setEmail(request.getEmail());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setRole(User.Role.STUDENT); // Default role is STUDENT
+
+        User savedUser = userRepository.save(newUser);
+        
+        RegisterResponse response = new RegisterResponse();
+
+        response.setId(savedUser.getId());
+        response.setUsername(savedUser.getUsername());
+        response.setEmail(savedUser.getEmail());
+        response.setRole(savedUser.getRole().name());
+
+        return response;
     }
 
     public String generateResetToken(String email) {
@@ -59,6 +98,31 @@ public class UserService {
 
         // Save the updated user
         userRepository.save(user);
+    }
+
+    public Map<String, String> loginUser(LoginRequest request) {
+
+        User dbUser = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+       
+
+        if (!passwordEncoder.matches(request.getPassword(), dbUser.getPassword())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        // Generate JWT token
+        String token = jwtUtil.generateToken(dbUser.getId(), dbUser.getEmail(), dbUser.getRole().name(), dbUser.getUsername());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(dbUser);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        response.put("username", dbUser.getUsername());
+        response.put("email", dbUser.getEmail());
+        response.put("role", dbUser.getRole().name());
+        response.put("refreshToken", refreshToken.getToken());
+
+        return response;
     }
 
 
