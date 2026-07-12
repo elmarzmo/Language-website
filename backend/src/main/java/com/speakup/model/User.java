@@ -1,5 +1,7 @@
 package com.speakup.model;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,14 +22,21 @@ public class User {
         ADMIN
     }
 
+    private String resetToken;
+    private LocalDateTime resetTokenExpiry;
+
+
+
     public User() {
     }
 
-    public User(String username, String email, String password, Role role) {
+    public User(String username, String email, String password, Role role, String resetToken, LocalDateTime resetTokenExpiry) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.resetToken = resetToken;
+        this.resetTokenExpiry = resetTokenExpiry;
     }
     // Getters and Setters
     public String getId() {
@@ -66,5 +75,22 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+    
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getResetTokenExpiry() {
+        return resetTokenExpiry;
+    }
+
+    public void setResetTokenExpiry(LocalDateTime resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
+    }
+
     
 }
