@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 interface AuthResponse {
-  token?: string;
+  resetToken?: string;
   refreshToken?: string;
   message?: string;
   success?: boolean;
@@ -14,6 +14,7 @@ interface AuthResponse {
   username?: string; // for storing in dashboard
   email?: string; // for storing in dashboard
   role?: string;
+  DEBUG_ONLY_resetLink?: string; // for debugging purposes only
 }
 
 @Injectable({
@@ -34,14 +35,16 @@ export class Auth {
     });
   }
 
+  
+
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, {
       email,
       password
     }).pipe(
       tap((response: AuthResponse) => {
-        if (response.token) {
-          localStorage.setItem('Token', response.token);
+        if (response.resetToken) {
+          localStorage.setItem('Token', response.resetToken);
           if (response.refreshToken) {
             localStorage.setItem('RefreshToken', response.refreshToken);
           }
@@ -78,6 +81,15 @@ export class Auth {
         console.warn('Logout request failed, but local auth session was cleared.');
       }
     });
+  }
+
+  
+  forgotPassword(email: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/forgot-password`, { email });
+  }
+
+  resetPassword(resetToken: string, newPassword: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/reset-password`, { resetToken, newPassword });
   }
 
   getToken(): string | null {
