@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.speakup.dto.CurrentUserDTO;
 import com.speakup.dto.ForgotPasswordRequest;
 import com.speakup.dto.ResetPasswordRequest;
+import com.speakup.dto.RegisterRequest;
+import com.speakup.dto.RegisterResponse;
+import com.speakup.dto.LoginRequest;
+
 import com.speakup.model.User;
-import com.speakup.model.User.Role;
 import com.speakup.repository.UserRepository;
 import com.speakup.security.JwtUtil;
 import com.speakup.security.RefreshToken;
 import com.speakup.service.RefreshTokenService;
 import com.speakup.service.UserService;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -45,7 +49,7 @@ public class AuthController {
     private RefreshTokenService refreshTokenService;
     
     @Autowired
-    private JwtUtil JwtUtil;
+    private JwtUtil jwtUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -53,71 +57,33 @@ public class AuthController {
     // Registration and Login endpoints
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         try {
-            // Check if email already exists
-            if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-                
+           RegisterResponse response = userService.registerUser(request);
+           return ResponseEntity.ok(response);
+            } catch(IllegalArgumentException e) {
                 return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Email already registered"));
-
+                    .body(Map.of("error", e.getMessage()));
+            } catch (Exception e) {
+                return ResponseEntity.status(500)
+                    .body(Map.of("error", "An error occurred during registration"));
             }
-            // force STUDENT role
-            user.setRole(Role.STUDENT);
-
-            user.setPassword(
-                passwordEncoder.encode(user.getPassword())
-            );
-            
-            User savedUser = userRepository.save(user);
-
-            return ResponseEntity.ok(savedUser);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(500)
-                .body(Map.of("error", e.getMessage()));
-        }
-    }
+           
+    
+}
 
     
   
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody User user) {
-        try {
-            Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
-
-            if (existingUser.isEmpty()) {
-                return ResponseEntity.status(401).body(Map.of("error", "User not found"));
-            }
-
-            User dbUser = existingUser.get();
-
-           if (!passwordEncoder.matches(
-                user.getPassword(),
-                dbUser.getPassword()
-           )) {
-                return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
-           } 
-            // Hernerate JWT token
-         String token = JwtUtil.generateToken(dbUser.getId(), dbUser.getEmail(), dbUser.getRole().name(), dbUser.getUsername() );
-
-         RefreshToken refreshToken = refreshTokenService.createRefreshToken(dbUser);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            response.put("refreshToken", refreshToken.getToken());
-
-            response.put("username", dbUser.getUsername());
-            response.put("email", dbUser.getEmail());
-           response.put("role", dbUser.getRole().name());
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            e.printStackTrace(); 
-            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
-        }
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest request) {
+       try {
+        Map<String, String> response = userService.loginUser(request);
+        return ResponseEntity.ok(response);
+       } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
+       } catch (Exception e) {
+        return ResponseEntity.status(500).body(Map.of("error", "An error occurred during login"));
+       }
     }
 
     @PostMapping("/refresh")
@@ -131,7 +97,7 @@ public class AuthController {
         RefreshToken token = refreshTokenService.verify(refreshToken);
 
 
-        String newAccessToken = JwtUtil.generateToken(token.getUserId(), token.getEmail(), token.getRole(), token.getUsername());
+        String newAccessToken = jwtUtil.generateToken(token.getUserId(), token.getEmail(), token.getRole(), token.getUsername());
 
 
         Map<String, String> response = new HashMap<>();
