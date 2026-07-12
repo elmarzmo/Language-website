@@ -14,10 +14,14 @@ import { Auth } from '../../guards/auth';
   host: { class: 'signin-host' }
 })
 export class Signin implements OnInit {
-  activeTab: 'login' | 'signup' = 'login';
+  // FIX 1: Added 'forgot' to the allowed union types
+  activeTab: 'login' | 'signup' | 'forgot' = 'login';
   isLoading = false;
   errorMessage = '';
   successMessage = '';
+
+  forgotPasswordEmail = '';
+  debugResetLink = ''; // For debugging purposes only
 
   // Login
   loginData = {
@@ -55,14 +59,15 @@ export class Signin implements OnInit {
     }
   }
 
-  switchTab(tab: 'login' | 'signup'): void {
+  // FIX 2: Updated parameter string layout to match activeTab properties
+  switchTab(tab: 'login' | 'signup' | 'forgot'): void {
     this.activeTab = tab;
     this.errorMessage = '';
     this.successMessage = '';
+    this.debugResetLink = '';
   }
 
   login(): void {
-    // Validation
     if (!this.loginData.email || !this.loginData.password) {
       this.errorMessage = 'Please fill in all fields';
       return;
@@ -74,31 +79,24 @@ export class Signin implements OnInit {
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (response) => {
         this.isLoading = false;
-      
         
-        // Store user data in localStorage for dashboard
-        const userId =  response.id ||response.token ||'';
+        const userId = response.id || response.resetToken || '';
         const userName = response.username || '';
         
         localStorage.setItem('userId', userId);
         localStorage.setItem('userName', userName);
         
-        
         this.successMessage = 'Login successful! Redirecting...';
-
-        // Use our new smart helper to route them correctly on login submit
         this.redirectToDashboard(response.role || null);
-
-    },
+      },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Login failed. Please try again.';
+        this.errorMessage = error.error?.error || 'Login failed. Please try again.';
       }
     });
   }
 
   signup(): void {
-    // Validation
     if (!this.signupData.username || !this.signupData.email || !this.signupData.password || !this.signupData.confirmPassword) {
       this.errorMessage = 'Please fill in all fields';
       return;
@@ -126,9 +124,8 @@ export class Signin implements OnInit {
         this.isLoading = false;
         this.successMessage = 'Registration successful! Please log in.';
         
-        // Clear signup form and switch to login
         setTimeout(() => {
-          const savedEmail = this.signupData.email; // Save the email before clearing
+          const savedEmail = this.signupData.email;
           this.signupData = {
             username: '',
             email: '',
@@ -137,7 +134,7 @@ export class Signin implements OnInit {
           };
           this.activeTab = 'login';
           this.successMessage = '';
-          this.loginData.email = savedEmail; // Pre-fill email in login form
+          this.loginData.email = savedEmail;
         }, 500);
       },
       error: (error) => {
@@ -147,5 +144,30 @@ export class Signin implements OnInit {
     });
   }
 
+  sendForgotPassword(): void {
+    if (!this.forgotPasswordEmail) {
+      this.errorMessage = 'Please enter your email address.';
+      return;
+    }
 
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.debugResetLink = '';
+
+    this.authService.forgotPassword(this.forgotPasswordEmail).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.successMessage = response.message || 'If that email exists, a reset link has been generated.';
+        
+        if (response.DEBUG_ONLY_resetLink) {
+          this.debugResetLink = response.DEBUG_ONLY_resetLink;
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.error || 'Failed to submit request. Please try again.';
+      }
+    });
+  }
 }
