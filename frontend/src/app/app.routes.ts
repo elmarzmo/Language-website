@@ -4,7 +4,7 @@ import { Contact } from './public/contact/contact';
 import { Home } from './public/home/home';
 import { Dashboard } from './private/student/dashboard/dashboard';
 import { Signin } from './public/signin/signin';
-import { AuthGuard } from './services/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AdminModule } from './admin/admin-module';
 import { LessonView } from './private/student/lesson-view/lesson-view';
 import { TeacherDashboard } from './private/teacher/teacher-dashboard/teacher-dashboard';

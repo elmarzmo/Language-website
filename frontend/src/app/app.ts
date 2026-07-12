@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { Navbar } from './component/navbar/navbar';
 import { TranslateService } from '@ngx-translate/core';
-import { Auth } from './services/auth';
+import { Auth } from './guards/auth';
 
 @Component({
   selector: 'app-root',

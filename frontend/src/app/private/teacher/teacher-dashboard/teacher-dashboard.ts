@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
 
 // Services
-import { Auth } from '../../../services/auth';
+import { Auth } from '../../../guards/auth';
 import { LessonService } from '../../../services/lesson';
 import { TeacherDashboardService } from '../../../services/teacher-dashboard.service';
 

@@ -9,7 +9,7 @@ import { ClassSession } from '../../../model/classSession.model';
 
 import { CohortService } from '../../../services/cohort-service';
 import { ClassSessionService } from '../../../services/class-session-service';
-import { Auth } from '../../../services/auth';
+import { Auth } from '../../../guards/auth';
 
 @Component({
   selector: 'app-teacher-cohorts-list',

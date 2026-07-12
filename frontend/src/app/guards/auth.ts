@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 interface AuthResponse {
   token?: string;
@@ -19,14 +20,14 @@ interface AuthResponse {
   providedIn: 'root',
 })
 export class Auth {
-  private apiUrl = 'http://localhost:8080/api/auth';
+    private apiUrl = environment.apiUrl;
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
   register(username: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, {
       username,
       email,
       password
@@ -34,7 +35,7 @@ export class Auth {
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, {
       email,
       password
     }).pipe(
@@ -69,7 +70,7 @@ export class Auth {
       return;
     }
 
-    this.http.post<AuthResponse>(`${this.apiUrl}/logout`, { refreshToken }).subscribe({
+    this.http.post<AuthResponse>(`${this.apiUrl}/auth/logout`, { refreshToken }).subscribe({
       next: () => {
         console.log('Logout successful');
       },
@@ -96,6 +97,6 @@ export class Auth {
   }
 
   getCurrentUser() {
-    return this.http.get(`${this.apiUrl}/current-user`);
+    return this.http.get(`${this.apiUrl}/auth/current-user`);
   }
 }

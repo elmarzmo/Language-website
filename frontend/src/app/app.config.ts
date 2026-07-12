@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 
 import { routes } from './app.routes';
-import { authInterceptor } from './auth-interceptor';
+import { authInterceptor } from './guards/auth.interceptor';
 
 export class CustomLoader implements TranslateLoader {
   constructor(private http: HttpClient) {}

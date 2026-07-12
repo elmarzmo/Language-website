@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../guards/auth';
 import { LessonModule } from '../../model/lesson.model';
 import { LessonService } from '../../services/lesson';
 import { forkJoin, Subscription } from 'rxjs';
