@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 interface AuthResponse {
+  token?: string;
   resetToken?: string;
   refreshToken?: string;
   message?: string;
@@ -43,8 +44,8 @@ export class Auth {
       password
     }).pipe(
       tap((response: AuthResponse) => {
-        if (response.resetToken) {
-          localStorage.setItem('Token', response.resetToken);
+        if (response.token) {
+          localStorage.setItem('Token', response.token);
           if (response.refreshToken) {
             localStorage.setItem('RefreshToken', response.refreshToken);
           }
