@@ -12,6 +12,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     
     List<User> findByRole(User.Role role);
 
+    Optional<User> findByResetToken(String resetToken);
+
     List<User> findTop10ByRoleAndUsernameContainingIgnoreCase(User.Role role, String username);
 }
 
