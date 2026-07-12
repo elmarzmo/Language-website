@@ -5,13 +5,13 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 interface AuthResponse {
+  id?: string; // user id or token id
   token?: string;
   resetToken?: string;
   refreshToken?: string;
   message?: string;
   success?: boolean;
   error?: string;
-  id?: string; // user id or token id
   username?: string; // for storing in dashboard
   email?: string; // for storing in dashboard
   role?: string;

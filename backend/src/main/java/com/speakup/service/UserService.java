@@ -116,6 +116,7 @@ public class UserService {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(dbUser);
 
         Map<String, String> response = new HashMap<>();
+        response.put("id", dbUser.getId());
         response.put("token", token);
         response.put("username", dbUser.getUsername());
         response.put("email", dbUser.getEmail());
