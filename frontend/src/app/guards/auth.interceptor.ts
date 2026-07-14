@@ -6,6 +6,7 @@ import { catchError, filter, switchMap, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
+
 // BehaviorSubject to track if we are already refreshing a token
 let isRefreshing = false;
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
@@ -49,7 +50,7 @@ function handle401Error(
     isRefreshing = true;
     refreshTokenSubject.next(null);
 
-    const refreshToken = localStorage.getItem('RefreshToken');
+    const refreshToken = authService.getRefreshToken();
 
     if (!refreshToken) {
       authService.logout();
@@ -63,7 +64,7 @@ function handle401Error(
       switchMap((res) => {
         isRefreshing = false;
         
-        localStorage.setItem('Token', res.accessToken);
+        authService.updateAccessToken(res.accessToken);
         refreshTokenSubject.next(res.accessToken);
 
         return next(request.clone({
