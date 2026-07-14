@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.speakup.dto.AdminDashboardDTO;
 import com.speakup.dto.ClassSessionDTO;
@@ -20,6 +22,7 @@ import com.speakup.dto.ClassSessionListDTO;
 import com.speakup.model.LessonModule;
 import com.speakup.model.User;
 import com.speakup.service.ClassSessionService;
+import com.speakup.service.FileStorageService;
 import com.speakup.service.LessonService;
 import com.speakup.service.UserService;
 
@@ -36,12 +39,13 @@ public class AdminDashboardController {
     private final LessonService lessonService;
     private final ClassSessionService classSessionService;
     private final UserService userService;
-    
+    private final FileStorageService fileStorageService;
 
-    public AdminDashboardController(LessonService lessonService, ClassSessionService classSessionService, UserService userService){
+    public AdminDashboardController(LessonService lessonService, ClassSessionService classSessionService, UserService userService, FileStorageService fileStorageService){
         this.lessonService = lessonService;
         this.classSessionService = classSessionService;
         this.userService = userService;
+        this.fileStorageService = fileStorageService;
     }
 
     @GetMapping("") 
@@ -72,7 +76,15 @@ public class AdminDashboardController {
 
      // ADMIN: create lesson
     @PostMapping("/lessons/create")
-    public ResponseEntity<LessonModule> createLesson( @RequestBody LessonModule lesson) {
+    public ResponseEntity<LessonModule> createLesson( @RequestPart("lesson") LessonModule lesson,
+                                                      @RequestPart(value = "audio", required = false) MultipartFile audio) {
+
+
+            if (audio != null && !audio.isEmpty()) {
+                String audioUrl = fileStorageService.save(audio); // Save the audio file and get its URL
+                lesson.setAudioUrl(audioUrl);
+            }
+
 
         return ResponseEntity.ok(lessonService.createLesson(lesson));
     }
