@@ -30,6 +30,8 @@ public class LessonModule {
 
     private String notes;
 
+    private String audioUrl;
+
 
     private String createdBy; // Teacher ID
 
