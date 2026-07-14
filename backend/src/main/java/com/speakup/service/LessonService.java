@@ -50,8 +50,27 @@ public class LessonService {
     } 
 
     public LessonModule updateLesson(String id, LessonModule updatedLesson) {
-        updatedLesson.setId(id);
-        return lessonRepository.save(updatedLesson);
+
+        LessonModule existingLesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+
+        // Update fields
+        existingLesson.setTitle(updatedLesson.getTitle());
+        existingLesson.setContent(updatedLesson.getContent());
+        existingLesson.setDescription(updatedLesson.getDescription());
+        existingLesson.setInstructions(updatedLesson.getInstructions());
+        existingLesson.setNotes(updatedLesson.getNotes());
+        existingLesson.setAudioUrl(updatedLesson.getAudioUrl());
+        existingLesson.setStatus(updatedLesson.getStatus());
+
+        existingLesson.setUpdatedDate(LocalDateTime.now());
+
+        if(updatedLesson.getResources() != null) {
+            existingLesson.setResources(updatedLesson.getResources());
+        }
+
+        return lessonRepository.save(existingLesson);
+     
     }
     
 }
