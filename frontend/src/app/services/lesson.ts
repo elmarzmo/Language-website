@@ -19,8 +19,8 @@ export class LessonService {
   getStudentLessons(){
     return this.http.get<LessonModule[]>(`${this.apiUrl}/dashboard/student/lessons`);
   }
-  createLesson(lesson: LessonModule) {
-  return this.http.post(`${this.apiUrl}/admin/lessons/create`, lesson);  
+  createLesson(formData: FormData){
+  return this.http.post(`${this.apiUrl}/admin/lessons/create`, formData);  
   } 
 
     
