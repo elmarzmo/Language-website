@@ -37,7 +37,8 @@ public class SecurityConfig {
 
                     // PUBLIC ENDPOINTS
                     .requestMatchers(
-                            "/api/auth/**"
+                            "/api/auth/**",
+                                "/audio/**"
                     ).permitAll()
                     
                     // STUDENT route
