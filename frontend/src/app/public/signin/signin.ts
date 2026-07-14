@@ -23,6 +23,8 @@ export class Signin implements OnInit {
   forgotPasswordEmail = '';
   debugResetLink = ''; // For debugging purposes only
 
+  rememberMe = false; // For "Remember Me" functionality
+
   // Login
   loginData = {
     email: '',
@@ -76,18 +78,14 @@ export class Signin implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginData.email, this.loginData.password).subscribe({
+    this.authService.login(this.loginData.email, this.loginData.password, this.rememberMe).subscribe({
       next: (response) => {
         this.isLoading = false;
         
-        const userId = response.id || '';
-        const userName = response.username || '';
-        
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('userName', userName);
+      
         
         this.successMessage = 'Login successful! Redirecting...';
-        this.redirectToDashboard(response.role || null);
+        this.redirectToDashboard(this.authService.getRole());
       },
       error: (error) => {
         this.isLoading = false;
