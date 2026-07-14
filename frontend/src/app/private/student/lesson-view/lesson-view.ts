@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LessonService } from '../../../services/lesson';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-lesson-view',
@@ -9,15 +10,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './lesson-view.html',
   styleUrl: './lesson-view.css',
 })
-export class LessonView implements OnInit, OnDestroy {
+export class LessonView implements OnInit {
 
   lesson: any; 
-  isReading: boolean = false;
-  isSpeechSupported: boolean = false;
-  isPaused: boolean = false;
-  playbackRate: number = 1;
-  private synthesis = window.speechSynthesis;
-  
+
+  audioUrl = '';
   constructor(
     private route: ActivatedRoute,
     private lessonService: LessonService
@@ -25,13 +22,19 @@ export class LessonView implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const lessonId = this.route.snapshot.paramMap.get('id');
-    this.isSpeechSupported = 'speechSynthesis' in window;
+
 
    
     if (lessonId) {
       this.lessonService.getStudentLessons().subscribe((data: any) => {
         this.lesson = data.find((l: any) => l.id === lessonId);
 
+
+        if (this.lesson?.audioUrl) {  
+          
+          this.audioUrl = environment.apiUrl.replace(/\/api$/, '') + this.lesson.audioUrl;
+          
+        }
         // mark after 10 seconds as completed
         setTimeout(() => {
           this.markAsCompleted(lessonId);
@@ -42,12 +45,7 @@ export class LessonView implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.synthesis.speaking) {
-      this.synthesis.cancel();
-    }
-  }
-
+  
   markAsCompleted(lessonId: string) {
     this.lessonService.markLessonComplete(lessonId).subscribe({
       next: () => {
@@ -60,90 +58,8 @@ export class LessonView implements OnInit, OnDestroy {
     })
   }
 
-  toggleTextToSpeech() {
-    if (!this.isSpeechSupported) {
-      alert('Text-to-speech is not supported in this browser.');
-      return;
-    }
 
-    // Handle resume
-    if (this.isPaused) {
-      this.synthesis.resume();
-      this.isPaused = false;
-      return;
-    }
 
-    // Handle pause
-    if (this.isReading) {
-      this.synthesis.pause();
-      this.isPaused = true;
-      return;
-    }
 
-    // Start new speech
-    const textToRead = `
-    ${this.stripHtml(this.lesson.content)}
-    `.trim();
 
-    const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.rate = this.playbackRate;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
-    utterance.onstart = () => {
-      this.isReading = true;
-      this.isPaused = false;
-    };
-
-    utterance.onend = () => {
-      this.isReading = false;
-      this.isPaused = false;
-    };
-
-    utterance.onerror = (event) => {
-      console.error('Speech synthesis error:', event);
-      this.isReading = false;
-      this.isPaused = false;
-    };
-
-    this.isReading = true;
-    this.synthesis.speak(utterance);
-  }
-
-  stopTextToSpeech(): void {
-    this.synthesis.cancel();
-    this.isReading = false;
-    this.isPaused = false;
-  }
-
-  setPlaybackRate(event: any): void {
-    const rate = parseFloat(event.target.value);
-    this.playbackRate = rate;
-
-    // If currently playing, we need to restart with new rate
-    if (this.isReading && !this.isPaused) {
-      const wasReading = this.isReading;
-      this.stopTextToSpeech();
-      
-      // Restart with new rate after a brief delay
-      setTimeout(() => {
-        if (wasReading) {
-          this.toggleTextToSpeech();
-        }
-      }, 100);
-    }
-  }
-
-  private stripHtml(html: string): string {
-    const temp = document.createElement('div');
-    temp.innerHTML = html;
-    return temp.textContent || temp.innerText || '';
-  }
-
-  getReadButtonText(): string {
-    if (!this.isSpeechSupported) return '🎧 Not Supported';
-    if (this.isPaused) return '▶️ Resume';
-    if (this.isReading) return '⏸️ Pause';
-    return '🎧 Listen';
-  }
 }
