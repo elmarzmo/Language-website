@@ -77,7 +77,7 @@
         <!-- Remember Me & Forgot Password -->
         <div class="form-footer">
           <label class="form-checkbox">
-            <input type="checkbox" [disabled]="isLoading" />
+            <input type="checkbox" [(ngModel)]="rememberMe" [disabled]="isLoading" />
             <span>{{ 'SIGNIN.REMEMBER_ME' | translate }}</span>
           </label>
           <a href="javascript:void(0)" (click)="switchTab('forgot')" class="forgot-link">
