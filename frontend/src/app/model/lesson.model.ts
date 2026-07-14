@@ -17,6 +17,8 @@ export interface LessonModule {
   liveClass?: LiveClass;
   completionPercentage?: number;
   assignedStudents: string[]; // student ids
+
+  audioUrl?: string; // URL for audio file associated with the lesson
 }
 
 export interface LessonResource {
