@@ -12,7 +12,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './lesson-create.css',
 })
 export class LessonCreate {
-  
+
+  audioFile?: File;
+
   lesson: Partial<LessonModule> = {
     title: '',
     content: '',
@@ -21,18 +23,51 @@ export class LessonCreate {
     notes: '',
   };
 
+
   constructor(
     private lessonService: LessonService,
     private router: Router
   ) { }
 
+
+  onAudioSelected(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.audioFile = file;
+    }
+  }
+
+
   createLesson() {
-    
+
     if (!this.lesson.title || !this.lesson.description) {
       alert('Please fill in all fields');
       return;
     }
-     this.lessonService.createLesson(this.lesson as LessonModule)
+
+
+    const formData = new FormData();
+
+
+    formData.append(
+      'lesson',
+      new Blob(
+        [JSON.stringify(this.lesson)],
+        { type: 'application/json' }
+      )
+    );
+
+console.log(this.audioFile);
+    if (this.audioFile) {
+      formData.append(
+        'audio',
+        this.audioFile
+      );
+    }
+
+
+    this.lessonService.createLesson(formData)
       .subscribe({
         next: () => {
           console.log('Lesson created successfully');

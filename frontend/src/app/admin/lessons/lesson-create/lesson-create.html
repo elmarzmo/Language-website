@@ -8,6 +8,26 @@
     </div>
   </div>
 
+
+  <!-- Lesson Audio -->
+<div class="form-group">
+
+  <label class="form-label">
+    Lesson Audio (MP3)
+  </label>
+
+  <input
+    type="file"
+    accept="audio/mp3,audio/mpeg"
+    (change)="onAudioSelected($event)"
+    class="form-input"
+  />
+
+  <p class="form-hint">
+    Upload the AI-generated lesson audio file.
+  </p>
+
+  
   <!-- Form -->
   <div class="form-wrapper">
     <form (ngSubmit)="createLesson()" class="lesson-form">
