@@ -16,6 +16,7 @@ interface AuthResponse {
   email?: string; // for storing in dashboard
   role?: string;
   DEBUG_ONLY_resetLink?: string; // for debugging purposes only
+
 }
 
 @Injectable({
@@ -38,21 +39,39 @@ export class Auth {
 
   
 
-  login(email: string, password: string): Observable<AuthResponse> {
+  login(email: string, password: string, rememberMe: boolean): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, {
       email,
       password
     }).pipe(
       tap((response: AuthResponse) => {
-        if (response.token) {
-          localStorage.setItem('Token', response.token);
+        if(response.token) {
+
+          ['Token', 'RefreshToken', 'Role', 'userId', 'userName'].forEach(key => {
+            localStorage.removeItem(key);
+            sessionStorage.removeItem(key);
+          });
+
+          const storage = rememberMe ? localStorage : sessionStorage;
+
+          storage.setItem('Token', response.token);
+
           if (response.refreshToken) {
-            localStorage.setItem('RefreshToken', response.refreshToken);
+            storage.setItem('RefreshToken', response.refreshToken);
           }
 
           if (response.role) {
-            localStorage.setItem('Role', response.role);
+            storage.setItem('Role', response.role);
           }
+
+          if(response.id) {
+            storage.setItem('userId', response.id);
+          }
+
+          if(response.username) {
+            storage.setItem('userName', response.username);
+          }
+
           this.isLoggedInSubject.next(true);
         }
       })
@@ -60,11 +79,13 @@ export class Auth {
   }
 
   logout(): void {
-    const refreshToken = localStorage.getItem('RefreshToken');
+    const refreshToken = localStorage.getItem('RefreshToken') ?? sessionStorage.getItem('RefreshToken');
     const clearAuthData = () => {
-      localStorage.removeItem('Token');
-      localStorage.removeItem('RefreshToken');
-      localStorage.removeItem('Role');
+      ['Token', 'RefreshToken', 'Role', 'userId', 'userName'].forEach(key => {
+        localStorage.removeItem(key);
+        sessionStorage.removeItem(key);
+      });
+      
       this.isLoggedInSubject.next(false);
     };
 
@@ -94,15 +115,18 @@ export class Auth {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('Token');
+    return localStorage.getItem('Token')??
+    sessionStorage.getItem('Token');
   }
 
   getRole(): string | null {
-    return localStorage.getItem('Role');
+    return localStorage.getItem('Role')??
+
+    sessionStorage.getItem('Role');
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('Token');
+    return !! (localStorage.getItem('Token') || sessionStorage.getItem('Token'));
   }
 
   isLoggedIn(): boolean {
@@ -111,5 +135,25 @@ export class Auth {
 
   getCurrentUser() {
     return this.http.get(`${this.apiUrl}/auth/current-user`);
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId') ?? sessionStorage.getItem('userId');
+  }
+
+  getUserName(): string | null {
+    return localStorage.getItem('userName') ?? sessionStorage.getItem('userName');
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem('RefreshToken') ?? sessionStorage.getItem('RefreshToken');
+  }
+
+  updateAccessToken(token: string): void {
+    if (localStorage.getItem('Token')) {
+      localStorage.setItem('Token', token);
+    } else {
+      sessionStorage.setItem('Token', token);
+    }
   }
 }
