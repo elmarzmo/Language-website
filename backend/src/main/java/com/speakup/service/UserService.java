@@ -1,23 +1,19 @@
 package com.speakup.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.speakup.service.RefreshTokenService;
 
-import com.speakup.security.JwtUtil;
-
-import com.speakup.model.User;
-import com.speakup.repository.UserRepository;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.speakup.dto.LoginRequest;
 import com.speakup.dto.RegisterRequest;
 import com.speakup.dto.RegisterResponse;
-import com.speakup.dto.LoginRequest;
+import com.speakup.model.User;
+import com.speakup.repository.UserRepository;
+import com.speakup.security.JwtUtil;
 import com.speakup.security.RefreshToken;
 
 @Service
@@ -42,6 +38,7 @@ public class UserService {
 
         //crete new user 
         User newUser = new User();
+        newUser.setAuthProvider(User.AuthProvider.LOCAL);
         newUser.setUsername(request.getUsername());
         newUser.setEmail(request.getEmail());
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -104,6 +101,10 @@ public class UserService {
 
         User dbUser = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (dbUser.getAuthProvider() == User.AuthProvider.GOOGLE) {
+            throw new IllegalArgumentException("This user has only signed up with Google. Please use Google login.");
+        }
 
        
 
