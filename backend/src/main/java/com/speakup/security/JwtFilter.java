@@ -38,6 +38,13 @@ public class JwtFilter extends OncePerRequestFilter {
     }
     */
 
+    
+        String path = request.getServletPath();
+
+        if (path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/") || path.startsWith("/login/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
 
         final String authHeader = request.getHeader("Authorization");
@@ -48,6 +55,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
+
 
         if (jwtUtil.isValid(token)) {
 
