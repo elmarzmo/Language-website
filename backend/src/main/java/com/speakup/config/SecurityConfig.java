@@ -9,14 +9,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.speakup.security.JwtFilter;
+import com.speakup.security.OAuth2LoginSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final OAuth2LoginSuccessHandler oAuth2SuccessHandler;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(JwtFilter jwtFilter, OAuth2LoginSuccessHandler oAuth2SuccessHandler) {
         this.jwtFilter = jwtFilter;
+        this.oAuth2SuccessHandler = oAuth2SuccessHandler;
     }
 
     @Bean
@@ -29,7 +32,7 @@ public class SecurityConfig {
 
             .sessionManagement(session ->
                     session.sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS
+                            SessionCreationPolicy.IF_REQUIRED
                     )
             )
 
@@ -38,7 +41,9 @@ public class SecurityConfig {
                     // PUBLIC ENDPOINTS
                     .requestMatchers(
                             "/api/auth/**",
-                                "/audio/**"
+                                "/audio/**",
+                                "/oauth2/**",
+                                "/login/**"
                     ).permitAll()
                     
                     // STUDENT route
@@ -58,6 +63,10 @@ public class SecurityConfig {
                     // EVERYTHING ELSE REQUIRES JWT
                     .anyRequest().authenticated()
             )
+
+            .oauth2Login(oauth -> oauth
+                .successHandler(oAuth2SuccessHandler)
+        )
 
             .addFilterBefore(
                     jwtFilter,
