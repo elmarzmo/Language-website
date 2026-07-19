@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Data;
+
 @Document(collection = "users")
+@Data
 public class User {
     @Id
     private String id;
@@ -25,72 +28,29 @@ public class User {
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 
+    private AuthProvider authProvider;
+
+    public enum AuthProvider {
+        LOCAL,
+        GOOGLE
+    }
+
 
 
     public User() {
     }
 
-    public User(String username, String email, String password, Role role, String resetToken, LocalDateTime resetTokenExpiry) {
+    public User(String username,
+         String email, 
+         String password, 
+         Role role, 
+         AuthProvider AuthProvider) {
+            
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.resetToken = resetToken;
-        this.resetTokenExpiry = resetTokenExpiry;
+        this.authProvider = AuthProvider;
     }
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-    
-    public String getResetToken() {
-        return resetToken;
-    }
-
-    public void setResetToken(String resetToken) {
-        this.resetToken = resetToken;
-    }
-
-    public LocalDateTime getResetTokenExpiry() {
-        return resetTokenExpiry;
-    }
-
-    public void setResetTokenExpiry(LocalDateTime resetTokenExpiry) {
-        this.resetTokenExpiry = resetTokenExpiry;
-    }
-
     
 }
