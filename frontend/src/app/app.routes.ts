@@ -18,6 +18,7 @@ export const routes: Routes = [
     { path: 'about', component: About },
     { path: 'contact', component: Contact },
     { path: 'signin', component: Signin },
+    {path: 'oauth-success', loadComponent: () => import('./public/oauth/oauth-success/oauth-success').then(m => m.OauthSuccess)},
 
     // student area
 
