@@ -156,4 +156,24 @@ export class Auth {
       sessionStorage.setItem('Token', token);
     }
   }
+
+  saveAuthData(token: string, refreshToken: string, user: any): void {
+
+    ['Token', 'RefreshToken', 'Role', 'userId', 'userName'].forEach(key => {
+      localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
+
+    });
+    localStorage.setItem('Token', token);
+    localStorage.setItem('RefreshToken', refreshToken);
+    localStorage.setItem('Role', user.role);
+    localStorage.setItem('userId', user.id);
+    localStorage.setItem('userName', user.username);
+
+    this.isLoggedInSubject.next(true);
+  }
+
+  loginWithGoogle(): void {
+    window.location.href = `${this.apiUrl}/oauth2/authorization/google`;
+  }
 }
