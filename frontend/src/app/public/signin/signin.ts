@@ -168,4 +168,8 @@ export class Signin implements OnInit {
       }
     });
   }
+
+  loginWithGoogle(): void {
+    this.authService.loginWithGoogle();
+  }
 }

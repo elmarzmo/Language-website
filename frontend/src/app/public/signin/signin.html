@@ -101,7 +101,7 @@
         <div class="divider">{{ 'SIGNIN.OR' | translate }}</div>
 
         <!-- Google Button -->
-        <button class="btn btn-google btn-large" [disabled]="isLoading">
+        <button class="btn btn-google btn-large" [disabled]="isLoading" (click)="loginWithGoogle()">
           {{ 'SIGNIN.LOGIN_GOOGLE' | translate }}
         </button>
       </div>
