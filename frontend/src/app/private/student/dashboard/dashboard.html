@@ -5,12 +5,16 @@
   <!-- ── HEADER ── -->
   <div class="dashboard-header">
     <div class="header-left">
-      <h1 class="welcome-title">Welcome, {{ studentName }} 👋</h1>
+      <h1 class="welcome-title">Welcome, {{ studentName }}</h1>
       <p class="current-date">{{ currentTime }}</p>
     </div>
     <button class="btn-logout" (click)="logout()">
       <span>Logout</span>
-      <span class="icon">🚪</span>
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
     </button>
   </div>
 
@@ -22,13 +26,18 @@
 
   <!-- ── NOT ENROLLED — shown only when loading is done and student has no cohort ── -->
   <div class="not-enrolled-state" *ngIf="!isLoading && !isEnrolled">
-    <div class="not-enrolled-icon">🎓</div>
-    <h2 class="not-enrolled-title">You are not in any group yet</h2>
+    <div class="not-enrolled-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" />
+        <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+      </svg>
+    </div>
+    <h2 class="not-enrolled-title">You're not in a group yet</h2>
     <p class="not-enrolled-message">
-      Our team is currently setting up your classroom placement and learning schedule.
-      Once your teacher adds you to a group, your lessons and classes will appear right here.
+      Our team is setting up your classroom placement and learning schedule.
+      Once your teacher adds you to a group, your lessons and classes will appear here.
     </p>
-    <p class="not-enrolled-hint">💡 No action needed — just check back soon!</p>
+    <p class="not-enrolled-hint">No action needed — check back soon.</p>
   </div>
 
   <!-- ══════════════════════════════════════
@@ -39,7 +48,12 @@
     <!-- ── NEXT CLASS ALERT ── -->
     <div class="top-alert" *ngIf="upcomingClasses.length > 0">
       <div class="alert-content">
-        <span class="alert-icon">🚀</span>
+        <span class="alert-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+        </span>
         <div class="alert-text">
           <p class="alert-title">
             Next Lesson: {{ getLessonInfo(upcomingClasses[0].lessonModuleId)?.title || 'Scheduled Session' }}
@@ -50,14 +64,14 @@
         </div>
       </div>
       <button class="btn-join-now" (click)="joinClass(upcomingClasses[0])">
-        📞 Join Now
+        Join Now
       </button>
     </div>
 
     <!-- ── LEARNING PATH ── -->
     <div class="section">
       <div class="section-header">
-        <h2 class="section-title">📚 Your Learning Path</h2>
+        <h2 class="section-title">Your Learning Path</h2>
         <p class="section-subtitle">Progress through lessons at your own pace</p>
       </div>
 
@@ -73,8 +87,10 @@
           [class.completed]="isCompleted(l.id)">
 
           <div class="lesson-badge">
-            <span class="badge-number">{{ i + 1 }}</span>
-            <span class="badge-icon" *ngIf="isCompleted(l.id)">✓</span>
+            <span class="badge-number" *ngIf="!isCompleted(l.id)">{{ i + 1 }}</span>
+            <svg class="badge-icon" *ngIf="isCompleted(l.id)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
           </div>
 
           <div class="card-header">
@@ -87,7 +103,10 @@
 
           <div class="card-footer">
             <span class="lesson-number">Lesson {{ i + 1 }}</span>
-            <span class="cta-arrow">→</span>
+            <svg class="cta-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </div>
 
         </div>
@@ -98,7 +117,7 @@
     <div class="dashboard-main">
       <div class="section">
         <div class="section-header">
-          <h2 class="section-title">📅 Your Upcoming Classes</h2>
+          <h2 class="section-title">Your Upcoming Classes</h2>
           <p class="section-subtitle">Join your scheduled classes to learn with instructors</p>
         </div>
 
@@ -121,7 +140,7 @@
                   {{ c.dateTime | date:'MMM d, yyyy h:mm a' }}
                 </p>
                 <p class="class-duration">
-                  ⏱️ {{ c.durationMinutes }} minutes
+                  {{ c.durationMinutes }} minutes
                 </p>
               </div>
               <span class="status-badge">{{ getClassStatus(c) }}</span>
@@ -132,14 +151,17 @@
                 class="btn btn-primary"
                 (click)="joinClass(c)"
                 *ngIf="getClassStatus(c) !== 'PAST'">
-                📞 Join Class
+                Join Class
               </button>
 
               <button
                 class="btn btn-secondary"
                 disabled
                 *ngIf="getClassStatus(c) === 'PAST'">
-                ✓ Completed
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Completed
               </button>
             </div>
 
