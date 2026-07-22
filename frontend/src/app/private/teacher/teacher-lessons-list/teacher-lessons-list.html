@@ -3,11 +3,11 @@
   <!-- Header Section -->
   <div class="header-section">
     <div class="header-content">
-      <h1 class="page-title">My Teaching Resources</h1>
+      <h1 class="page-title">My teaching resources</h1>
       <p class="page-subtitle">Select an assigned lesson to view curriculum materials and instructions</p>
     </div>
     <a routerLink="/teacher/dashboard" class="btn btn-secondary">
-      ← Back to Dashboard
+      ← Back to dashboard
     </a>
   </div>
 
@@ -40,17 +40,10 @@
   </div>
 
   <!-- Empty State -->
-  <ng-template #noLessons>
-    <div *ngIf="!isLoading" class="empty-state">
-      <div class="empty-icon">📚</div>
-      <h3 class="empty-title">No Resources Available</h3>
-      <p class="empty-text">No educational resources have been assigned to your workspace yet</p>
-    </div>
-  </ng-template>
-
-  <!-- Show empty state if no lessons -->
-  <div *ngIf="!isLoading && (!lessons || lessons.length === 0)">
-    <ng-container *ngTemplateOutlet="noLessons"></ng-container>
+  <div *ngIf="!isLoading && (!lessons || lessons.length === 0)" class="empty-state">
+    <div class="empty-icon">📚</div>
+    <h3 class="empty-title">No resources available</h3>
+    <p class="empty-text">No educational resources have been assigned to your workspace yet</p>
   </div>
 
 </div>
