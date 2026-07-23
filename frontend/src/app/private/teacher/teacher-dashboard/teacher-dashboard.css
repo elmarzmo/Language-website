@@ -1,5 +1,4 @@
-/* teacher-dashboard.css */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
 
 /* ══════════════════════════════════════
    GLOBAL
@@ -12,7 +11,7 @@
 
 .dashboard-container {
   font-family: 'DM Sans', sans-serif;
-  background: #f7f5ff;
+  background: #f9fdfd;
   min-height: 100vh;
   padding: 2rem;
   max-width: 1100px;
@@ -37,13 +36,13 @@
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.3rem, 3vw, 1.9rem);
   font-weight: 700;
-  color: #1a1a1a;
+  color: #1c1917;
   letter-spacing: -0.02em;
 }
 
 .current-date {
   font-size: 13px;
-  color: #888;
+  color: #6b7280;
   margin-top: 4px;
 }
 
@@ -58,15 +57,15 @@
   font-size: 13px;
   font-weight: 500;
   font-family: 'DM Sans', sans-serif;
-  color: #555;
+  color: #6b7280;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .btn-logout:hover {
-  background: #fdecea;
-  color: #b83224;
-  border-color: rgba(184, 50, 36, 0.15);
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.15);
 }
 
 /* ══════════════════════════════════════
@@ -79,15 +78,15 @@
   justify-content: center;
   padding: 5rem 2rem;
   gap: 1rem;
-  color: #888;
+  color: #6b7280;
   font-size: 14px;
 }
 
 .spinner {
   width: 34px;
   height: 34px;
-  border: 3px solid #e0dcf7;
-  border-top-color: #7c6fcf;
+  border: 3px solid rgba(37, 99, 235, 0.2);
+  border-top-color: #2563eb;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -126,21 +125,21 @@
   flex-shrink: 0;
 }
 
-.stat-icon-wrap.purple { background: #f0eeff; }
-.stat-icon-wrap.blue   { background: #E6F1FB; }
-.stat-icon-wrap.teal   { background: #E1F5EE; }
+.stat-icon-wrap.purple { background: #eff6ff; }
+.stat-icon-wrap.blue   { background: #eff6ff; }
+.stat-icon-wrap.teal   { background: #e6f6f8; }
 
 .stat-number {
   font-family: 'Playfair Display', serif;
   font-size: 1.7rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #1c1917;
   line-height: 1;
 }
 
 .stat-label {
   font-size: 12px;
-  color: #888;
+  color: #6b7280;
   margin-top: 3px;
 }
 
@@ -163,13 +162,13 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #1c1917;
   letter-spacing: -0.01em;
 }
 
 .section-subtitle {
   font-size: 13px;
-  color: #888;
+  color: #6b7280;
 }
 
 /* ══════════════════════════════════════
@@ -195,8 +194,8 @@
 }
 
 .mgmt-card:hover {
-  border-color: rgba(124, 111, 207, 0.3);
-  box-shadow: 0 4px 16px rgba(124, 111, 207, 0.07);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.07);
 }
 
 .mgmt-top {
@@ -216,8 +215,8 @@
   font-size: 1.2rem;
 }
 
-.mgmt-icon.purple { background: #f0eeff; }
-.mgmt-icon.blue   { background: #E6F1FB; }
+.mgmt-icon.purple { background: #eff6ff; }
+.mgmt-icon.blue   { background: #eff6ff; }
 
 .mgmt-count-block {
   display: flex;
@@ -229,25 +228,25 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #1c1917;
   line-height: 1;
 }
 
 .mgmt-count-label {
   font-size: 11px;
-  color: #aaa;
+  color: #9ca3af;
   margin-top: 2px;
 }
 
 .mgmt-title {
   font-size: 14px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: #1c1917;
 }
 
 .mgmt-desc {
   font-size: 12px;
-  color: #888;
+  color: #6b7280;
   line-height: 1.6;
   flex: 1;
 }
@@ -255,7 +254,7 @@
 .mgmt-link {
   font-size: 12px;
   font-weight: 500;
-  color: #7c6fcf;
+  color: #2563eb;
   margin-top: 0.25rem;
 }
 
@@ -280,14 +279,13 @@
   flex-wrap: wrap;
 }
 
-/* Left accent border per status */
 .class-card.accent-live {
-  border-left: 2px solid #1D9E75;
+  border-left: 2px solid #16a34a;
   border-radius: 0 12px 12px 0;
 }
 
 .class-card.accent-upcoming {
-  border-left: 2px solid #7c6fcf;
+  border-left: 2px solid #2563eb;
   border-radius: 0 12px 12px 0;
 }
 
@@ -308,7 +306,7 @@
 .class-name {
   font-size: 14px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: #1c1917;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -323,7 +321,7 @@
 
 .class-meta span {
   font-size: 12px;
-  color: #888;
+  color: #6b7280;
 }
 
 .class-right {
@@ -333,7 +331,6 @@
   flex-shrink: 0;
 }
 
-/* Status badges */
 .status-badge {
   font-size: 11px;
   font-weight: 500;
@@ -342,13 +339,12 @@
   white-space: nowrap;
 }
 
-.badge-live     { background: #E1F5EE; color: #0F6E56; }
-.badge-upcoming { background: #f0eeff; color: #7c6fcf; }
-.badge-past     { background: #f2f2f2; color: #aaa; }
+.badge-live     { background: #eaf7ee; color: #16a34a; }
+.badge-upcoming { background: #eff6ff; color: #2563eb; }
+.badge-past     { background: #f2f2f2; color: #9ca3af; }
 
-/* Action buttons */
 .btn-start {
-  background: #7c6fcf;
+  background: #2563eb;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -362,13 +358,13 @@
 }
 
 .btn-start:hover {
-  background: #6a5dbf;
+  background: #1d4ed8;
   transform: translateY(-1px);
 }
 
 .btn-done {
   background: #f2f2f2;
-  color: #aaa;
+  color: #9ca3af;
   border: none;
   border-radius: 8px;
   padding: 8px 18px;
@@ -403,7 +399,7 @@
 
 .empty-text {
   font-size: 13px;
-  color: #aaa;
+  color: #9ca3af;
 }
 
 /* ══════════════════════════════════════

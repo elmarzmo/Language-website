@@ -8,21 +8,15 @@
 
 html, body {
   font-family: 'DM Sans', sans-serif;
-  background: #f7f5ff;
+  background: #f9fdfd;
 }
 
-/* ══════════════════════════════════════
-   MAIN CONTAINER
-════════════════════════════════════════ */
 .lesson-container {
   min-height: 100vh;
-  background: #f7f5ff;
+  background: #f9fdfd;
   padding-bottom: 3rem;
 }
 
-/* ══════════════════════════════════════
-   LESSON HEADER
-════════════════════════════════════════ */
 .lesson-header {
   background: #ffffff;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.07);
@@ -41,7 +35,7 @@ html, body {
 .back-link {
   font-size: 13px;
   font-weight: 500;
-  color: #7c6fcf;
+  color: #2563eb;
   text-decoration: none;
   transition: color 0.15s ease;
   display: inline-flex;
@@ -51,7 +45,7 @@ html, body {
 }
 
 .back-link:hover {
-  color: #6a5dbf;
+  color: #1d4ed8;
 }
 
 .lesson-title {
@@ -61,19 +55,16 @@ html, body {
   letter-spacing: -0.02em;
   margin: 0;
   line-height: 1.2;
-  color: #1a1a1a;
+  color: #1c1917;
 }
 
 .lesson-meta {
   font-size: 12px;
-  color: #888;
+  color: #6b7280;
   font-weight: 400;
   margin: 0;
 }
 
-/* ══════════════════════════════════════
-   CONTENT WRAPPER
-════════════════════════════════════════ */
 .lesson-content-wrapper {
   max-width: 1100px;
   margin: 0 auto;
@@ -83,39 +74,25 @@ html, body {
   gap: 1.5rem;
 }
 
-/* ══════════════════════════════════════
-   SECTIONS
-════════════════════════════════════════ */
 .section {
   background: #ffffff;
   border-radius: 14px;
   padding: 1.4rem;
   box-shadow: 0 1px 2px rgba(28, 25, 23, 0.05);
   border: 0.5px solid rgba(0, 0, 0, 0.07);
-  border-left: 2px solid #7c6fcf;
+  border-left: 2px solid #2563eb;
   border-radius: 0 14px 14px 0;
   transition: all 0.15s ease;
 }
 
 .section:hover {
-  box-shadow: 0 4px 12px rgba(124, 111, 207, 0.06);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
 }
 
-.description-section {
-  border-left-color: #7c6fcf;
-}
-
-.content-section {
-  border-left-color: #7c6fcf;
-}
-
-.instructions-section {
-  border-left-color: #8d7dd9;
-}
-
-.notes-section {
-  border-left-color: #6a5dbf;
-}
+.description-section { border-left-color: #2563eb; }
+.content-section     { border-left-color: #2563eb; }
+.instructions-section { border-left-color: #0e7490; }
+.notes-section       { border-left-color: #1d4ed8; }
 
 .section-header {
   display: flex;
@@ -130,14 +107,11 @@ html, body {
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #1c1917;
   letter-spacing: -0.005em;
   margin: 0;
 }
 
-/* ══════════════════════════════════════
-   TEXT SECTIONS
-════════════════════════════════════════ */
 .description,
 .instructions,
 .notes {
@@ -149,21 +123,18 @@ html, body {
 
 .instructions {
   padding: 1rem;
-  background: #f9f8fc;
+  background: #e6f6f8;
   border-radius: 8px;
-  border-left: 2px solid #8d7dd9;
+  border-left: 2px solid #0e7490;
 }
 
 .notes {
   padding: 1rem;
-  background: #f9f8fc;
+  background: #eff6ff;
   border-radius: 8px;
-  border-left: 2px solid #6a5dbf;
+  border-left: 2px solid #1d4ed8;
 }
 
-/* ══════════════════════════════════════
-   CONTENT DISPLAY
-════════════════════════════════════════ */
 .content-display {
   font-size: 14px;
   color: #555;
@@ -185,24 +156,16 @@ html, body {
 .content-display h5,
 .content-display h6 {
   font-family: 'Playfair Display', serif;
-  color: #1a1a1a;
+  color: #1c1917;
   margin-top: 1.25rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
   font-weight: 600;
 }
 
-.content-display h1 {
-  font-size: 1.5rem;
-}
-
-.content-display h2 {
-  font-size: 1.3rem;
-}
-
-.content-display h3 {
-  font-size: 1.1rem;
-}
+.content-display h1 { font-size: 1.5rem; }
+.content-display h2 { font-size: 1.3rem; }
+.content-display h3 { font-size: 1.1rem; }
 
 .content-display ul,
 .content-display ol {
@@ -216,29 +179,29 @@ html, body {
 }
 
 .content-display a {
-  color: #7c6fcf;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.15s ease;
 }
 
 .content-display a:hover {
-  color: #6a5dbf;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
 .content-display blockquote {
   margin-left: 0;
   padding-left: 1rem;
-  border-left: 2px solid #7c6fcf;
+  border-left: 2px solid #2563eb;
   color: #777;
   font-style: italic;
   margin-bottom: 1rem;
 }
 
 .content-display code {
-  background: #f0eeff;
-  color: #7c6fcf;
+  background: #eff6ff;
+  color: #2563eb;
   padding: 2px 6px;
   border-radius: 4px;
   font-family: 'Courier New', monospace;
@@ -260,9 +223,6 @@ html, body {
   padding: 0;
 }
 
-/* ══════════════════════════════════════
-   BUTTONS
-════════════════════════════════════════ */
 .btn {
   padding: 8px 18px;
   border-radius: 8px;
@@ -286,14 +246,11 @@ html, body {
 }
 
 .btn-secondary:hover {
-  background: #faf9f8;
-  color: #1a1a1a;
-  border-color: rgba(124, 111, 207, 0.2);
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.2);
 }
 
-/* ══════════════════════════════════════
-   FOOTER
-════════════════════════════════════════ */
 .lesson-footer {
   max-width: 1100px;
   margin: 2rem auto 0;
@@ -305,24 +262,21 @@ html, body {
   padding: 8px 18px;
 }
 
-/* ══════════════════════════════════════
-   LOADING STATE
-════════════════════════════════════════ */
 .loading-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f7f5ff;
+  background: #f9fdfd;
   gap: 1.5rem;
 }
 
 .spinner {
   width: 34px;
   height: 34px;
-  border: 3px solid #e0dcf7;
-  border-top-color: #7c6fcf;
+  border: 3px solid rgba(37, 99, 235, 0.15);
+  border-top-color: #2563eb;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -333,127 +287,35 @@ html, body {
 
 .loading-container p {
   font-size: 14px;
-  color: #888;
+  color: #6b7280;
 }
 
-/* ══════════════════════════════════════
-   RESPONSIVE - TABLET (768px)
-════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .lesson-header {
-    padding: 1.5rem;
-  }
-
-  .lesson-title {
-    font-size: 1.5rem;
-  }
-
-  .lesson-content-wrapper {
-    padding: 1.5rem;
-    gap: 1.25rem;
-  }
-
-  .section {
-    padding: 1.2rem;
-  }
-
-  .section-title {
-    font-size: 1rem;
-  }
-
-  .description,
-  .instructions,
-  .notes,
-  .content-display {
-    font-size: 13px;
-  }
-
-  .content-display h1 {
-    font-size: 1.3rem;
-  }
-
-  .content-display h2 {
-    font-size: 1.1rem;
-  }
-
-  .content-display h3 {
-    font-size: 1rem;
-  }
-
-  .lesson-footer {
-    padding: 1.5rem;
-  }
+  .lesson-header { padding: 1.5rem; }
+  .lesson-title { font-size: 1.5rem; }
+  .lesson-content-wrapper { padding: 1.5rem; gap: 1.25rem; }
+  .section { padding: 1.2rem; }
+  .section-title { font-size: 1rem; }
+  .description, .instructions, .notes, .content-display { font-size: 13px; }
+  .content-display h1 { font-size: 1.3rem; }
+  .content-display h2 { font-size: 1.1rem; }
+  .content-display h3 { font-size: 1rem; }
+  .lesson-footer { padding: 1.5rem; }
 }
 
-/* ══════════════════════════════════════
-   RESPONSIVE - MOBILE (480px)
-════════════════════════════════════════ */
 @media (max-width: 480px) {
-  .lesson-header {
-    padding: 1.25rem;
-  }
-
-  .lesson-title {
-    font-size: 1.25rem;
-  }
-
-  .lesson-meta {
-    font-size: 11px;
-  }
-
-  .lesson-content-wrapper {
-    padding: 1rem;
-    gap: 1rem;
-  }
-
-  .section {
-    padding: 1rem;
-    border-radius: 10px;
-    border-radius: 0 10px 10px 0;
-  }
-
-  .section-header {
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .section-title {
-    font-size: 0.95rem;
-  }
-
-  .description,
-  .instructions,
-  .notes,
-  .content-display {
-    font-size: 12px;
-    line-height: 1.6;
-  }
-
-  .content-display h1 {
-    font-size: 1.2rem;
-    margin-top: 1rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .content-display h2 {
-    font-size: 1.05rem;
-  }
-
-  .content-display h3 {
-    font-size: 0.95rem;
-  }
-
-  .content-display ul,
-  .content-display ol {
-    margin-left: 1.25rem;
-  }
-
-  .lesson-footer {
-    padding: 1rem;
-  }
-
-  .lesson-footer .btn {
-    width: 100%;
-    justify-content: center;
-  }
+  .lesson-header { padding: 1.25rem; }
+  .lesson-title { font-size: 1.25rem; }
+  .lesson-meta { font-size: 11px; }
+  .lesson-content-wrapper { padding: 1rem; gap: 1rem; }
+  .section { padding: 1rem; border-radius: 10px; border-radius: 0 10px 10px 0; }
+  .section-header { margin-bottom: 0.75rem; padding-bottom: 0.5rem; }
+  .section-title { font-size: 0.95rem; }
+  .description, .instructions, .notes, .content-display { font-size: 12px; line-height: 1.6; }
+  .content-display h1 { font-size: 1.2rem; margin-top: 1rem; margin-bottom: 0.6rem; }
+  .content-display h2 { font-size: 1.05rem; }
+  .content-display h3 { font-size: 0.95rem; }
+  .content-display ul, .content-display ol { margin-left: 1.25rem; }
+  .lesson-footer { padding: 1rem; }
+  .lesson-footer .btn { width: 100%; justify-content: center; }
 }
