@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
-import { Navbar } from './component/navbar/navbar';
+
 import { TranslateService } from '@ngx-translate/core';
 import { Auth } from './guards/auth';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
