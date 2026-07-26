@@ -18,8 +18,8 @@ import { CohortService } from '../service/cohort.service';
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [CommonModule, TranslateModule, RouterLink],
-  templateUrl: './admindashboard.html',
-  styleUrls: ['./admindashboard.css'],
+  templateUrl: './adminDashboard.html',
+  styleUrls: ['./adminDashboard.css'],
   host: {
     'class': 'dashboard-host',
     'style': 'display: block; height: 100%; width: 100%;'
