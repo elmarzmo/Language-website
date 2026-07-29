@@ -174,6 +174,7 @@ export class Auth {
   }
 
   loginWithGoogle(): void {
-    window.location.href = `${this.apiUrl}/oauth2/authorization/google`;
+ 
+     window.location.assign(`${environment.oauth2AuthorizationUrl}`);
   }
 }

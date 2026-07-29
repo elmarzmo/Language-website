@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../../guards/auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-signin',
@@ -169,7 +170,12 @@ export class Signin implements OnInit {
     });
   }
 
-  loginWithGoogle(): void {
-    this.authService.loginWithGoogle();
-  }
+ loginWithGoogle(): void {
+  const url = environment.oauth2AuthorizationUrl;
+
+  console.log("Google login clicked");
+  console.log("Redirecting to:", url);
+
+  window.location.href = url;
+}
 }
