@@ -159,6 +159,7 @@ export class Signin implements OnInit {
         this.isLoading = false;
         this.successMessage = response.message || 'If that email exists, a reset link has been generated.';
         
+        //TODO: Remove this in production
         if (response.DEBUG_ONLY_resetLink) {
           this.debugResetLink = response.DEBUG_ONLY_resetLink;
         }
