@@ -1,9 +1,15 @@
 package com.speakup.service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,25 +63,40 @@ public class UserService {
     }
 
     public String generateResetToken(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("If the email exists, a reset link has been sent."));
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if(userOptional.isEmpty()) {
+            return null;
+        }
+
+
+        User user = userOptional.get();
 
         // Generate a random token (you can use UUID or any other method)
-        String resetToken = java.util.UUID.randomUUID().toString();
+        String rawToken = UUID.randomUUID().toString();
+
+        
+        String hashedToken = hashToken(rawToken);
 
         // Set the token and its expiry time (e.g., 1 hour from now)
-        user.setResetToken(resetToken);
-        user.setResetTokenExpiry(java.time.LocalDateTime.now().plusMinutes(15));
+        user.setResetToken(hashedToken);
+        user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(15));
 
         // Save the updated user
         userRepository.save(user);
 
-        return resetToken;
+        return rawToken;
     }
 
-    public void resetPassword(String resetToken, String newPassword) {
-        User user = userRepository.findByResetToken(resetToken)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid reset token"));
+    public void resetPassword(String rawResetToken, String newPassword) {
+
+        if (rawResetToken == null || rawResetToken.isBlank()) {
+            throw new IllegalArgumentException("Invalid reset token");
+        }
+        String hashedToken = hashToken(rawResetToken);
+
+        User user = userRepository.findByResetToken(hashedToken)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid or expired reset token"));
 
         // Check if the token has expired
         if (user.getResetTokenExpiry() == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
@@ -86,9 +107,7 @@ public class UserService {
         if (newPassword == null || newPassword.trim().isEmpty()) {
             throw new IllegalArgumentException("New password cannot be empty");
         }
-        if (newPassword.length() < 6) {
-            throw new IllegalArgumentException("New password must be at least 6 characters long");
-        }
+        
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetToken(null);
         user.setResetTokenExpiry(null);
@@ -151,4 +170,16 @@ public class UserService {
         }
         return userRepository.findTop10ByRoleAndUsernameContainingIgnoreCase(User.Role.TEACHER, query);
     }
+
+    private String hashToken(String token) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(token.getBytes(StandardCharsets.UTF_8));
+            
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
+            // return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing token", e);
+        }
+        }
 }
