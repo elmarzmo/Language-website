@@ -3,9 +3,18 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Auth } from '../auth';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   templateUrl: './reset-password.html',
   styleUrls: ['./reset-password.css']
 })
