@@ -14,7 +14,9 @@ public class CrosConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://d27rbb57hwwdnl.cloudfront.net/")
+                        .allowedOrigins(
+                            "http://localhost:4200",
+                            "https://d27rbb57hwwdnl.cloudfront.net")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
             }
