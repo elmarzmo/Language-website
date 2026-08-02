@@ -31,17 +31,26 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        /* 
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-        response.setStatus(HttpServletResponse.SC_OK);
-        return;
-    }
-    */
+
+        
+         
+ 
+    
 
     
         String path = request.getServletPath();
 
-        if (path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/") || path.startsWith("/login/")) {
+               if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+        filterChain.doFilter(request, response);
+        return;
+    }
+
+
+
+        if (path.startsWith("/api/auth/")
+             || path.startsWith("/oauth2/")
+             || path.startsWith("/login/oauth2/")
+             || path.startsWith("/login/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -57,7 +66,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
 
-        if (jwtUtil.isValid(token)) {
+        if (jwtUtil.isValid(token) &&
+                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
             String userId = jwtUtil.extractUserId(token);
             String role = jwtUtil.extractRole(token);
