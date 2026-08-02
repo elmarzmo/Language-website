@@ -9,12 +9,14 @@ import { TeacherDashboard } from './private/teacher/teacher-dashboard/teacher-da
 import { TeacherLessonsView } from './private/teacher/teacher-lessons-view/teacher-lessons-view';
 import { TeacherLessonsList } from './private/teacher/teacher-lessons-list/teacher-lessons-list';
 import { TeacherCohortsList } from './private/teacher/teacher-cohorts-list/teacher-cohorts-list';
+import { ResetPassword } from './guards/reset-password/reset-password';
 
 export const routes: Routes = [
     
    
     { path:'', redirectTo: 'signin', pathMatch: 'full' },
     { path: 'signin', component: Signin },
+    { path: 'reset-password', component: ResetPassword },
     {path: 'oauth-success', loadComponent: () => import('./public/oauth/oauth-success/oauth-success').then(m => m.OauthSuccess)},
 
     // student area
