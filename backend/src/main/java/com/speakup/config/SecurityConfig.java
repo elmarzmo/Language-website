@@ -43,7 +43,8 @@ public class SecurityConfig {
                             "/api/auth/**",
                                 "/audio/**",
                                 "/oauth2/**",
-                                "/login/**"
+                                "/login/**",
+                                "/api/debug"
                     ).permitAll()
                     
                     // STUDENT route
