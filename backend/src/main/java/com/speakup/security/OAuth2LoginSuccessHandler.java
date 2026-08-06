@@ -71,7 +71,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = refreshTokenservice.createRefreshToken(user).getToken();
 
         // TODO: use the domain name before production
-        String redirectUrl = "https://d27rbb57hwwdnl.cloudfront.net/oauth-success"
+        String redirectUrl = "https://voixaenglish.com/oauth-success"
         + "?token=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8)
         + "&refreshToken=" + URLEncoder.encode(refreshToken, StandardCharsets.UTF_8);
         response.sendRedirect(redirectUrl);
