@@ -75,6 +75,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         + "?token=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8)
         + "&refreshToken=" + URLEncoder.encode(refreshToken, StandardCharsets.UTF_8);
         response.sendRedirect(redirectUrl);
+        System.out.println("Server Name: " + request.getServerName());
+System.out.println("Request URL: " + request.getRequestURL());
+System.out.println("Host: " + request.getHeader("Host"));
+System.out.println("X-Forwarded-Host: " + request.getHeader("X-Forwarded-Host"));
+System.out.println("X-Forwarded-Proto: " + request.getHeader("X-Forwarded-Proto"));
     }
+    
     
 }
