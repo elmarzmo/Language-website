@@ -56,7 +56,7 @@ export class AuthGuard implements CanActivate {
 
       // Catch-all fallback just in case the role string is corrupt or missing
 
-      this.router.navigate(['/home']);
+      this.router.navigate(['/signin']);
 
     }
     return false;

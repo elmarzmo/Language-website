@@ -39,6 +39,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
     
         String path = request.getServletPath();
+        
+
+System.out.println("JWT FILTER PATH: " + path);
+System.out.println("AUTH HEADER: " + request.getHeader("Authorization"));
 
                if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
         filterChain.doFilter(request, response);
@@ -47,13 +51,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
 
-        if (path.startsWith("/api/auth/")
-             || path.startsWith("/oauth2/")
-             || path.startsWith("/login/oauth2/")
-             || path.startsWith("/login/")) {
+    if (path.equals("/api/auth/login")
+        || path.equals("/api/auth/register")
+        || path.startsWith("/oauth2/")
+        || path.startsWith("/login/oauth2/")
+        || path.startsWith("/login/")) {
             filterChain.doFilter(request, response);
             return;
-        }
+}
 
 
         final String authHeader = request.getHeader("Authorization");
@@ -65,13 +70,24 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
+        System.out.println("AUTH BEFORE: " 
+    + SecurityContextHolder.getContext().getAuthentication());
 
-        if (jwtUtil.isValid(token) &&
-                 SecurityContextHolder.getContext().getAuthentication() == null) {
+
+        if (jwtUtil.isValid(token) ) {
 
             String userId = jwtUtil.extractUserId(token);
             String role = jwtUtil.extractRole(token);
             String username = jwtUtil.extractUsername(token);
+
+ System.out.println("====== JWT DATA ======");
+    System.out.println("USER ID: " + userId);
+    System.out.println("USERNAME: " + username);
+    System.out.println("ROLE: " + role);
+    System.out.println("======================");
+
+
+
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(

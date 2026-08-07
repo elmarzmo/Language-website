@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -17,13 +18,15 @@ import com.speakup.service.RefreshTokenService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenservice;
+
+     @Value("${frontend.url}")
+    private String frontendUrl;
 
     public OAuth2LoginSuccessHandler(UserRepository userRepository, JwtUtil jwtUtil, RefreshTokenService refreshTokenservice) {
         this.userRepository = userRepository;
@@ -72,10 +75,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = refreshTokenservice.createRefreshToken(user).getToken();
 
         // TODO: use the domain name before production
-        String redirectUrl = "https://voixaenglish.com/oauth-success"
+       String redirectUrl = frontendUrl 
+        + "/oauth-success"
         + "?token=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8)
         + "&refreshToken=" + URLEncoder.encode(refreshToken, StandardCharsets.UTF_8);
-        response.sendRedirect(redirectUrl);
+
+response.sendRedirect(redirectUrl);
      
     }
     

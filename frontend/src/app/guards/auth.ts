@@ -134,8 +134,15 @@ export class Auth {
   }
 
   getCurrentUser() {
-    return this.http.get(`${this.apiUrl}/auth/current-user`);
-  }
+  return this.http.get(
+    `${this.apiUrl}/auth/current-user`,
+    {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    }
+  );
+}
 
   getUserId(): string | null {
     return localStorage.getItem('userId') ?? sessionStorage.getItem('userId');
