@@ -16,7 +16,8 @@ public class CrosConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                             "http://localhost:4200",
-                            "https://voixaenglish.com")
+                            "https://voixaenglish.com",
+                          "https://www.voixaenglish.com")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
             }
