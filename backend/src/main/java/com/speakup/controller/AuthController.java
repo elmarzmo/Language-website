@@ -2,7 +2,6 @@ package com.speakup.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.speakup.dto.CurrentUserDTO;
 import com.speakup.dto.ForgotPasswordRequest;
-import com.speakup.dto.ResetPasswordRequest;
+import com.speakup.dto.LoginRequest;
 import com.speakup.dto.RegisterRequest;
 import com.speakup.dto.RegisterResponse;
-import com.speakup.dto.LoginRequest;
-
-import com.speakup.model.User;
+import com.speakup.dto.ResetPasswordRequest;
 import com.speakup.repository.UserRepository;
 import com.speakup.security.JwtUtil;
 import com.speakup.security.RefreshToken;
 import com.speakup.service.RefreshTokenService;
 import com.speakup.service.UserService;
-
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -148,11 +143,17 @@ public class AuthController {
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
         String email = request.getEmail();
        try{
-        userService.generateResetToken(email);
+        String rawToken = userService.generateResetToken(email);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "If the email exists, a reset link has been sent.");
+
+        
+        return ResponseEntity.ok(response);
        } catch(Exception ignored){
         // Ignore the exception to prevent email enumeration
-       }
         return ResponseEntity.ok(Map.of("message", "If the email exists, a reset link has been sent."));
+       }
     }
 
     @PostMapping("/reset-password")
