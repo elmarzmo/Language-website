@@ -28,12 +28,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, JwtUtil jwtUtil, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.refreshTokenService = refreshTokenService;
         this.jwtUtil = jwtUtil;
+        this.emailService = emailService;
     }
 
     public RegisterResponse registerUser(RegisterRequest request) {
@@ -84,6 +86,8 @@ public class UserService {
 
         // Save the updated user
         userRepository.save(user);
+
+        emailService.sendPasswordResetEmail(user.getEmail(), rawToken);
 
         return rawToken;
     }
