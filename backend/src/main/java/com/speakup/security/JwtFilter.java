@@ -80,12 +80,6 @@ System.out.println("AUTH HEADER: " + request.getHeader("Authorization"));
             String role = jwtUtil.extractRole(token);
             String username = jwtUtil.extractUsername(token);
 
- System.out.println("====== JWT DATA ======");
-    System.out.println("USER ID: " + userId);
-    System.out.println("USERNAME: " + username);
-    System.out.println("ROLE: " + role);
-    System.out.println("======================");
-
 
 
 
