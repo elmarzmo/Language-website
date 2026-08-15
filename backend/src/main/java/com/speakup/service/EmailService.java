@@ -33,11 +33,13 @@ public class EmailService {
         );
      
        
+        System.out.println("SENDING RESET EMAIL TO: " + email);
+
 
   
         mailSender.send(message);
 
-    
+     System.out.println("RESET EMAIL SENT");
 
     }
     
