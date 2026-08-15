@@ -33,13 +33,15 @@ public class EmailService {
         );
      
        
-        System.out.println("SENDING RESET EMAIL TO: " + email);
+      System.out.println("SENDING RESET EMAIL TO: " + email);
 
-
-  
-        mailSender.send(message);
-
-     System.out.println("RESET EMAIL SENT");
+try {
+    mailSender.send(message);
+    System.out.println("RESET EMAIL SENT");
+} catch (Exception e) {
+    System.out.println("EMAIL SEND FAILED");
+    e.printStackTrace();
+}
 
     }
     
