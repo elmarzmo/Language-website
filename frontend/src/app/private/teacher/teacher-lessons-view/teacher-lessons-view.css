@@ -120,12 +120,12 @@ html, body {
   line-height: 1.7;
   margin: 0;
 }
-
 .instructions {
   padding: 1rem;
   background: #e6f6f8;
   border-radius: 8px;
   border-left: 2px solid #0e7490;
+  white-space: pre-line;
 }
 
 .notes {
@@ -133,7 +133,9 @@ html, body {
   background: #eff6ff;
   border-radius: 8px;
   border-left: 2px solid #1d4ed8;
+  white-space: pre-line;
 }
+
 
 .content-display {
   font-size: 14px;
