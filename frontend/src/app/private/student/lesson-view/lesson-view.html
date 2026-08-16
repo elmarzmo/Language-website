@@ -31,19 +31,28 @@
     </p>
   </div>
 
+  <!-- Memorization Reminder -->
+  <div class="memorize-reminder">
+    <span class="memorize-icon">🚨</span>
+    <span>You need to memorize this text before the next class.</span>
+     <span class="memorize-icon">🚨</span>
+  </div>
+
   <!-- Main Content -->
   <div class="content" [innerHTML]="lesson.content"></div>
 
   <div class="description-container" *ngIf="lesson.instructions">
     <h3>What to expect next class</h3>
-    <p class="instructions">
+    
+    <div class="instructions">
       <svg class="callout-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10" />
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
-      <span>{{ lesson.instructions }}</span>
-    </p>
+      <div class="instructions-text">{{ lesson.instructions }}</div>
+    </div>
+
   </div>
 
   <!-- Back Button -->
