@@ -31,7 +31,7 @@ public class TeacherDashboardService {
 
     public TeacherDashboardDTO getTeacherDashboard(String teacherId) {
 
-        classSessionService.updateCompletedSessions();;
+        classSessionService.updateCompletedSessions();
 
 
         List<Cohort> cohorts = cohortRepository.findByTeacherId(teacherId);
