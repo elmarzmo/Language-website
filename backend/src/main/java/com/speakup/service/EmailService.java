@@ -1,4 +1,6 @@
 package com.speakup.service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     private final MailSender mailSender;
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     public EmailService(MailSender mailSender) {
         this.mailSender = mailSender;
@@ -23,7 +26,7 @@ public class EmailService {
 
         message.setText(
              "Hello,\n\n" +
-                "We received a request to reset your SpeakUp Languages password.\n\n" +
+                "We received a request to reset your Voixaenglish password.\n\n" +
                 "Click the link below to reset your password:\n\n" +
                 resetLink +
                 "\n\n" +
@@ -33,14 +36,14 @@ public class EmailService {
         );
      
        
-      System.out.println("SENDING RESET EMAIL TO: " + email);
+      logger.info("SENDING password reset email");
 
 try {
-    mailSender.send(message);
-    System.out.println("RESET EMAIL SENT");
+    mailSender.send(message);        
+    logger.info("Password reset email sent successfully");
 } catch (Exception e) {
-    System.out.println("EMAIL SEND FAILED");
-    e.printStackTrace();
+    logger.error("Failed to send email: " + e);
+    throw new RuntimeException("Failed to send email: " + e);
 }
 
     }
