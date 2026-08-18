@@ -211,6 +211,12 @@
           </span>
         </button>
 
+        <!-- Reset Email Help -->
+  
+        <p *ngIf="successMessage" class="reset-email-help">
+          Didn't receive the reset link? Check your spam folder or contact us at
+          <a href="mailto:support@voixaenglish.com">support@voixaenglish.com</a>
+        </p>
         <!-- Debug Link -->
         <div *ngIf="debugResetLink" class="alert alert-warning" role="alert">
           <span class="alert-icon">i</span>

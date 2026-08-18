@@ -267,6 +267,23 @@ html, body {
   animation: spin 0.8s linear infinite;
 }
 
+.reset-email-help {
+  margin: 16px 0 20px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.reset-email-help a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.reset-email-help a:hover {
+  opacity: 0.8;
+}
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
