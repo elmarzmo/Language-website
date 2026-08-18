@@ -78,7 +78,8 @@ export class TeacherCohortsList implements OnInit {
           cohort.upcomingSession = allSessions
             .filter(session =>
               session.cohortId === cohort.id &&
-              session.status === 'SCHEDULED'
+              session.status === 'SCHEDULED' ||
+              session.status === 'ONGOING'
             )
             .sort(
               (a, b) =>
