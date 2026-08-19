@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { HomeComponent } from './public/home/home';
 import { Dashboard } from './private/student/dashboard/dashboard';
 import { Signin } from './public/signin/signin';
 import { AuthGuard } from './guards/auth.guard';
@@ -12,9 +13,9 @@ import { TeacherCohortsList } from './private/teacher/teacher-cohorts-list/teach
 import { ResetPassword } from './public/signin/oauth-success/reset-password/reset-password';
 
 export const routes: Routes = [
-    
+    { path: 'home', component: HomeComponent },
    
-    { path:'', redirectTo: 'signin', pathMatch: 'full' },
+    { path:'', redirectTo: 'home', pathMatch: 'full' },
     { path: 'signin', component: Signin },
     { path: 'reset-password', component: ResetPassword },
     {path: 'oauth-success', loadComponent: () => import('./public/signin/oauth-success/oauth-success').then(m => m.OauthSuccess)},
