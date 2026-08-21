@@ -7,7 +7,7 @@ import { Navbar } from '../../component/navbar/navbar';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TranslateModule, Navbar],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
