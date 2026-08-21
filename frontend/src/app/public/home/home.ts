@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { Navbar } from '../../component/navbar/navbar';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, Navbar],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
@@ -22,13 +23,16 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToSignup(): void {
-    this.router.navigate(['/signup']);
+     this.router.navigate(['/signin'], { queryParams: { action: 'signup' } });
   }
 
   navigateToSignIn(): void {
     this.router.navigate(['/signin']);
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+  }
   scrollToHowItWorks(): void {
     if (this.howItWorks) {
       this.howItWorks.nativeElement.scrollIntoView({ behavior: 'smooth' });
