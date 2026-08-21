@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from '../../guards/auth';
 import { environment } from '../../../environments/environment';
+import { Navbar } from '../../component/navbar/navbar';
 
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule],
+  imports: [CommonModule, TranslateModule, FormsModule, Navbar],
   templateUrl: './signin.html',
   styleUrls: ['./signin.css'],
   host: { class: 'signin-host' }
@@ -42,14 +43,30 @@ export class Signin implements OnInit {
 
   constructor(
     private authService: Auth,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     // If the user is already logged in, redirect them to the dashboard
     if (this.authService.isLoggedIn()) {
       this.redirectToDashboard(this.authService.getRole());
+      return;
     }
+
+    // Check for the 'action' query parameter
+    this.route.queryParams.subscribe((params) => {
+      const action = params['action'];
+      if (action === 'signup') {
+        this.activeTab = 'signup';
+      }
+      else if (action === 'forgot') {
+        this.activeTab = 'forgot';
+      }
+      else {
+        this.activeTab = 'login';
+      }
+    });
   }
 
   private redirectToDashboard(role: string | null): void {
@@ -179,4 +196,12 @@ export class Signin implements OnInit {
 
   window.location.href = url;
 }
+
+  navigateToSignup(): void {
+     this.router.navigate(['/signin'], { queryParams: { action: 'signup' } });
+  }
+
+  navigateToHome(): void {
+    this.router.navigate(['/']);
+  }
 }
