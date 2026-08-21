@@ -10,7 +10,7 @@ import { Navbar } from '../../component/navbar/navbar';
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule, Navbar],
+  imports: [CommonModule, TranslateModule, FormsModule],
   templateUrl: './signin.html',
   styleUrls: ['./signin.css'],
   host: { class: 'signin-host' }

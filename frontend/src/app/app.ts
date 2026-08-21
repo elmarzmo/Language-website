@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Auth } from './guards/auth';
 import { Navbar } from "./component/navbar/navbar";
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar],
+  imports: [RouterOutlet, Navbar, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -29,13 +31,5 @@ export class App {
     });
   }
 
-  switchLanguage(lang: string) {
-    this.translate.use(lang);
 
-    if (lang === 'ar') {
-      document.documentElement.dir = 'rtl';
-    } else {
-      document.documentElement.dir = 'ltr';
-    }
-  }
 }

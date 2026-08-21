@@ -11,12 +11,16 @@ import { TeacherLessonsView } from './private/teacher/teacher-lessons-view/teach
 import { TeacherLessonsList } from './private/teacher/teacher-lessons-list/teacher-lessons-list';
 import { TeacherCohortsList } from './private/teacher/teacher-cohorts-list/teacher-cohorts-list';
 import { ResetPassword } from './public/signin/oauth-success/reset-password/reset-password';
+import { GuestGuard } from './guards/guest.guard';
+
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent },
    
-    { path:'', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'signin', component: Signin },
+   { path:'', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent, canActivate: [GuestGuard] },
+   
+    
+    { path: 'signin', component: Signin, canActivate: [GuestGuard] },
     { path: 'reset-password', component: ResetPassword },
     {path: 'oauth-success', loadComponent: () => import('./public/signin/oauth-success/oauth-success').then(m => m.OauthSuccess)},
 
