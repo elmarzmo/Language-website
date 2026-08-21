@@ -3,11 +3,12 @@ import { RouterOutlet, Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Auth } from './guards/auth';
+import { Navbar } from "./component/navbar/navbar";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
