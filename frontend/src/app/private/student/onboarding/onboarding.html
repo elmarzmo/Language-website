@@ -1,0 +1,84 @@
+<div class="onboarding-page">
+
+  <div class="onboarding-card">
+
+    <div class="onboarding-header">
+      <span class="step-label">GET STARTED</span>
+
+      <h1>Let's get to know you</h1>
+
+      <p>
+        Tell us a little about your English level so we can
+        personalize your learning experience.
+      </p>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      Loading...
+    </div>
+
+    <div *ngIf="!loading">
+
+      <div class="question-section">
+
+        <h2>What's your current English level?</h2>
+
+        <p class="question-description">
+          Choose the option that best describes you.
+        </p>
+
+        <div class="level-options">
+
+          <button
+            *ngFor="let level of levels"
+            type="button"
+            class="level-option"
+            [class.selected]="onboarding.englishLevel === level.value"
+            (click)="selectLevel(level.value)"
+          >
+
+            <div class="level-content">
+
+              <div class="level-title">
+                {{ level.title }}
+              </div>
+
+              <div class="level-description">
+                {{ level.description }}
+              </div>
+
+            </div>
+
+            <div class="selection-indicator">
+              <span
+                *ngIf="onboarding.englishLevel === level.value"
+              >
+                ✓
+              </span>
+            </div>
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="button"
+        class="continue-button"
+        [disabled]="saving || !onboarding.englishLevel"
+        (click)="continue()"
+      >
+        <span *ngIf="!saving">Continue</span>
+        <span *ngIf="saving">Saving...</span>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
