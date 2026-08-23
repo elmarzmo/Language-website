@@ -12,7 +12,7 @@ import { TeacherLessonsList } from './private/teacher/teacher-lessons-list/teach
 import { TeacherCohortsList } from './private/teacher/teacher-cohorts-list/teacher-cohorts-list';
 import { ResetPassword } from './public/signin/oauth-success/reset-password/reset-password';
 import { GuestGuard } from './guards/guest.guard';
-
+import { Onboarding } from './private/student/onboarding/onboarding';
 
 export const routes: Routes = [
    
@@ -26,6 +26,7 @@ export const routes: Routes = [
 
     // student area
 
+    {path: 'student/onboarding', component: Onboarding, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
     { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
     { path: 'dashboard/lesson/:id', component: LessonView, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
 
