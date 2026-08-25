@@ -157,6 +157,10 @@
   text-align: center;
   color: #6b7280;
 }
+.enrollment-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
 
 @media (max-width: 600px) {
   .onboarding-card {
