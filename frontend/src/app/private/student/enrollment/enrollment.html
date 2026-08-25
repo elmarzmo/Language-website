@@ -1,0 +1,161 @@
+<div class="enrollment-header">
+
+  <span class="step-label">STEP 2 OF 2</span>
+
+  <h1>Complete Your Enrollment</h1>
+
+  <p>
+    Choose your subscription and get ready to start
+    your English learning journey.
+  </p>
+
+</div>
+
+<div class="enrollment-page">
+
+    
+  <div class="enrollment-card">
+
+    <div class="header">
+      <h1>Complete Your Enrollment</h1>
+
+      <p>
+        You're almost ready to start learning English.
+      </p>
+    </div>
+
+    <!-- Subscription -->
+    <div class="plan-card">
+
+      <div class="plan-header">
+        <div>
+          <h2>{{ planName }}</h2>
+          <p>Small-group English classes</p>
+        </div>
+
+        <div class="price">
+          <span class="amount">${{ monthlyPrice }}</span>
+          <span class="interval">/ month</span>
+        </div>
+      </div>
+
+      <ul class="features">
+        <li>Small-group English classes</li>
+        <li>Native English-speaking teachers</li>
+        <li>Learning materials</li>
+      </ul>
+
+    </div>
+
+    <!-- Voucher -->
+    <div class="voucher-section">
+
+      <h3>Have a voucher?</h3>
+
+      <p>
+        Enter your voucher code below.
+      </p>
+
+      <div class="voucher-input">
+
+        <input
+          type="text"
+          [(ngModel)]="voucherCode"
+          placeholder="Enter voucher code"
+          [disabled]="voucherApplied || isValidatingVoucher"
+        />
+
+        <button
+          type="button"
+          (click)="validateVoucher()"
+          [disabled]="
+            !voucherCode.trim() ||
+            voucherApplied ||
+            isValidatingVoucher
+          "
+        >
+          {{ isValidatingVoucher ? 'Checking...' : 'Apply' }}
+        </button>
+
+      </div>
+
+      <div
+        class="success-message"
+        *ngIf="voucherApplied"
+      >
+        ✓ {{ voucherMessage }}
+      </div>
+
+      <div
+        class="error-message"
+        *ngIf="voucherError"
+      >
+        {{ voucherError }}
+      </div>
+
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+
+      <div class="summary-row">
+        <span>Monthly subscription</span>
+        <span>${{ monthlyPrice.toFixed(2) }}</span>
+      </div>
+
+      <div
+        class="summary-row discount"
+        *ngIf="voucherApplied"
+      >
+        <span>Voucher discount</span>
+        <span>
+          -${{ discountAmount.toFixed(2) }}
+        </span>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>${{ total.toFixed(2) }}</span>
+      </div>
+
+    </div>
+
+    <!-- Payment notice -->
+    <div
+      class="payment-notice"
+      *ngIf="total > 0"
+    >
+      <strong>Payment</strong>
+
+      <p>
+        Online payment will be available soon.
+      </p>
+    </div>
+
+    <!-- Enrollment error -->
+    <div
+      class="error-message enrollment-error"
+      *ngIf="enrollmentError"
+    >
+      {{ enrollmentError }}
+    </div>
+
+    <!-- Complete -->
+    <button
+      class="enroll-button"
+      type="button"
+      (click)="enroll()"
+      [disabled]="isEnrolling || total > 0"
+    >
+      {{
+        isEnrolling
+          ? 'Completing enrollment...'
+          : 'Complete Enrollment'
+      }}
+    </button>
+
+  </div>
+
+</div>
