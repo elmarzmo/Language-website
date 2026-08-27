@@ -112,7 +112,7 @@ export class Enrollment {
 
         console.log('Enrollment successful:', response);
 
-        this.router.navigate(['/student/dashboard']);
+        this.router.navigate(['/dashboard']);
       },
 
       error: (error) => {
