@@ -110,7 +110,7 @@ export class Enrollment {
 
         this.isEnrolling = false;
 
-        console.log('Enrollment successful:', response);
+        
 
         this.router.navigate(['/dashboard']);
       },
