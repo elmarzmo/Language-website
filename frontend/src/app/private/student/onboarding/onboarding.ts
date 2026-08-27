@@ -90,7 +90,7 @@ export class Onboarding implements OnInit {
         // For now, continue to the dashboard.
         // Later this will go to the subscription/enrollment page.
         //TODO: Implement the subscription/enrollment page and redirect to it instead of the dashboard.
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/student/enrollment']);
       },
       error: () => {
         this.saving = false;
