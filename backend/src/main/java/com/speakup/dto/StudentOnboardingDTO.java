@@ -14,6 +14,7 @@ public class StudentOnboardingDTO {
    
     private EnglishLevel englishLevel;
     private boolean profileCompleted;
+    private boolean enrolled;
 
   
 }
