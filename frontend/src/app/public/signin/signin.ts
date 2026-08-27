@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from '../../guards/auth';
 import { environment } from '../../../environments/environment';
-import { Navbar } from '../../component/navbar/navbar';
+import { StudentOnboardingService } from '../../services/student-onboarding-service';
+import { Onboarding } from '../../private/student/onboarding/onboarding';
 
 @Component({
   selector: 'app-signin',
@@ -44,7 +45,8 @@ export class Signin implements OnInit {
   constructor(
     private authService: Auth,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private studentOnboardingService: StudentOnboardingService
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +77,29 @@ export class Signin implements OnInit {
     } else if (role === 'TEACHER') {
       this.router.navigate(['/teacher/dashboard']);
     } else if (role === 'STUDENT') {
-      this.router.navigate(['/dashboard']);
+
+      this.studentOnboardingService.getStudentOnboarding().subscribe({
+        next: (Onboarding) => {
+          if(!Onboarding.profileCompleted){
+            this.router.navigate(['/student/onboarding']);
+            return;
+          }
+
+          if(!Onboarding.enrolled) {
+
+            this.router.navigate(['/student/enrollment']);
+            return;
+          }
+                this.router.navigate(['/dashboard']);
+
+
+        },
+        error: () => {
+          this.router.navigate(['/student/onboarding']);
+        }
+      });
+      return;
+
     }
   }
 
