@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from '../../guards/auth';
 import { environment } from '../../../environments/environment';
 import { StudentOnboardingService } from '../../services/student-onboarding-service';
-import { Onboarding } from '../../private/student/onboarding/onboarding';
+
 
 @Component({
   selector: 'app-signin',
@@ -79,13 +79,13 @@ export class Signin implements OnInit {
     } else if (role === 'STUDENT') {
 
       this.studentOnboardingService.getStudentOnboarding().subscribe({
-        next: (Onboarding) => {
-          if(!Onboarding.profileCompleted){
+        next: (onboarding) => {
+          if(!onboarding.profileCompleted){
             this.router.navigate(['/student/onboarding']);
             return;
           }
 
-          if(!Onboarding.enrolled) {
+          if(!onboarding.enrolled) {
 
             this.router.navigate(['/student/enrollment']);
             return;

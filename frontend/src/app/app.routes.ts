@@ -14,6 +14,7 @@ import { ResetPassword } from './public/signin/oauth-success/reset-password/rese
 import { GuestGuard } from './guards/guest.guard';
 import { Onboarding } from './private/student/onboarding/onboarding';
 import { Enrollment } from './private/student/enrollment/enrollment';
+import { StudentOnboardingGuard } from './guards/student-onboarding.guard';
 
 export const routes: Routes = [
    
@@ -27,8 +28,8 @@ export const routes: Routes = [
 
     // student area
 
-    {path: 'student/onboarding', component: Onboarding, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
-        {path: 'student/enrollment', component: Enrollment, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
+    {path: 'student/onboarding', component: Onboarding, canActivate: [AuthGuard, StudentOnboardingGuard], data: { roles: ['STUDENT'] } },
+    {path: 'student/enrollment', component: Enrollment, canActivate: [AuthGuard, StudentOnboardingGuard], data: { roles: ['STUDENT'] } },
 
     { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
     { path: 'dashboard/lesson/:id', component: LessonView, canActivate: [AuthGuard], data: { roles: ['STUDENT'] } },
