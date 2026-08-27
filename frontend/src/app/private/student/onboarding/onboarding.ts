@@ -14,7 +14,8 @@ export class Onboarding implements OnInit {
 
   onboarding: StudentOnboarding = {
     englishLevel: null,
-    profileCompletion: false,
+    profileCompleted: false,
+    enrolled: false
   };
 
   loading = true;
@@ -80,16 +81,15 @@ export class Onboarding implements OnInit {
 
     const data: StudentOnboarding = {
       englishLevel: this.onboarding.englishLevel,
-      profileCompletion: true,
+      profileCompleted: true,
+      enrolled: false
     };
 
     this.studentOnboardingService.updateStudentOnboarding(data).subscribe({
       next: () => {
         this.saving = false;
 
-        // For now, continue to the dashboard.
-        // Later this will go to the subscription/enrollment page.
-        //TODO: Implement the subscription/enrollment page and redirect to it instead of the dashboard.
+       
         this.router.navigate(['/student/enrollment']);
       },
       error: () => {
