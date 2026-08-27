@@ -57,6 +57,7 @@ public class StudentOnboardingService {
         StudentOnboardingDTO dto = new StudentOnboardingDTO();
         dto.setEnglishLevel(studentOnboarding.getEnglishLevel());
         dto.setProfileCompleted(studentOnboarding.isProfileCompleted());
+        dto.setEnrolled(studentOnboarding.isEnrolled());
         return dto;
     }
 }
