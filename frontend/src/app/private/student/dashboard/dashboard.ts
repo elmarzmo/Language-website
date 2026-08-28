@@ -117,7 +117,7 @@ export class Dashboard implements OnInit, OnDestroy {
             }
 
             this.isLoading = false;
-            console.log('Dashboard fully synced — enrolled:', this.isEnrolled);
+           
           },
           error: (err) => {
             console.error('Failed to sync dashboard data', err);

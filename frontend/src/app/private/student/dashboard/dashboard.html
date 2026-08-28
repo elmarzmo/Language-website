@@ -18,11 +18,91 @@
     </button>
   </div>
 
-  <!-- ── LOADING ── -->
-  <div *ngIf="isLoading" class="loading">
-    <div class="spinner"></div>
-    <p>Syncing your learning data...</p>
+<!-- ── LOADING SKELETON ── -->
+<div *ngIf="isLoading" class="dashboard-skeleton">
+
+  <!-- Next class skeleton -->
+  <div class="skeleton-alert">
+    <div class="skeleton-alert-left">
+      <div class="skeleton skeleton-circle"></div>
+
+      <div class="skeleton-alert-text">
+        <div class="skeleton skeleton-line alert-title-line"></div>
+        <div class="skeleton skeleton-line alert-time-line"></div>
+      </div>
+    </div>
+
+    <div class="skeleton skeleton-button"></div>
   </div>
+
+  <!-- Learning path skeleton -->
+  <div class="section">
+    <div class="section-header">
+      <div class="skeleton skeleton-line section-title-line"></div>
+      <div class="skeleton skeleton-line section-subtitle-line"></div>
+    </div>
+
+    <div class="lessons-grid">
+
+      <div class="lesson-card skeleton-card" *ngFor="let card of [1, 2, 3, 4]">
+
+        <div class="skeleton skeleton-badge"></div>
+
+        <div class="card-header">
+          <div class="skeleton skeleton-line lesson-title-line"></div>
+        </div>
+
+        <div class="card-content">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line description-short"></div>
+        </div>
+
+        <div class="card-footer">
+          <div class="skeleton skeleton-line lesson-number-line"></div>
+          <div class="skeleton skeleton-arrow"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Upcoming classes skeleton -->
+  <div class="dashboard-main">
+    <div class="section">
+
+      <div class="section-header">
+        <div class="skeleton skeleton-line section-title-line"></div>
+        <div class="skeleton skeleton-line section-subtitle-line"></div>
+      </div>
+
+      <div class="class-list">
+
+        <div class="class-card skeleton-class-card">
+
+          <div class="class-header">
+            <div>
+              <div class="skeleton skeleton-line class-title-line"></div>
+              <div class="skeleton skeleton-line class-date-line"></div>
+              <div class="skeleton skeleton-line class-duration-line"></div>
+            </div>
+
+            <div class="skeleton skeleton-status"></div>
+          </div>
+
+          <div class="class-actions">
+            <div class="skeleton skeleton-class-button"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
   <!-- ── NOT ENROLLED — shown only when loading is done and student has no cohort ── -->
   <div class="not-enrolled-state" *ngIf="!isLoading && !isEnrolled">

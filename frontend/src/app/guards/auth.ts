@@ -96,9 +96,7 @@ export class Auth {
     }
 
     this.http.post<AuthResponse>(`${this.apiUrl}/auth/logout`, { refreshToken }).subscribe({
-      next: () => {
-        console.log('Logout successful');
-      },
+     
       error: () => {
         console.warn('Logout request failed, but local auth session was cleared.');
       }
