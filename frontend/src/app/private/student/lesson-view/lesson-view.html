@@ -68,10 +68,88 @@
 
 </div>
 
-<!-- Loading Template -->
+<!-- Loading Skeleton -->
 <ng-template #loading>
-  <div class="loading-container">
-    <div class="spinner"></div>
-    <p>Loading lesson details...</p>
+
+  <div class="lesson-container lesson-skeleton">
+
+    <!-- Lesson Header -->
+    <div class="lesson-header">
+      <div class="skeleton skeleton-title"></div>
+    </div>
+
+    <!-- Audio Player -->
+    <div class="audio-player-container">
+      <div class="audio-player skeleton-audio">
+        <div class="skeleton skeleton-audio-icon"></div>
+        <div class="skeleton skeleton-audio-label"></div>
+        <div class="skeleton skeleton-audio-controls"></div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="description-container">
+      <div class="skeleton-description">
+        <div class="skeleton skeleton-description-icon"></div>
+
+        <div class="skeleton-description-text">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line short"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memorization Reminder -->
+    <div class="memorize-reminder skeleton-reminder">
+      <div class="skeleton skeleton-reminder-icon"></div>
+      <div class="skeleton skeleton-reminder-text"></div>
+      <div class="skeleton skeleton-reminder-icon"></div>
+    </div>
+
+    <!-- Main Lesson Content -->
+    <div class="content skeleton-content">
+
+      <div class="skeleton skeleton-content-heading"></div>
+
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line medium"></div>
+
+      <div class="skeleton skeleton-content-heading second"></div>
+
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line short"></div>
+
+      <div class="skeleton skeleton-content-box"></div>
+
+    </div>
+
+    <!-- What to expect -->
+    <div class="description-container skeleton-instructions">
+
+      <div class="skeleton skeleton-instructions-title"></div>
+
+      <div class="instructions">
+        <div class="skeleton skeleton-instructions-icon"></div>
+
+        <div class="skeleton-description-text">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line medium"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Back Button -->
+    <div class="back-btn-row">
+      <div class="skeleton skeleton-back-button"></div>
+    </div>
+
   </div>
+
 </ng-template>
