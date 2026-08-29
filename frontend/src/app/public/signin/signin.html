@@ -85,7 +85,7 @@
           (click)="login()"
           [disabled]="isLoading">
           <span *ngIf="!isLoading">Sign In</span>
-          <span *ngIf="isLoading">
+          <span *ngIf="isLoading" class="button-loading">
             <span class="spinner-small"></span>
             Signing in...
           </span>
