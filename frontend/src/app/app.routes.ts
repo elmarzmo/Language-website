@@ -16,13 +16,20 @@ import { Onboarding } from './private/student/onboarding/onboarding';
 import { Enrollment } from './private/student/enrollment/enrollment';
 import { StudentOnboardingGuard } from './guards/student-onboarding.guard';
 import { Policy } from './public/policy/policy';
+import { TermsOfService } from './public/terms-of-service/terms-of-service';
+import { Refund } from './public/refund/refund';
+import { Cancellation } from './public/cancellation/cancellation';
 
 export const routes: Routes = [
    
-   { path:'', redirectTo: 'home', pathMatch: 'full' },
+  
+    { path:'', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent, canActivate: [GuestGuard] },
+    
     {path: 'policy',component: Policy, canActivate: [GuestGuard] },
-   
+    {path: 'terms',component: TermsOfService, canActivate: [GuestGuard] },
+    {path: 'refund',component: Refund, canActivate: [GuestGuard] },
+    {path: 'cancellation',component: Cancellation, canActivate: [GuestGuard] },
     
     { path: 'signin', component: Signin, canActivate: [GuestGuard] },
     { path: 'reset-password', component: ResetPassword },
