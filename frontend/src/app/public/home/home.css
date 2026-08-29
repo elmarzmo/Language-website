@@ -680,6 +680,121 @@ button {
 
 
 /* =========================================================
+   PRICING
+   ========================================================= */
+
+.pricing-section {
+  padding: 110px 0;
+
+  background: var(--white);
+}
+
+.pricing-card {
+  max-width: 520px;
+
+  margin: 70px auto 0;
+
+  padding: 50px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--white);
+
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+}
+
+.pricing-header {
+  margin-bottom: 36px;
+
+  text-align: center;
+}
+
+.pricing-header h3 {
+  margin: 0 0 16px;
+
+  color: var(--navy);
+
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.pricing-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.currency {
+  color: var(--muted);
+
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.price {
+  color: var(--blue);
+
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.period {
+  color: var(--muted);
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  margin-bottom: 36px;
+}
+
+.pricing-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pricing-feature span {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  color: var(--white);
+  background: var(--blue);
+
+  font-size: 12px;
+  font-weight: 900;
+
+  margin-top: 2px;
+}
+
+.pricing-feature p {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
    FINAL CTA
    ========================================================= */
 
@@ -736,6 +851,108 @@ button {
 }
 
 
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer-section {
+  padding: 60px 0 40px;
+
+  background: var(--navy);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 50px;
+
+  align-items: start;
+}
+
+.footer-brand h3 {
+  margin: 0 0 12px;
+
+  color: var(--white);
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.footer-brand p {
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-contact h4 {
+  margin: 0 0 12px;
+
+  color: var(--white);
+
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.footer-contact a {
+  display: inline-block;
+
+  color: #93c5fd;
+
+  font-size: 14px;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.footer-contact a:hover {
+  color: var(--white);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  justify-content: flex-start;
+}
+
+.footer-links a {
+  color: #94a3b8;
+
+  font-size: 13px;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--white);
+}
+
+.footer-bottom {
+  grid-column: 1 / -1;
+
+  padding-top: 30px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
 
 
 /* =========================================================
@@ -761,7 +978,12 @@ button {
   }
 
   .footer-container {
-    gap: 50px;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-links {
+    grid-column: 1 / -1;
   }
 }
 
@@ -781,7 +1003,8 @@ button {
   .how-it-works-section,
   .lessons-section,
   .teachers-section,
-  .results-section {
+  .results-section,
+  .pricing-section {
     padding: 75px 0;
   }
 
@@ -862,6 +1085,20 @@ button {
     border-bottom: none;
   }
 
+  .pricing-card {
+    padding: 40px 30px;
+
+    max-width: 100%;
+  }
+
+  .pricing-header h3 {
+    font-size: 22px;
+  }
+
+  .price {
+    font-size: 48px;
+  }
+
   .final-cta-section {
     padding: 75px 0;
   }
@@ -881,7 +1118,15 @@ button {
 
   .footer-container {
     grid-template-columns: 1fr;
-    gap: 45px;
+    gap: 35px;
+  }
+
+  .footer-links {
+    grid-column: auto;
+  }
+
+  .footer-section {
+    padding: 50px 0 30px;
   }
 }
 
@@ -900,9 +1145,20 @@ button {
     font-size: 42px;
   }
 
-  .footer-links {
-    grid-template-columns: 1fr;
-    gap: 30px;
+  .pricing-card {
+    padding: 30px 20px;
+  }
+
+  .pricing-header h3 {
+    font-size: 20px;
+  }
+
+  .price {
+    font-size: 42px;
+  }
+
+  .pricing-features {
+    margin-bottom: 28px;
   }
 }
 
