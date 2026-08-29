@@ -15,11 +15,13 @@ import { GuestGuard } from './guards/guest.guard';
 import { Onboarding } from './private/student/onboarding/onboarding';
 import { Enrollment } from './private/student/enrollment/enrollment';
 import { StudentOnboardingGuard } from './guards/student-onboarding.guard';
+import { Policy } from './public/policy/policy';
 
 export const routes: Routes = [
    
    { path:'', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent, canActivate: [GuestGuard] },
+    {path: 'policy',component: Policy, canActivate: [GuestGuard] },
    
     
     { path: 'signin', component: Signin, canActivate: [GuestGuard] },
