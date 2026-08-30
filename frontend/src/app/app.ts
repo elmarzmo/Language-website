@@ -1,34 +1,45 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 
-import { TranslateService } from '@ngx-translate/core';
 import { Auth } from './guards/auth';
 import { Navbar } from "./component/navbar/navbar";
-
+import { Footer } from './component/footer/footer';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, CommonModule],
+  imports: [RouterOutlet, Navbar, CommonModule, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected title = 'language-website';
+  protected title = 'Voixa-English';
   isLoggedIn = false;
 
   constructor(
-    private translate: TranslateService,
+    
     private authService: Auth,
     private router: Router
   ) {
-    this.translate.use('en');
+    
     
     // Subscribe to login status
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
     });
+
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+    )
+    .subscribe(() => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }
+      );
   }
 
 

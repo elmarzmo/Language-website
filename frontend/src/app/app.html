@@ -4,6 +4,4 @@
 
   <router-outlet></router-outlet>
 
-<footer class="bg-light text-center py-3 mt-4">
-  <p>&copy; 2024 Language Learning Website. All rights reserved.</p>
-</footer>
+  <app-footer *ngIf="!isLoggedIn"></app-footer>
