@@ -6,7 +6,6 @@
     <!-- Logo/Header -->
     <div class="card-header">
       <h1 class="brand-title">Sign In</h1>
-      <p class="brand-subtitle">Access your account</p>
     </div>
 
     <!-- Tab Navigation -->
@@ -15,13 +14,13 @@
         class="tab-btn" 
         [class.active]="activeTab === 'login'"
         (click)="switchTab('login')">
-        {{ 'SIGNIN.LOGIN_TITLE' | translate }}
+        Log In
       </button>
       <button 
         class="tab-btn" 
         [class.active]="activeTab === 'signup'"
         (click)="switchTab('signup')">
-        {{ 'SIGNIN.SIGNUP_TITLE' | translate }}
+        Sign Up
       </button>
     </div>
 
@@ -41,19 +40,19 @@
 
       <!-- LOGIN TAB -->
       <div class="tab-content" [class.active]="activeTab === 'login'">
-        <h2 class="form-title">Sign In</h2>
+        <h2 class="form-title">Welcome Back</h2>
         <p class="form-subtitle">Enter your credentials to continue</p>
 
         <!-- Email Field -->
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">Email Address</label>
           <input 
             type="email" 
             class="form-input" 
             [(ngModel)]="loginData.email" 
             name="loginEmail"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_EMAIL_PLACEHOLDER' | translate" />
+            placeholder="e.g. sarah@email.com" />
         </div>
 
         <!-- Password Field -->
@@ -65,7 +64,7 @@
             [(ngModel)]="loginData.password" 
             name="loginPassword"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_PASSWORD_PLACEHOLDER' | translate" />
+            placeholder="Enter your password" />
         </div>
 
         <!-- Remember Me & Forgot Password -->
@@ -84,7 +83,7 @@
           class="btn btn-primary btn-large" 
           (click)="login()"
           [disabled]="isLoading">
-          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="!isLoading">Log In</span>
           <span *ngIf="isLoading" class="button-loading">
             <span class="spinner-small"></span>
             Signing in...
@@ -92,7 +91,7 @@
         </button>
 
         <!-- Divider -->
-        <div class="divider">or</div>
+        <div class="divider">OR</div>
 
         <!-- Google Button -->
         <button class="btn btn-google btn-large" [disabled]="isLoading" (click)="loginWithGoogle()">
@@ -102,7 +101,7 @@
 
       <!-- SIGNUP TAB -->
       <div class="tab-content" [class.active]="activeTab === 'signup'">
-        <h2 class="form-title">Create Account</h2>
+        <h2 class="form-title">Create Your Account</h2>
         <p class="form-subtitle">Join our community today</p>
 
         <!-- Username Field -->
@@ -114,19 +113,19 @@
             [(ngModel)]="signupData.username"
             name="signupUsername"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_FULLNAME_PLACEHOLDER' | translate" />
+            placeholder="e.g. Sarah Johnson" />
         </div>
 
         <!-- Email Field -->
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">Email Address</label>
           <input 
             type="email" 
             class="form-input" 
             [(ngModel)]="signupData.email"
             name="signupEmail"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_EMAIL_PLACEHOLDER' | translate" />
+            placeholder="e.g. sarah@email.com" />
         </div>
 
         <!-- Password Field -->
@@ -138,7 +137,7 @@
             [(ngModel)]="signupData.password"
             name="signupPassword"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_PASSWORD_PLACEHOLDER' | translate" />
+            placeholder="Enter your password" />
         </div>
 
         <!-- Confirm Password Field -->
@@ -150,14 +149,14 @@
             [(ngModel)]="signupData.confirmPassword"
             name="signupConfirmPassword"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_CONFIRM_PASSWORD_PLACEHOLDER' | translate" />
+            placeholder="Re-enter your password" />
         </div>
 
         <!-- Terms Agreement -->
         <div class="form-group">
           <label class="form-checkbox">
             <input type="checkbox" [disabled]="isLoading" />
-            <span>I agree to the Terms of Service</span>
+            <span>I agree to the Terms of Service and Privacy Policy</span>
           </label>
         </div>
 
@@ -174,11 +173,11 @@
         </button>
 
         <!-- Divider -->
-        <div class="divider">or</div>
+        <div class="divider">OR</div>
 
         <!-- Google Button -->
         <button class="btn btn-google btn-large" [disabled]="isLoading" (click)="loginWithGoogle()">
-          Continue with Google
+          Sign Up with Google
         </button>
       </div>
 
@@ -189,14 +188,14 @@
 
         <!-- Email Field -->
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">Email Address</label>
           <input 
             type="email" 
             class="form-input" 
             [(ngModel)]="forgotPasswordEmail" 
             name="forgotEmail"
             [disabled]="isLoading"
-            [placeholder]="'SIGNIN.FIELD_EMAIL_PLACEHOLDER' | translate" />
+            placeholder="e.g. sarah@email.com" />
         </div>
 
         <!-- Submit Button -->
@@ -229,7 +228,7 @@
         <!-- Back to Login -->
         <div class="text-center">
           <a href="javascript:void(0)" (click)="switchTab('login')" class="forgot-link">
-            ← Back to Sign In
+            ← Back to Log In
           </a>
         </div>
       </div>
