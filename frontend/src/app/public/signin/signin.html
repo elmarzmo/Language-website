@@ -152,13 +152,37 @@
             placeholder="Re-enter your password" />
         </div>
 
+
+
         <!-- Terms Agreement -->
-        <div class="form-group">
-          <label class="form-checkbox">
-            <input type="checkbox" [disabled]="isLoading" />
-            <span>I agree to the Terms of Service and Privacy Policy</span>
-          </label>
-        </div>
+
+<div class="form-group terms-group">
+  <label class="form-checkbox terms-checkbox">
+    <input 
+      type="checkbox" 
+      [(ngModel)]="termsAccepted"
+      name="termsAccepted"
+      [disabled]="isLoading" />
+
+
+<span>
+  I agree to the 
+  <a routerLink="/terms-of-service" target="_blank">
+    Terms of Service
+  </a>
+  and
+  <a routerLink="/privacy-policy" target="_blank">
+    Privacy Policy
+  </a>.
+</span>
+
+
+  </label>
+</div>
+
+
+
+
 
         <!-- Signup Button -->
         <button 

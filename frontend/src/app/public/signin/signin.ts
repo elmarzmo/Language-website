@@ -27,6 +27,7 @@ export class Signin implements OnInit {
   debugResetLink = ''; // For debugging purposes only
 
   rememberMe = false; // For "Remember Me" functionality
+  termsAccepted= false;
 
   // Login
   loginData = {
@@ -41,6 +42,7 @@ export class Signin implements OnInit {
     password: '',
     confirmPassword: ''
   };
+  
 
   constructor(
     private authService: Auth,
@@ -152,6 +154,10 @@ export class Signin implements OnInit {
       return;
     }
 
+    if (!this.termsAccepted) {
+      this.errorMessage = 'Please agree to the Terms of Service and Privacy Policy before creating your account.';
+    return;
+  }
     this.isLoading = true;
     this.errorMessage = '';
 
