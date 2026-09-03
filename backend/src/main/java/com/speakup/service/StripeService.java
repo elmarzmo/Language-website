@@ -16,14 +16,16 @@ public class StripeService {
     @Value("${frontend.url}")
     private String frontendUrl;
 
-    public String createCheckoutSession(String userId) throws StripeException {
+    @Value("${stripe.coupon-id}")
+    private String couponId;
 
-        SessionCreateParams params =
-                SessionCreateParams.builder()
-                        .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                        .setSuccessUrl(
-                                frontendUrl + "/student/onboarding?payment=success"
-                        )
+    public String createCheckoutSession(String userId, String voucherCode) throws StripeException {
+
+        SessionCreateParams.Builder builder = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
+                .setSuccessUrl(
+                        frontendUrl + "/student/onboarding?payment=success"
+                )
                         .setCancelUrl(
                                 frontendUrl + "/student/onboarding?payment=cancelled"
                         )
@@ -33,10 +35,17 @@ public class StripeService {
                                         .setQuantity(1L)
                                         .build()
                         )
-                        .putMetadata("userId", userId)
-                        .build();
+                        .putMetadata("userId", userId);
 
-        Session session = Session.create(params);
+        if (voucherCode != null && !voucherCode.trim().isEmpty()) {
+                builder.addDiscount(
+                        SessionCreateParams.Discount.builder()
+                                .setCoupon(couponId)
+                                .build()
+                );
+        }
+
+        Session session = Session.create(builder.build());
 
         return session.getUrl();
     }
