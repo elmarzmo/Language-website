@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,14 +27,17 @@ public class StripeController {
 
     @PostMapping("/create-checkout-session")
     public ResponseEntity<?> createCheckoutSession(
+            @RequestBody Map<String, String> request,
             HttpServletRequest httpRequest) {
 
         try {
             String studentId =
                     (String) httpRequest.getAttribute("userId");
+            
+            String voucherCode = request.get("voucherCode");
 
             String checkoutUrl =
-                    stripeService.createCheckoutSession(studentId);
+                    stripeService.createCheckoutSession(studentId, voucherCode);
 
             return ResponseEntity.ok(
                     Map.of("url", checkoutUrl)
