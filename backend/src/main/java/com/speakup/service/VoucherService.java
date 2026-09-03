@@ -38,6 +38,14 @@ public class VoucherService {
 
         Voucher voucher = optionalVoucher.get();
 
+        if (voucher.getDiscountAmount().compareTo(new BigDecimal("29.99")) != 0) {
+            return new VoucherValidationResponse(
+                false,
+                "This voucher is not valid for this subscription.",
+                BigDecimal.ZERO
+            );
+        }
+
         if(!voucher.isActive()) {
             return new VoucherValidationResponse(false, 
                 "Voucher code is not active.",
