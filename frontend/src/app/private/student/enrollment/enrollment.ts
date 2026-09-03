@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Router } from '@angular/router';
+import { StripeService } from '../../../services/stripe-service';
 
 @Component({
   selector: 'app-enrollment',
@@ -21,7 +22,7 @@ export class Enrollment {
 
   readonly planId = '6a8bd67360bf3bab41d1c72b';
   readonly planName = 'Standard Monthly';
-  readonly monthlyPrice = 29;
+  readonly monthlyPrice = 29.99;
 
   voucherCode = '';
 
@@ -39,6 +40,7 @@ export class Enrollment {
   constructor(
     private voucherService: VoucherService,
     private enrollmentService: EnrollmentService,
+    private stripeService: StripeService,
     private router: Router
   ){}
 
@@ -99,29 +101,19 @@ export class Enrollment {
 
     this.isEnrolling = true;
 
-    this.enrollmentService.enroll({
-      planId: this.planId,
-      voucherCode: this.voucherApplied
-        ? this.voucherCode.trim()
-        : undefined
-    }).subscribe({
+   this.stripeService.createCheckoutSession().subscribe({
 
-      next: (response: EnrollmentResponse) => {
-
+      next: (response) => {
         this.isEnrolling = false;
-
-        
-
-        this.router.navigate(['/dashboard']);
+        window.location.href = response.url;
       },
 
       error: (error) => {
-
         this.isEnrolling = false;
 
         this.enrollmentError =
           error.error?.error ||
-          'Unable to complete enrollment.';
+          'Unable to initiate enrollment. Please try again.';
       }
     });
   }
