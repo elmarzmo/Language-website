@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import com.speakup.dto.VoucherValidationResponse;
 
 @Service
 public class StripeService {
@@ -18,6 +19,12 @@ public class StripeService {
 
     @Value("${stripe.coupon-id}")
     private String couponId;
+
+    private final VoucherService voucherService;
+
+    public StripeService(VoucherService voucherService) {
+        this.voucherService = voucherService;
+    }
 
     public String createCheckoutSession(String userId, String voucherCode) throws StripeException {
 
@@ -37,13 +44,23 @@ public class StripeService {
                         )
                         .putMetadata("userId", userId);
 
-        if (voucherCode != null && !voucherCode.trim().isEmpty()) {
-                builder.addDiscount(
-                        SessionCreateParams.Discount.builder()
-                                .setCoupon(couponId)
-                                .build()
-                );
+       if (voucherCode != null && !voucherCode.trim().isEmpty()) {
+
+   
+        VoucherValidationResponse validation =
+   
+        voucherService.validateVoucher(voucherCode);
+
+        if (!validation.isValid()) {
+                throw new IllegalArgumentException(validation.getMessage());   
         }
+
+        builder.addDiscount(
+                SessionCreateParams.Discount.builder()
+                .setCoupon(couponId)
+                .build()
+        );
+}
 
         Session session = Session.create(builder.build());
 
