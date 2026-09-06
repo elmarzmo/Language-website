@@ -155,6 +155,8 @@ public class EnrollmentService {
         );
     }
 
+
+    
     private void validateVoucher(Voucher voucher) {
 
         if (!voucher.isActive()) {
@@ -180,4 +182,140 @@ public class EnrollmentService {
             );
         }
     }
+
+
+
+
+    
+public void completeEnrollmentFromStripe(
+        String userId,
+        String planId,
+        String voucherCode) {
+
+    // 1. Make sure the student does not already have an active subscription
+    if (subscriptionRepository
+            .findByUserIdAndStatus(
+                    userId,
+                    Subscription.SubscriptionStatus.ACTIVE
+            )
+            .isPresent()) {
+
+        // Stripe can send the same webhook more than once.
+        // If enrollment was already completed, do nothing.
+        return;
+    }
+
+    // 2. Find the subscription plan
+    SubscriptionPlan plan =
+            subscriptionPlanRepository
+                    .findByIdAndActiveTrue(planId)
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Subscription plan not found or inactive."
+                            )
+                    );
+
+    // 3. Find voucher if one was used
+    Voucher voucher = null;
+
+    if (voucherCode != null && !voucherCode.trim().isEmpty()) {
+
+        String normalizedCode =
+                voucherCode.trim().toUpperCase();
+
+        voucher = voucherRepository
+                .findByCode(normalizedCode)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Voucher code not found."
+                        )
+                );
+
+        validateVoucher(voucher);
+    }
+
+    // 4. Calculate the amount for the current billing period
+    BigDecimal amount = plan.getPrice();
+
+    if (voucher != null) {
+
+        amount = amount.subtract(
+                voucher.getDiscountAmount()
+        );
+
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            amount = BigDecimal.ZERO;
+        }
+    }
+
+    // 5. Create the local subscription
+    LocalDateTime startDate =
+            LocalDateTime.now();
+
+    LocalDateTime endDate =
+            startDate.plusMonths(1);
+
+    Subscription subscription =
+            new Subscription();
+
+    subscription.setUserId(userId);
+    subscription.setPlanId(plan.getId());
+
+    subscription.setVoucherId(
+            voucher != null
+                    ? voucher.getId()
+                    : null
+    );
+
+    subscription.setAmount(amount);
+    subscription.setCurrency(plan.getCurrency());
+
+    subscription.setStatus(
+            Subscription.SubscriptionStatus.ACTIVE
+    );
+
+    subscription.setStartDate(startDate);
+    subscription.setEndDate(endDate);
+
+    Subscription saved =
+            subscriptionRepository.save(subscription);
+
+    // 6. Mark the student as enrolled
+    StudentOnboarding onboarding =
+            studentOnboardingRepository
+                    .findByUserId(userId)
+                    .orElseGet(() -> {
+
+                        StudentOnboarding newOnboarding =
+                                new StudentOnboarding();
+
+                        newOnboarding.setUserId(userId);
+
+                        return newOnboarding;
+                    });
+
+    onboarding.setEnrolled(true);
+    onboarding.setSubscriptionId(saved.getId());
+
+    if (voucher != null) {
+        onboarding.setVoucherCode(
+                voucher.getCode()
+        );
+    }
+
+    studentOnboardingRepository.save(onboarding);
+
+    // 7. Consume the voucher only after Stripe confirms the checkout
+    if (voucher != null) {
+
+        voucher.setUsedCount(
+                voucher.getUsedCount() + 1
+        );
+
+        voucherRepository.save(voucher);
+    }
+}
+
+
+
 }
