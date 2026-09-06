@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StripeService } from '../../../services/stripe-service';
 
+
 @Component({
   selector: 'app-enrollment',
   imports: [CommonModule, FormsModule],
@@ -39,7 +40,7 @@ export class Enrollment {
 
   constructor(
     private voucherService: VoucherService,
-    private enrollmentService: EnrollmentService,
+ 
     private stripeService: StripeService,
     private router: Router
   ){}
@@ -95,28 +96,31 @@ export class Enrollment {
     });
   }
 
-   enroll(): void {
+ 
 
-    this.enrollmentError = '';
+enroll(): void {
+  this.enrollmentError = '';
+  this.isEnrolling = true;
 
-    this.isEnrolling = true;
+  const voucherCode = this.voucherApplied
+    ? this.voucherCode.trim()
+    : undefined;
 
-   this.stripeService.createCheckoutSession().subscribe({
+  this.stripeService.createCheckoutSession(voucherCode).subscribe({
+    next: (response) => {
+      window.location.href = response.url;
+    },
+    error: (error) => {
+      this.isEnrolling = false;
 
-      next: (response) => {
-        this.isEnrolling = false;
-        window.location.href = response.url;
-      },
+      this.enrollmentError =
+        error.error?.error ||
+        'Unable to start payment. Please try again.';
+    }
+  });
+}
 
-      error: (error) => {
-        this.isEnrolling = false;
 
-        this.enrollmentError =
-          error.error?.error ||
-          'Unable to initiate enrollment. Please try again.';
-      }
-    });
-  }
 
 
 }
