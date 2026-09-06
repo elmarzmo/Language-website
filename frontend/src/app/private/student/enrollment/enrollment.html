@@ -144,17 +144,17 @@
 
     <!-- Complete -->
     <button
-      class="enroll-button"
-      type="button"
-      (click)="enroll()"
-      [disabled]="isEnrolling || total > 0"
-    >
-      {{
-        isEnrolling
-          ? 'Completing enrollment...'
-          : 'Complete Enrollment'
-      }}
-    </button>
+  class="enroll-button"
+  type="button"
+  (click)="enroll()"
+  [disabled]="isEnrolling"
+>
+  {{
+    isEnrolling
+      ? 'Redirecting to payment...'
+      : 'Continue to Payment'
+  }}
+</button>
 
   </div>
 
