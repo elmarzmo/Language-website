@@ -31,17 +31,31 @@ public class StripeController {
             HttpServletRequest httpRequest) {
 
         try {
+
             String studentId =
                     (String) httpRequest.getAttribute("userId");
-            
-            String voucherCode = request.get("voucherCode");
+
+            String voucherCode =
+                    request.get("voucherCode");
 
             String checkoutUrl =
-                    stripeService.createCheckoutSession(studentId, voucherCode);
+                    stripeService.createCheckoutSession(
+                            studentId,
+                            voucherCode
+                    );
 
             return ResponseEntity.ok(
                     Map.of("url", checkoutUrl)
             );
+
+        } catch (IllegalArgumentException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of(
+                            "error",
+                            e.getMessage()
+                    ));
 
         } catch (StripeException e) {
 
@@ -54,3 +68,4 @@ public class StripeController {
         }
     }
 }
+
