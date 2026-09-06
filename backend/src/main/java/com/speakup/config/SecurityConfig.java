@@ -44,7 +44,8 @@ public class SecurityConfig {
                                 "/audio/**",
                                 "/oauth2/**",
                                 "/login/**",
-                                "/api/debug/**"
+                                "/api/debug/**",
+                                "/api/stripe/webhook"
                     ).permitAll()
                     
                     // STUDENT route
