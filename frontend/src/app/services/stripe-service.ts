@@ -16,10 +16,10 @@ export class StripeService {
 
   constructor(private http: HttpClient) {}
 
-  createCheckoutSession(): Observable<StripeCheckoutResponse> {
+  createCheckoutSession(voucherCode?: string): Observable<StripeCheckoutResponse> {
     return this.http.post<StripeCheckoutResponse>(
       `${this.apiUrl}/student/stripe/create-checkout-session`,
-      {}
+      { voucherCode: voucherCode || null }
     );
   }
 }
