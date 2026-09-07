@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Auth } from '../../../guards/auth';
+import { StudentOnboardingService } from '../../../services/student-onboarding-service';
+
 @Component({
   selector: 'app-oauth-success',
   imports: [],
@@ -12,7 +14,11 @@ export class OauthSuccess implements OnInit {
   constructor(
     private authService: Auth, 
     private route: ActivatedRoute, 
-    private router: Router) { }
+    private router: Router,
+  
+    private studentOnboardingService: StudentOnboardingService
+
+  ) { }
 
   ngOnInit(): void {
     
@@ -34,18 +40,53 @@ export class OauthSuccess implements OnInit {
 
         next: (user: any) => {
           this.authService.saveAuthData(token, refreshToken, user);
-          
-          switch (user.role) {
-            case 'ADMIN':
-              this.router.navigate(['/admin']);
-              break;
-            case 'TEACHER':
-              this.router.navigate(['/teacher/dashboard']);
-              break;
-            
-            default:
-              this.router.navigate(['/dashboard']);
+
+          // admin
+          if (user.role === 'ADMIN') {
+            this.router.navigate(['/admin']);
+            return;
           }
+          if (user.role === 'TEACHER') {
+            this.router.navigate(['/teacher/dashboard']);
+            return;
+          }
+          if (user.role === 'STUDENT') {
+
+            this.studentOnboardingService.getStudentOnboarding().subscribe({
+              next: (onboardingData: any) => {
+
+                // student has not completed onboarding
+                if(!onboardingData.profileCompleted){
+                  this.router.navigate(['/student/onboarding']);
+                  return;
+                }
+
+                // profile completed but not enrolled
+                if(!onboardingData.enrolled){
+                  this.router.navigate(['/student/enrollment']);
+                  return;
+                }
+
+                // fully onboarded student
+                // fully onboarded student, navigate to dashboard
+               
+                this.router.navigate(['/dashboard']);
+                
+              },
+              error: () => {
+                // If onboarding record cannot be loaded,
+                //  // send student to onboarding
+                this.router.navigate(['/student/onboarding']); 
+              } 
+            });
+
+            return;
+          }
+
+          // Unknown role, redirect to signin
+          localStorage.removeItem('Token');
+          localStorage.removeItem('RefreshToken');
+          this.router.navigate(['/signin']);
         },
         error: () => {
           localStorage.removeItem('Token');
@@ -53,6 +94,9 @@ export class OauthSuccess implements OnInit {
           this.router.navigate(['/signin']);
         }
       });
+         
+
+   
   }
 
 
