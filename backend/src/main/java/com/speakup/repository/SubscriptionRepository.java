@@ -11,4 +11,6 @@ public interface SubscriptionRepository extends MongoRepository<Subscription, St
     Optional<Subscription> findByUserId(String userId);
 
     Optional<Subscription> findByUserIdAndStatus(String userId, Subscription.SubscriptionStatus status);
+
+    Optional<Subscription> findByStripeSubscriptionId(String stripeSubscriptionId);
 }
