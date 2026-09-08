@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.speakup.service.EnrollmentService;
 import com.speakup.service.StripeService;
 import com.stripe.exception.StripeException;
 
@@ -20,9 +21,11 @@ import jakarta.servlet.http.HttpServletRequest;
 public class StripeController {
 
     private final StripeService stripeService;
+    private final EnrollmentService enrollmentService;
 
-    public StripeController(StripeService stripeService) {
+    public StripeController(StripeService stripeService, EnrollmentService enrollmentService) {
         this.stripeService = stripeService;
+        this.enrollmentService = enrollmentService;
     }
 
     @PostMapping("/create-checkout-session")
@@ -67,5 +70,73 @@ public class StripeController {
                     ));
         }
     }
+
+    @PostMapping("/cancel")
+public ResponseEntity<?> cancelSubscription(
+        HttpServletRequest httpRequest) {
+
+    try {
+
+        String studentId =
+                (String) httpRequest.getAttribute("userId");
+
+        enrollmentService.cancelSubscription(studentId);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message",
+                        "Subscription cancellation scheduled successfully."
+                )
+        );
+
+    } catch (IllegalArgumentException e) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of(
+                        "error",
+                        e.getMessage()
+                ));
+
+    } catch (StripeException e) {
+
+        return ResponseEntity
+                .internalServerError()
+                .body(Map.of(
+                        "error",
+                        "Unable to cancel subscription."
+                ));
+    }
+}
+
+     @PostMapping("/reactivate")
+     public ResponseEntity<?> reactivateSubscription(
+             HttpServletRequest httpRequest) {
+
+         try {
+             String studentId =
+                     (String) httpRequest.getAttribute("userId");
+
+             enrollmentService.reactivateSubscription(studentId);
+
+             return ResponseEntity.ok(
+                     Map.of("message", "Subscription reactivated successfully.")
+             );
+         } catch(IllegalArgumentException e){
+             return ResponseEntity
+                     .badRequest()
+                     .body(Map.of(
+                             "error",
+                             e.getMessage()
+                     ));
+         } catch (StripeException e) {
+             return ResponseEntity
+                     .internalServerError()
+                     .body(Map.of(
+                             "error",
+                             "Unable to reactivate subscription."
+                     ));
+         }
+     }
 }
 
