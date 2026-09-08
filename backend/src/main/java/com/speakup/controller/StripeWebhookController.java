@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.speakup.service.EnrollmentService;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
+import com.stripe.model.Subscription;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 
@@ -45,13 +46,29 @@ public class StripeWebhookController {
                     "Stripe event received: " + event.getType()
             );
 
+            // -----------------------------------------
+            // CHECKOUT COMPLETED
+            // -----------------------------------------
+
             if ("checkout.session.completed"
                     .equals(event.getType())) {
-Session session =
-        (Session) event.getDataObjectDeserializer()
-                .deserializeUnsafe();
 
-System.out.println("Checkout session ID: " + session.getId());
+                Session session =
+                        (Session) event.getDataObjectDeserializer()
+                                .deserializeUnsafe();
+
+                String stripeSubscriptionId =
+                        session.getSubscription();
+
+                System.out.println(
+                        "Stripe subscription ID: "
+                                + stripeSubscriptionId
+                );
+
+                System.out.println(
+                        "Checkout session ID: "
+                                + session.getId()
+                );
 
                 String userId =
                         session.getMetadata().get("userId");
@@ -65,12 +82,12 @@ System.out.println("Checkout session ID: " + session.getId());
                 if (userId == null || planId == null) {
 
                     System.out.println("MISSING METADATA");
-
                     System.out.println("userId: " + userId);
-
                     System.out.println("planId: " + planId);
+                    System.out.println(
+                            "voucherCode: " + voucherCode
+                    );
 
-                    System.out.println("voucherCode: " + voucherCode);
                     return ResponseEntity.badRequest()
                             .body("Missing checkout metadata.");
                 }
@@ -78,7 +95,8 @@ System.out.println("Checkout session ID: " + session.getId());
                 enrollmentService.completeEnrollmentFromStripe(
                         userId,
                         planId,
-                        voucherCode
+                        voucherCode,
+                        stripeSubscriptionId
                 );
 
                 System.out.println(
@@ -87,7 +105,72 @@ System.out.println("Checkout session ID: " + session.getId());
                 );
             }
 
-            return ResponseEntity.ok("Webhook received: " + event.getType());
+            // -----------------------------------------
+            // SUBSCRIPTION UPDATED
+            // -----------------------------------------
+
+            else if ("customer.subscription.updated"
+                    .equals(event.getType())) {
+
+                Subscription stripeSubscription =
+                        (Subscription) event
+                                .getDataObjectDeserializer()
+                                .deserializeUnsafe();
+
+                String stripeSubscriptionId =
+                        stripeSubscription.getId();
+
+                boolean cancelAtPeriodEnd =
+                        stripeSubscription.getCancelAtPeriodEnd();
+
+              
+
+                System.out.println(
+                        "Subscription updated: "
+                                + stripeSubscriptionId
+                );
+
+                System.out.println(
+                        "Cancel at period end: "
+                                + cancelAtPeriodEnd
+                );
+
+                
+
+                enrollmentService.handleStripeSubscriptionUpdated(
+                        stripeSubscriptionId,
+                        cancelAtPeriodEnd
+                );
+            }
+
+            // -----------------------------------------
+            // SUBSCRIPTION DELETED
+            // -----------------------------------------
+
+            else if ("customer.subscription.deleted"
+                    .equals(event.getType())) {
+
+                Subscription stripeSubscription =
+                        (Subscription) event
+                                .getDataObjectDeserializer()
+                                .deserializeUnsafe();
+
+                String stripeSubscriptionId =
+                        stripeSubscription.getId();
+
+                System.out.println(
+                        "Subscription deleted: "
+                                + stripeSubscriptionId
+                );
+
+                enrollmentService.handleStripeSubscriptionDeleted(
+                        stripeSubscriptionId
+                );
+            }
+
+            return ResponseEntity.ok(
+                    "Webhook received: " + event.getType()
+            );
 
         } catch (SignatureVerificationException e) {
 
@@ -96,11 +179,17 @@ System.out.println("Checkout session ID: " + session.getId());
 
         } catch (Exception e) {
 
-            System.out.println("WEBHOOK ERROR: " + e.getMessage());
+            System.out.println(
+                    "WEBHOOK ERROR: " + e.getMessage()
+            );
+
             e.printStackTrace();
 
             return ResponseEntity.internalServerError()
-                    .body("Webhook processing failed" + e.getMessage());
+                    .body(
+                            "Webhook processing failed: "
+                                    + e.getMessage()
+                    );
         }
     }
 }
