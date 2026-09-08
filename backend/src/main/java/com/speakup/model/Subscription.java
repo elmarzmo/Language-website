@@ -25,11 +25,17 @@ public class Subscription {
 
     private String voucherId;
 
+    private String stripeSubscriptionId;
+
+  
+
     private BigDecimal amount;
 
     private String currency;
 
     private SubscriptionStatus status;
+
+    private boolean cancelAtPeriodEnd;
 
     private LocalDateTime startDate;
 
