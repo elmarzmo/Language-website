@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.speakup.dto.VoucherValidationResponse;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Subscription;
 import com.stripe.model.checkout.Session;
+import com.stripe.param.SubscriptionUpdateParams;
 import com.stripe.param.checkout.SessionCreateParams;
+
 
 @Service
 public class StripeService {
@@ -74,6 +77,29 @@ public class StripeService {
     
                 return session.getUrl();
 
+        }
+
+
+        public Subscription cancelSubscription(String subscriptionId) throws StripeException {
+                Subscription subscription = Subscription.retrieve(subscriptionId);
+
+                SubscriptionUpdateParams params = SubscriptionUpdateParams.builder()
+                        .setCancelAtPeriodEnd(true)
+                        .build();
+
+                subscription = subscription.update(params);
+                return subscription;
+        }
+
+        public Subscription reactivateSubscription(String subscriptionId) throws StripeException {
+                Subscription subscription = Subscription.retrieve(subscriptionId);
+
+                SubscriptionUpdateParams params = SubscriptionUpdateParams.builder()
+                        .setCancelAtPeriodEnd(false)
+                        .build();
+
+                subscription = subscription.update(params);
+                return subscription;
         }
 
 
