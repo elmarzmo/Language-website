@@ -2,6 +2,7 @@ package com.speakup.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ import com.speakup.repository.StudentOnboardingRepository;
 import com.speakup.repository.SubscriptionPlanRepository;
 import com.speakup.repository.SubscriptionRepository;
 import com.speakup.repository.VoucherRepository;
+import com.stripe.exception.StripeException;
+
+
 
 @Service
 public class EnrollmentService {
@@ -23,17 +27,22 @@ public class EnrollmentService {
     private final VoucherRepository voucherRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final StudentOnboardingRepository studentOnboardingRepository;
+    private final StripeService stripeService;
 
     public EnrollmentService(
             SubscriptionPlanRepository subscriptionPlanRepository,
             VoucherRepository voucherRepository,
             SubscriptionRepository subscriptionRepository,
-            StudentOnboardingRepository studentOnboardingRepository) {
+            StudentOnboardingRepository studentOnboardingRepository,
+            StripeService stripeService
+        
+        ) {
 
         this.subscriptionPlanRepository = subscriptionPlanRepository;
         this.voucherRepository = voucherRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.studentOnboardingRepository = studentOnboardingRepository;
+        this.stripeService = stripeService;
     }
 
     public EnrollmentResponseDTO enroll(
@@ -190,8 +199,19 @@ public class EnrollmentService {
 public void completeEnrollmentFromStripe(
         String userId,
         String planId,
-        String voucherCode) {
+        String voucherCode,
+        String stripeSubscriptionId
+) {
 
+
+
+        if (stripeSubscriptionId == null ||
+            stripeSubscriptionId.isBlank()) {
+
+        throw new IllegalArgumentException(
+                "Stripe subscription ID is missing."
+        );
+    }
     // 1. Make sure the student does not already have an active subscription
     if (subscriptionRepository
             .findByUserIdAndStatus(
@@ -273,6 +293,7 @@ public void completeEnrollmentFromStripe(
     subscription.setStatus(
             Subscription.SubscriptionStatus.ACTIVE
     );
+    subscription.setStripeSubscriptionId(stripeSubscriptionId);
 
     subscription.setStartDate(startDate);
     subscription.setEndDate(endDate);
@@ -316,6 +337,168 @@ public void completeEnrollmentFromStripe(
     }
 }
 
+public void cancelSubscription(String userId)
+        throws StripeException {
+
+    StudentOnboarding onboarding =
+            studentOnboardingRepository
+                    .findByUserId(userId)
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Student onboarding record not found."
+                            )
+                    );
+
+    if (onboarding.getSubscriptionId() == null ||
+            onboarding.getSubscriptionId().isBlank()) {
+
+        throw new IllegalArgumentException(
+                "No subscription found."
+        );
+    }
+
+    Subscription subscription =
+            subscriptionRepository
+                    .findById(onboarding.getSubscriptionId())
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Subscription not found."
+                            )
+                    );
+
+    if (subscription.getStripeSubscriptionId() == null ||
+            subscription.getStripeSubscriptionId().isBlank()) {
+
+        throw new IllegalArgumentException(
+                "Stripe subscription ID is missing."
+        );
+    }
+
+    if (subscription.getStatus() !=
+            Subscription.SubscriptionStatus.ACTIVE) {
+
+        throw new IllegalArgumentException(
+                "Your subscription is not active."
+        );
+    }
+
+    stripeService.cancelSubscription(
+            subscription.getStripeSubscriptionId()
+    );
+}
 
 
+public void reactivateSubscription(String userId)
+        throws StripeException {
+
+    StudentOnboarding onboarding =
+            studentOnboardingRepository
+                    .findByUserId(userId)
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Student onboarding record not found."
+                            )
+                    );
+
+    if (onboarding.getSubscriptionId() == null ||
+            onboarding.getSubscriptionId().isBlank()) {
+
+        throw new IllegalArgumentException(
+                "No subscription found."
+        );
+    }
+
+    Subscription subscription =
+            subscriptionRepository
+                    .findById(onboarding.getSubscriptionId())
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Subscription not found."
+                            )
+                    );
+
+    if (subscription.getStripeSubscriptionId() == null ||
+            subscription.getStripeSubscriptionId().isBlank()) {
+
+        throw new IllegalArgumentException(
+                "Stripe subscription ID is missing."
+        );
+    }
+
+    if (subscription.getStatus() !=
+            Subscription.SubscriptionStatus.ACTIVE) {
+
+        throw new IllegalArgumentException(
+                "Your subscription is no longer active."
+        );
+    }
+
+    stripeService.reactivateSubscription(
+            subscription.getStripeSubscriptionId()
+    );
+}
+
+public void handleStripeSubscriptionUpdated(
+        String stripeSubscriptionId,
+        boolean cancelAtPeriodEnd
+) {
+
+    Subscription subscription =
+            subscriptionRepository
+                    .findByStripeSubscriptionId(stripeSubscriptionId)
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Subscription not found for Stripe subscription: "
+                                            + stripeSubscriptionId
+                            )
+                    );
+
+
+
+                    subscription.setCancelAtPeriodEnd(cancelAtPeriodEnd);
+
+    
+    // The subscription is still active even when
+    // cancellation is scheduled.
+    subscription.setStatus(
+            Subscription.SubscriptionStatus.ACTIVE
+    );
+
+    subscriptionRepository.save(subscription);
+}
+public void handleStripeSubscriptionDeleted(
+        String stripeSubscriptionId
+) {
+
+    Optional<Subscription> optionalSubscription =
+            subscriptionRepository
+                    .findByStripeSubscriptionId(stripeSubscriptionId);
+
+    if (optionalSubscription.isEmpty()) {
+
+        System.out.println(
+                "No local subscription found for deleted Stripe subscription: "
+                        + stripeSubscriptionId
+        );
+
+        return;
+    }
+
+    Subscription subscription = optionalSubscription.get();
+
+    subscription.setCancelAtPeriodEnd(false);
+
+    subscription.setStatus(
+            Subscription.SubscriptionStatus.CANCELED
+    );
+
+    subscriptionRepository.save(subscription);
+
+    studentOnboardingRepository
+            .findByUserId(subscription.getUserId())
+            .ifPresent(onboarding -> {
+                onboarding.setEnrolled(false);
+                studentOnboardingRepository.save(onboarding);
+            });
+}
 }
