@@ -7,6 +7,7 @@ import { DashboardService, StudentDashboard, ClassSession } from '../../../servi
 import { LessonModule } from '../../../model/lesson.model';
 import { LessonService } from '../../../services/lesson';
 import { catchError, forkJoin, of, tap } from 'rxjs';
+import {SubscriptionService} from "../../../services/subscription-service";
 
 @Component({
   selector: 'app-student-dashboard',
@@ -32,6 +33,16 @@ export class Dashboard implements OnInit, OnDestroy {
   isEnrolled = false;       // ← only flipped to true when dashboard API call succeeds
   private dashboardLoaded = false; // internal flag to track API success
 
+  
+
+  subscriptionStatus: 'ACTIVE' | 'CANCELED' = 'ACTIVE';
+  cancelAtPeriodEnd = false;
+
+  isSubscriptionLoading = false;
+  subscriptionMessage = '';
+  subscriptionError = '';
+
+
   lessonLookup: Map<string, LessonModule> = new Map();
   completedLessons: Set<string> = new Set();
 
@@ -41,7 +52,8 @@ export class Dashboard implements OnInit, OnDestroy {
     private auth: Auth,
     private dashboardService: DashboardService,
     private router: Router,
-    private lessonService: LessonService
+    private lessonService: LessonService,
+    private subscriptionService: SubscriptionService
   ) {}
 
   ngOnInit(): void {
@@ -184,6 +196,53 @@ export class Dashboard implements OnInit, OnDestroy {
   isCompleted(lessonId: string): boolean {
     return this.completedLessons.has(lessonId);
   }
+
+
+  cancelSubscription(): void {
+  this.isSubscriptionLoading = true;
+  this.subscriptionMessage = '';
+  this.subscriptionError = '';
+
+  this.subscriptionService.cancelSubscription().subscribe({
+    next: (response) => {
+      this.subscriptionStatus = 'ACTIVE';
+      this.cancelAtPeriodEnd = true;
+      this.subscriptionMessage = response.message || 'Your subscription will be canceled at the end of the current billing period.';
+      this.isSubscriptionLoading = false;
+    },
+    error: (err) => {
+
+          console.error('Failed to cancel subscription:', err);
+
+      this.subscriptionError = err?.error?.error || 'Failed to cancel subscription.';
+      this.isSubscriptionLoading = false;
+    }
+  });
+
+
+}
+
+
+reactivateSubscription(): void {
+  this.isSubscriptionLoading = true;
+  this.subscriptionMessage = '';
+  this.subscriptionError = '';
+
+  this.subscriptionService.reactivateSubscription().subscribe({
+    next: (response) => {
+      this.subscriptionStatus = 'ACTIVE';
+      this.cancelAtPeriodEnd = false;
+      this.subscriptionMessage = response.message || 'Your subscription has been reactivated.';
+      this.isSubscriptionLoading = false;
+    },
+    error: (err) => {
+      console.error('Failed to reactivate subscription:', err);
+      this.subscriptionError = err?.error?.error || 'Failed to reactivate subscription.';
+      this.isSubscriptionLoading = false;
+    }
+  });
+}
+
 
   logout(): void {
     this.auth.logout();
