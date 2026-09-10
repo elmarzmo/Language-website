@@ -2,6 +2,7 @@ package com.speakup.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -500,5 +501,44 @@ public void handleStripeSubscriptionDeleted(
                 onboarding.setEnrolled(false);
                 studentOnboardingRepository.save(onboarding);
             });
+}
+
+public Map<String, Object> getSubscriptionStatus(String userId) {
+
+        StudentOnboarding onboarding =
+                studentOnboardingRepository
+                        .findByUserId(userId)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "Student onboarding record not found."
+                                )
+                        );
+        if(onboarding.getSubscriptionId() == null ||
+                onboarding.getSubscriptionId().isBlank()) {
+
+           throw new IllegalArgumentException(
+                    "No subscription found."
+            );
+        }
+
+        Subscription subscription =
+                        subscriptionRepository
+                                .findById(onboarding.getSubscriptionId())
+                                .orElseThrow(() ->
+                                        new IllegalArgumentException(
+                                                "Subscription not found."
+                                        )
+                                );
+
+
+    return Map.of(
+            "hasActiveSubscription", true,
+            "planId", subscription.getPlanId(),
+            "amount", subscription.getAmount(),
+            "currency", subscription.getCurrency(),
+            "startDate", subscription.getStartDate(),
+            "endDate", subscription.getEndDate(),
+            "cancelAtPeriodEnd", subscription.isCancelAtPeriodEnd()
+    );
 }
 }
