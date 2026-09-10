@@ -75,6 +75,8 @@ export class Dashboard implements OnInit, OnDestroy {
         this.studentName = user.username;
         this.isLoading = true;
 
+        this.loadSubscriptionStatus();
+
         forkJoin({
           dashboard: this.dashboardService.getStudentDashboard().pipe(
             tap(() => { this.dashboardLoaded = true; }), // ← only runs on API success
@@ -140,6 +142,19 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: () => {
         this.router.navigate(['/signin']);
+      }
+    });
+  }
+
+
+  private loadSubscriptionStatus(): void {
+    this.subscriptionService.getSubscriptionStatus().subscribe({
+      next: (response) => {
+        this.subscriptionStatus = response.status;
+        this.cancelAtPeriodEnd = response.cancelAtPeriodEnd;
+      },
+      error: (err) => {
+        console.error('Failed to load subscription status:', err);
       }
     });
   }
