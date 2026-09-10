@@ -20,4 +20,8 @@ export class SubscriptionService {
   reactivateSubscription(): Observable<any> {
     return this.http.post(`${this.apiUrl}/student/stripe/reactivate`, {});
   }
+
+  getSubscriptionStatus(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/student/stripe/subscription-status`);
+  }
 }
