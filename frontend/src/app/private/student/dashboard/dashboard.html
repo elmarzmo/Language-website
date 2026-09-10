@@ -193,6 +193,137 @@
       </div>
     </div>
 
+
+    <!-- ── SUBSCRIPTION ── -->
+<div class="section subscription-section">
+  <div class="section-header">
+    <h2 class="section-title">Your Subscription</h2>
+    <p class="section-subtitle">Manage your Voixa English membership</p>
+  </div>
+
+  <div class="subscription-card">
+
+    <!-- ACTIVE -->
+    <ng-container *ngIf="subscriptionStatus === 'ACTIVE' && !cancelAtPeriodEnd">
+
+      <div class="subscription-info">
+        <div class="subscription-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 7h-9" />
+            <path d="M20 7l-3-3" />
+            <path d="M20 7l-3 3" />
+            <path d="M4 17h9" />
+            <path d="M4 17l3-3" />
+            <path d="M4 17l3 3" />
+          </svg>
+        </div>
+
+        <div>
+          <h3>Monthly Plan</h3>
+          <p>$29.99 / month</p>
+        </div>
+      </div>
+
+      <div class="subscription-status">
+        <span class="status-badge active">Active</span>
+
+        <button
+          class="btn-cancel-subscription"
+          (click)="cancelSubscription()"
+          [disabled]="isSubscriptionLoading">
+          {{ isSubscriptionLoading ? 'Cancelling...' : 'Cancel Subscription' }}
+        </button>
+      </div>
+
+    </ng-container>
+
+
+    <!-- CANCELLATION SCHEDULED -->
+    <ng-container *ngIf="subscriptionStatus === 'ACTIVE' && cancelAtPeriodEnd">
+
+      <div class="subscription-info">
+        <div class="subscription-icon scheduled">
+          <svg width="22" height="22" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <polyline points="12 7 12 12 15 14" />
+          </svg>
+        </div>
+
+        <div>
+          <h3>Cancellation Scheduled</h3>
+          <p>Your subscription will remain active until the end of your billing period.</p>
+        </div>
+      </div>
+
+      <div class="subscription-status">
+        <span class="status-badge scheduled">Ending Soon</span>
+
+        <button
+          class="btn-reactivate-subscription"
+          (click)="reactivateSubscription()"
+          [disabled]="isSubscriptionLoading">
+          {{ isSubscriptionLoading ? 'Reactivating...' : 'Reactivate Subscription' }}
+        </button>
+      </div>
+
+    </ng-container>
+
+
+    <!-- CANCELED -->
+    <ng-container *ngIf="subscriptionStatus === 'CANCELED'">
+
+      <div class="subscription-info">
+        <div class="subscription-icon canceled">
+          <svg width="22" height="22" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </div>
+
+        <div>
+          <h3>Subscription Canceled</h3>
+          <p>Your subscription is no longer active.</p>
+        </div>
+      </div>
+
+      <div class="subscription-status">
+        <span class="status-badge canceled">Canceled</span>
+
+        <button
+          class="btn-reactivate-subscription"
+          (click)="reactivateSubscription()"
+          [disabled]="isSubscriptionLoading">
+          {{ isSubscriptionLoading ? 'Processing...' : 'Start Subscription Again' }}
+        </button>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+  <!-- Success message -->
+  <div
+    class="subscription-message success"
+    *ngIf="subscriptionMessage">
+    {{ subscriptionMessage }}
+  </div>
+
+  <!-- Error message -->
+  <div
+    class="subscription-message error"
+    *ngIf="subscriptionError">
+    {{ subscriptionError }}
+  </div>
+
+</div>
+
+
     <!-- ── UPCOMING CLASSES ── -->
     <div class="dashboard-main">
       <div class="section">
