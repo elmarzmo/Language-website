@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -138,5 +139,27 @@ public ResponseEntity<?> cancelSubscription(
                      ));
          }
      }
-}
 
+     @GetMapping("/subscription-status")
+     public ResponseEntity<?> getSubscriptionStatus(
+             HttpServletRequest httpRequest) {
+
+         try {
+             String studentId =
+                     (String) httpRequest.getAttribute("userId");
+
+            
+
+             return ResponseEntity.ok(
+                         enrollmentService.getSubscriptionStatus(studentId)
+                     );
+         } catch (IllegalArgumentException e) {
+             return ResponseEntity
+                     .badRequest()
+                     .body(Map.of(
+                             "error",
+                             e.getMessage()
+                     ));
+         }
+     }
+}
