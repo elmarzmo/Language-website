@@ -532,7 +532,8 @@ public Map<String, Object> getSubscriptionStatus(String userId) {
 
 
     return Map.of(
-            "hasActiveSubscription", true,
+
+            "hasActiveSubscription", subscription.getStatus() == Subscription.SubscriptionStatus.ACTIVE,            
             "planId", subscription.getPlanId(),
             "amount", subscription.getAmount(),
             "currency", subscription.getCurrency(),
