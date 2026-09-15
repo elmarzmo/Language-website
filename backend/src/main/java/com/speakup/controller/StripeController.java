@@ -105,6 +105,7 @@ public ResponseEntity<?> cancelSubscription(
                 .internalServerError()
                 .body(Map.of(
                         "error",
+                        e.getMessage() != null ? e.getMessage() :
                         "Unable to cancel subscription."
                 ));
     }
