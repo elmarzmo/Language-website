@@ -8,6 +8,7 @@ import { LessonModule } from '../../../model/lesson.model';
 import { LessonService } from '../../../services/lesson';
 import { catchError, forkJoin, of, tap } from 'rxjs';
 import {SubscriptionService} from "../../../services/subscription-service";
+import {StripeService} from "../../../services/stripe-service";
 
 @Component({
   selector: 'app-student-dashboard',
@@ -53,7 +54,8 @@ export class Dashboard implements OnInit, OnDestroy {
     private dashboardService: DashboardService,
     private router: Router,
     private lessonService: LessonService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private stripeService: StripeService
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +77,7 @@ export class Dashboard implements OnInit, OnDestroy {
         this.studentName = user.username;
         this.isLoading = true;
 
-        this.loadSubscriptionStatus();
+        this.loadSubscription();
 
         forkJoin({
           dashboard: this.dashboardService.getStudentDashboard().pipe(
@@ -146,18 +148,26 @@ export class Dashboard implements OnInit, OnDestroy {
     });
   }
 
+private loadSubscription(): void {
+  console.log('LOAD SUBSCRIPTION CALLED');
 
-  private loadSubscriptionStatus(): void {
-    this.subscriptionService.getSubscriptionStatus().subscribe({
-      next: (response) => {
-        this.subscriptionStatus = response.status;
-        this.cancelAtPeriodEnd = response.cancelAtPeriodEnd;
-      },
-      error: (err) => {
-        console.error('Failed to load subscription status:', err);
-      }
-    });
-  }
+  this.subscriptionService.getSubscriptionStatus().subscribe({
+    next: (subscription) => {
+      console.log('SUBSCRIPTION RESPONSE:', subscription);
+
+      this.subscriptionStatus =
+        subscription.hasActiveSubscription ? 'ACTIVE' : 'CANCELED';
+
+      this.cancelAtPeriodEnd = subscription.cancelAtPeriodEnd;
+
+      console.log('subscriptionStatus:', this.subscriptionStatus);
+      console.log('cancelAtPeriodEnd:', this.cancelAtPeriodEnd);
+    },
+    error: (err) => {
+      console.error('Failed to load subscription:', err);
+    }
+  });
+}
 
   private updateTime(): void {
     const now = new Date();
@@ -243,6 +253,19 @@ reactivateSubscription(): void {
   this.subscriptionMessage = '';
   this.subscriptionError = '';
 
+  if(this.subscriptionStatus === 'CANCELED') {
+    this.stripeService.createCheckoutSession().subscribe({
+      next: (response) => {
+        window.location.href = response.url;
+      },
+      error: (err) => {
+        console.error('Failed to create checkout session:', err);
+        this.subscriptionError = err?.error?.error || 'Failed to create checkout session.';
+        this.isSubscriptionLoading = false;
+      }
+    });
+    return; // Exit the function to avoid calling reactivateSubscription again
+  }
   this.subscriptionService.reactivateSubscription().subscribe({
     next: (response) => {
       this.subscriptionStatus = 'ACTIVE';

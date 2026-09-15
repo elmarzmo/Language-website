@@ -775,6 +775,238 @@
   border-radius: 50%;
 }
 
+/* ══════════════════════════════════════
+   SUBSCRIPTION
+════════════════════════════════════════ */
+
+.subscription-section {
+  margin-top: var(--space-5);
+}
+
+.subscription-card {
+  margin: 0 var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-card);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* ── Subscription information ── */
+
+.subscription-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.subscription-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.subscription-info p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ── Subscription icon ── */
+
+.subscription-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-success-tint);
+  color: var(--color-success);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.subscription-icon.scheduled {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.subscription-icon.canceled {
+  background: var(--color-danger-tint);
+  color: var(--color-danger);
+}
+
+/* ── Status / action area ── */
+
+.subscription-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* ── Status badges ── */
+
+.subscription-status .status-badge.active {
+  background: var(--color-success-tint);
+  color: var(--color-success);
+}
+
+.subscription-status .status-badge.scheduled {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.subscription-status .status-badge.canceled {
+  background: var(--color-danger-tint);
+  color: var(--color-danger);
+}
+
+/* ── Subscription buttons ── */
+
+.btn-cancel-subscription,
+.btn-reactivate-subscription {
+  min-height: 40px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+/* Cancel */
+
+.btn-cancel-subscription {
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-muted);
+}
+
+.btn-cancel-subscription:hover:not(:disabled) {
+  background: var(--color-danger-tint);
+  border-color: #FCA5A5;
+  color: var(--color-danger);
+}
+
+/* Reactivate / Start again */
+
+.btn-reactivate-subscription {
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: white;
+}
+
+.btn-reactivate-subscription:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* Disabled / loading */
+
+.btn-cancel-subscription:disabled,
+.btn-reactivate-subscription:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Messages ── */
+
+.subscription-message {
+  margin: var(--space-3) var(--space-4) 0;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.subscription-message.success {
+  background: var(--color-success-tint);
+  border: 1px solid #BBE6C7;
+  color: #166534;
+}
+
+.subscription-message.error {
+  background: var(--color-danger-tint);
+  border: 1px solid #F5B5B5;
+  color: #991B1B;
+}
+
+
+/* ══════════════════════════════════════
+   SUBSCRIPTION RESPONSIVE
+════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  .subscription-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+    margin: 0 var(--space-3);
+  }
+
+  .subscription-status {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-cancel-subscription,
+  .btn-reactivate-subscription {
+    flex: 1;
+  }
+
+  .subscription-message {
+    margin-left: var(--space-3);
+    margin-right: var(--space-3);
+  }
+}
+
+@media (max-width: 480px) {
+
+  .subscription-card {
+    padding: var(--space-3);
+  }
+
+  .subscription-info {
+    align-items: flex-start;
+  }
+
+  .subscription-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .subscription-status {
+    flex-wrap: wrap;
+  }
+
+  .subscription-status .status-badge {
+    margin-right: auto;
+  }
+
+  .btn-cancel-subscription,
+  .btn-reactivate-subscription {
+    width: 100%;
+    flex: none;
+  }
+}
+
+
 
 /* ── Upcoming class ── */
 
